@@ -39,10 +39,23 @@ suppressPackageStartupMessages(library(downloadthis))
 
 <br />
 
+# **Encuestas de opinión pública en Uruguay**
+
+<div style="text-align: justify">
+Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 (Aguiar, 2000). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [Roper Center](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país (Zuasnábar, 2018). Hacia finales de la década de 1990 las consultoras [Equipos](https://equipos.com.uy/), [Cifra](https://www.cifra.com.uy/), [Factum](https://factum.uy/) e Interconsult y [Radar](https://www.gruporadar.com.uy/) a la que sumaría [Opción Consultores](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. 
+
+A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [Latinobarómetro](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [Barómetro de las Américas](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [LAPOP](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. A su vez, otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [Encuesta Mundial de Valores](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [Comparative Study of Electoral Systems](https://cses.org/) (2009 y 2019)
+</div>
+
+<hr style="border:1.5px solid #2c3e50"> </hr>
+
+<br />
 
 # **Evaluación del presidente**
 
 La evaluación del presidente es uno de los indicadores más utilizados en el estudio de la opinión pública en sistemas presidencialistas y releva cómo la opinión pública evalúa la gestión del presidente. 
+
+La dinámica de la aprobación presidencial (ciclos).
 
 Se pregunta en encuestas de opinión pública y su fraseo suele ser alguna variación de *"¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?"*. Los datos son recabados por consultoras de opinión pública locales y en Uruguay se releva a nivel nacional de forma ininterrumpida desde 1990. 
 
@@ -351,7 +364,9 @@ Apellido, Nombre (2010) Nombre de trabajo. Revista
 
 Apellido, Nombre (2010) Nombre de trabajo. Revista. Disponible en: [enlace en línea](https://ophi.org.uk/recuento-y-medicion-multidimensional-de-la-pobreza/). Consultado el 13/03/2020
 
+Aguiar, C. A. (2000). La Historia y la historia: Opinión Pública y opinión pública en el Uruguay. Prisma, (15), 7-45.
 
+Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Montevideo: Konrad Adenauer Stiftung.
 
 &nbsp;
 <hr />
