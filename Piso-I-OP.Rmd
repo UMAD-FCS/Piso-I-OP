@@ -42,23 +42,17 @@ suppressPackageStartupMessages(library(downloadthis))
 
 # **Evaluación del presidente**
 
-Es uno de los indicadores más utilizados en el estudio de la opinión pública en sistemas presidencialistas y releva cómo la opinión pública evalúa la gestión del presidente. Se pregunta en encuestas de opinión pública y su fraseo suele ser alguna variación de "¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?". Los datos son recabados por consultoras de opinión pública locales y en Uruguay se releva a nivel nacional de forma ininterrumpida desde 1990
+La evaluación del presidente es uno de los indicadores más utilizados en el estudio de la opinión pública en sistemas presidencialistas y releva cómo la opinión pública evalúa la gestión del presidente. 
 
-## **Serie histórica**
-
-Acá va la foto
-<!-- Gráfico evolución -->
-
-## **Tabaré Vázquez II (2014-2019)**
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
+Se pregunta en encuestas de opinión pública y su fraseo suele ser alguna variación de *"¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?"*. Los datos son recabados por consultoras de opinión pública locales y en Uruguay se releva a nivel nacional de forma ininterrumpida desde 1990. 
 
 <br />
 
-<br />
+##  **Serie histórica**
+
 
 <div style="text-align: center">
-#### **Nombre de Indicador I** 
+####  **Serie histórica**
 </div>
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -66,25 +60,56 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lor
 #### Gráfico
 
 ```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-gapminder <- gapminder::gapminder %>% 
-  filter(country == "Uruguay")
+library(opuy)
+library(tidyverse)
 
-g1 <- ggplot(gapminder,
-       aes(x = year, y = lifeExp)) +
-  geom_point(size = 3, colour = "#2c3e50") +
-  geom_line(size = 1, colour = "#2c3e50", alpha = .6) +
-  theme_minimal() +
-  labs(x = "", y = "",
-       title = "Esperanza de vida en Uruguay")
+# Descargar y manipular data desde opuy
+dat_opuy <- opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente',
+         categoria_unificada == 3) %>%
+  select(fecha, empresa, valor, presidente) %>%
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou"))) 
+# Anotaciones
+annotation <- data.frame(
+  x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
+                 "2012-06-06", "2017-06-06", "2022-01-01")),
+  y = 85,
+  label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
+            "Vázquez II", "Lacalle Pou"))
 
-plot(g1)
+fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
+                    "2010-01-01", "2015-01-01", "2020-01-01"))
+    
+
+# Grafico
+aprob_serie <- dat_opuy %>%
+  ggplot(aes(x = fecha, y = valor, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Porcentaje de aprobación",
+       x = "",
+       title = "Aprobación del presidente (serie histórica)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie)
 ```
 
-
-<!-- Por si no usan Plotly (que ya tiene botón de descarga) -->
-
 ```{r}
-download_this(g1,
+download_this(aprob_serie,
               button_label = "Descargar gráfico",
               icon = "fa fa-download")
 ```
@@ -93,7 +118,8 @@ download_this(g1,
 #### Tabla
 
 ```{r}
-DT::datatable(gapminder,
+DT::datatable(dat_opuy %>% 
+                arrange(desc(fecha)),
               extensions =  'Buttons',
               options =  list(dom = 'Bfrtip',
                               buttons = c('copy', 'csv', 'excel', 'print')))
@@ -102,142 +128,52 @@ DT::datatable(gapminder,
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
-gapminder <- gapminder::gapminder %>% 
-  filter(year == 2007)
+library(opuy)
+library(tidyverse)
 
-hist(gapminder$lifeExp,
-     main = "Distribución de esperanza de vida en 2007",
-     col = "skyblue3",
-     border ="black",
-     density = 75)
+# Descargar y manipular data desde opuy
+dat_opuy <- opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente',
+         categoria_unificada == 3) %>%
+  select(fecha, empresa, valor, presidente) %>%
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou"))) 
+# Anotaciones
+annotation <- data.frame(
+  x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
+                 "2012-06-06", "2017-06-06", "2022-01-01")),
+  y = 85,
+  label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
+            "Vázquez II", "Lacalle Pou"))
 
-```
+fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
+                    "2010-01-01", "2015-01-01", "2020-01-01"))
+    
 
+# Grafico
+aprob_serie <- dat_opuy %>%
+  ggplot(aes(x = fecha, y = valor, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Porcentaje de aprobación",
+       x = "",
+       title = "Aprobación del presidente (serie histórica)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
 
-## {.toc-ignore .unlisted .unnumbered}
-
-## **José Mujica (2014-2019)**
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
-
-<div style="text-align: center">
-#### **Nombre de Indicador II** 
-</div>
-
-### {.tabset .tabset-fade .tabset-pills}
-
-#### Gráfico
-
-```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-gapminder <- gapminder::gapminder %>% 
-  filter(country == "Uruguay")
-
-g1 <- ggplot(gapminder,
-       aes(x = year, y = lifeExp)) +
-  geom_point(size = 3, colour = "#2c3e50") +
-  geom_line(size = 1, colour = "#2c3e50", alpha = .6) +
-  theme_minimal() +
-  labs(x = "", y = "",
-       title = "Esperanza de vida en Uruguay")
-
-plot(g1)
-```
-
-
-<!-- Por si no usan Plotly (que ya tiene botón de descarga) -->
-
-```{r}
-download_this(g1,
-              button_label = "Descargar gráfico",
-              icon = "fa fa-download")
-```
-
-#### Tabla
-
-```{r}
-DT::datatable(gapminder,
-              extensions =  'Buttons',
-              options =  list(dom = 'Bfrtip',
-                              buttons = c('copy', 'csv', 'excel', 'print')))
-```
-
-#### Código en R
-
-```{r, echo=TRUE, eval=FALSE}
-gapminder <- gapminder::gapminder %>% 
-  filter(year == 2007)
-
-hist(gapminder$lifeExp,
-     main = "Distribución de esperanza de vida en 2007",
-     col = "skyblue3",
-     border ="black",
-     density = 75)
-
-```
-
-## {.toc-ignore .unlisted .unnumbered}
-
-## **Tabaré Vázquez I (2005-2009)**
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
-
-## {.toc-ignore .unlisted .unnumbered}
-
-<br />
-
-<div style="text-align: center">
-#### **Nombre de Indicador III** 
-</div>
-
-### {.tabset .tabset-fade .tabset-pills}
-
-#### Gráfico
-
-```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-gapminder <- gapminder::gapminder %>% 
-  filter(country == "Uruguay")
-
-g1 <- ggplot(gapminder,
-       aes(x = year, y = lifeExp)) +
-  geom_point(size = 3, colour = "#2c3e50") +
-  geom_line(size = 1, colour = "#2c3e50", alpha = .6) +
-  theme_minimal() +
-  labs(x = "", y = "",
-       title = "Esperanza de vida en Uruguay")
-
-plot(g1)
-```
-
-
-<!-- Por si no usan Plotly (que ya tiene botón de descarga) -->
-
-```{r}
-download_this(g1,
-              button_label = "Descargar gráfico",
-              icon = "fa fa-download")
-```
-
-
-#### Tabla
-
-```{r}
-DT::datatable(gapminder,
-              extensions =  'Buttons',
-              options =  list(dom = 'Bfrtip',
-                              buttons = c('copy', 'csv', 'excel', 'print')))
-```
-
-#### Código en R
-
-```{r, echo=TRUE, eval=FALSE}
-gapminder <- gapminder::gapminder %>% 
-  filter(year == 2007)
-
-hist(gapminder$lifeExp,
-     main = "Distribución de esperanza de vida en 2007",
-     col = "skyblue3",
-     border ="black",
-     density = 75)
+plot(aprob_serie)
 
 ```
 
