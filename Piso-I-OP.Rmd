@@ -7,6 +7,7 @@ output:
     toc_float: yes
     smooth_scroll: yes
     toc_depth: 2
+    css: "www/estilo.css"
   pdf_document:
     toc: yes
     toc_depth: '2'
@@ -35,36 +36,50 @@ suppressPackageStartupMessages(library(downloadthis))
 **La [Unidad de Métodos y Acceso a Datos](https://umad.cienciassociales.edu.uy/) (UMAD) (FCS-UdelaR) a partir del [Observatorio Uruguay](https://umad.cienciassociales.edu.uy/observatorio-uruguay/) busca aportar a la difusión de conocimiento respecto a temas de interés general sobre la realidad social, económica y política del Uruguay. Esta serie de documentos tiene como objetivo presentar indicadores clave para el análisis de tendencias históricas del país que esperamos sean de utilidad para las comunidades académicas, los tomadores de decisión y los formadores de opinión, así como el público en general. Se presentan aquí indicadores de opinión pública provenientes de encuestadoras locales y proyectos de opinión pública internacionales **
 </div>
 
-<hr style="border:1.5px solid #2c3e50"> </hr>
-
 <br />
+
+<hr style="border:1.5px solid #2c3e50"> </hr>
 
 # **Encuestas de opinión pública en Uruguay**
 
 <div style="text-align: justify">
+
 Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 (Aguiar, 2000). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [Roper Center](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país (Zuasnábar, 2018). Hacia finales de la década de 1990 las consultoras [Equipos](https://equipos.com.uy/), [Cifra](https://www.cifra.com.uy/), [Factum](https://factum.uy/) e Interconsult y [Radar](https://www.gruporadar.com.uy/) a la que sumaría [Opción Consultores](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. 
 
 A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [Latinobarómetro](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [Barómetro de las Américas](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [LAPOP](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. A su vez, otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [Encuesta Mundial de Valores](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [Comparative Study of Electoral Systems](https://cses.org/) (2009 y 2019)
 </div>
 
-<hr style="border:1.5px solid #2c3e50"> </hr>
-
 <br />
 
-# **Evaluación del presidente**
+<hr style="border:1.5px solid #2c3e50"> </hr>
 
-La evaluación del presidente es uno de los indicadores más utilizados en el estudio de la opinión pública en sistemas presidencialistas y releva cómo la opinión pública evalúa la gestión del presidente. 
+# **Evaluación presidencial**
 
-La dinámica de la aprobación presidencial (ciclos).
+<div style="text-align: justify">
 
-Se pregunta en encuestas de opinión pública y su fraseo suele ser alguna variación de *"¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?"*. Los datos son recabados por consultoras de opinión pública locales y en Uruguay se releva a nivel nacional de forma ininterrumpida desde 1990. 
+**La evaluación presidencial** es uno de los indicadores más utilizados en el estudio de la opinión pública en sistemas presidencialistas y releva cómo la opinión pública evalúa la gestión del presidente. Entre otros motivos, la aprobación presidencial es importante en sistemas presidencialistas porque los presidentes pueden utilizar las evaluaciones que la opinión pública como una guía para ajustar sus programas (Carlin et al., 2015). De esta forma, la aprobación presidencial funciona como un mecanismo de *accountability* o rendición de cuentas que el electorado posee para reaccionar frente a las decisiones del presidente. Entre otras consecuencias, existe evidencia para América Latina de que una eleveda aprobación presidencial aumenta la probabilidad de pasar legistlatura de forma satisfactoria (Calvo, 2007), contribuye a gobiernos más estables (Martinez-Gallardo, 2012) y aumenta la probabilidad de los presidentes de terminar sus mandatos (Perez-Liñán, 2007).
+
+La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cíclico** con forma de tick invertido, divido en tres etapas:
+<ol>
+  <li>**Luna de miel**: los primeros meses de mandato suele ser el período donde el presidente obtiene mayor aprobación </li>
+  <li>**Deterioro**: posterior a la luna de miel normalmente existe un declive gradual de la aprobación hasta cerca del año antes del término de su mandato. </li>
+  <li>**Recupero final**: en el último año de mandato la aprobación del presidente suele recuperarse </li>
+</ol>
+ 
+<br />
+
+<div class="boxed">
+**La evaluación del presidente en Uruguay se releva releva a nivel nacional de forma ininterrumpida fines de la década de 1980 por consultoras de opinión pública locales. El fraseo de la pregunta suele ser alguna variación de** *"¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?"*.  
+</div>
 
 <br />
 
 ##  **Serie histórica**
 
-
 <div style="text-align: center">
+
+El gráfico debajo muestra la serie histórica de aprobación presidencial según administración.
+
 ####  **Serie histórica**
 </div>
 
@@ -189,6 +204,9 @@ aprob_serie <- dat_opuy %>%
 plot(aprob_serie)
 
 ```
+
+
+
 
 ## {.toc-ignore .unlisted .unnumbered}
 
@@ -362,9 +380,15 @@ UMAD (2020) Opinión Pública en Uruguay. Disponible en [enlace en línea]().
 <div style="text-align: justify">										
 Apellido, Nombre (2010) Nombre de trabajo. Revista
 
-Apellido, Nombre (2010) Nombre de trabajo. Revista. Disponible en: [enlace en línea](https://ophi.org.uk/recuento-y-medicion-multidimensional-de-la-pobreza/). Consultado el 13/03/2020
-
 Aguiar, C. A. (2000). La Historia y la historia: Opinión Pública y opinión pública en el Uruguay. Prisma, (15), 7-45.
+
+Calvo, E. (2007). The responsive legislature: Public opinion and law making in a highly disciplined legislature. British Journal of Political Science, 37(2), 263-280.
+
+Carlin, R. E., Love, G. J., & Martínez-Gallardo, C. (2015). Cushioning the fall: Scandals, economic conditions, and executive approval. Political Behavior, 37(1), 109-130.
+
+Martinez-Gallardo, C. (2012). Out of the cabinet: what drives defections from the government in presidential systems?. Comparative Political Studies, 45(1), 62-90.
+
+Pérez-Liñán, A. (2007). Presidential impeachment and the new political instability in Latin America. Cambridge University Press.
 
 Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Montevideo: Konrad Adenauer Stiftung.
 
