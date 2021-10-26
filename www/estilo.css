@@ -1,4 +1,4 @@
-      .boxed {
+.boxed {
         background: #D6EAF8;
         color: #154360;
         margin: 3px auto;
@@ -7,3 +7,7 @@
         border-radius: 5px;
         border: 3px solid #154360;
       }
+
+h2 { /* Header 2 */
+    font-size: 22px;
+}
