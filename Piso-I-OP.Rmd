@@ -64,6 +64,14 @@ Hablar de margen de error, diferentes question wordings, etc.
 **La evaluación presidencial** es uno de los indicadores más utilizados en el estudio de la opinión pública en sistemas presidencialistas y releva cómo la opinión pública evalúa la gestión del presidente. Entre otros motivos, la aprobación presidencial es importante en sistemas presidencialistas porque los presidentes pueden utilizar las evaluaciones que la opinión pública como una guía para ajustar sus programas (Carlin et al., 2015). De esta forma, la aprobación presidencial funciona como un mecanismo de *accountability* o rendición de cuentas que el electorado posee para reaccionar frente a las decisiones del presidente. Entre otras consecuencias, existe evidencia para América Latina de que una eleveda aprobación presidencial aumenta la probabilidad de pasar legistlatura de forma satisfactoria (Calvo, 2007), contribuye a gobiernos más estables (Martinez-Gallardo, 2012) y aumenta la probabilidad de los presidentes de terminar sus mandatos (Perez-Liñán, 2007).
 </div>
 
+<br>
+
+<div class="boxed">
+**La evaluación del presidente en Uruguay se releva releva a nivel nacional de forma ininterrumpida fines de la década de 1980 por consultoras de opinión pública locales. El fraseo de la pregunta suele ser alguna variación de** *"¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?"*.  
+</div>
+
+<br />
+
 ## **Ciclos de aprobación presidencial**
 
 La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cíclico** con forma de tick invertido, divido en tres etapas (Stimson, 1976; Carlin et al., 2018):
@@ -75,21 +83,25 @@ La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cícl
  
 <br />
 
-<div class="boxed">
-**La evaluación del presidente en Uruguay se releva releva a nivel nacional de forma ininterrumpida fines de la década de 1980 por consultoras de opinión pública locales. El fraseo de la pregunta suele ser alguna variación de** *"¿Ud. aprueba o desaprueba la forma en que se está desempeñando el Presidente?"*.  
-</div>
-
-<br />
-
 ## **Serie histórica de aprobación**
 
 El gráfico debajo muestra la serie histórica de aprobación presidencial según administración. 
+
+<br />
+
+<div style="text-align: center">
+#### **Serie histórica (tendencia con datos de todas las consultoras)** 
+</div>
 
 ### {.tabset .tabset-fade .tabset-pills}
 
 #### Gráfico
 
 ```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# remotes::install_github("Nicolas-Schmidt/opuy")
+
 library(opuy)
 library(tidyverse)
 
@@ -102,6 +114,7 @@ dat_opuy <- opuy %>%
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
                                         "Lacalle Pou"))) 
+
 # Anotaciones
 annotation <- data.frame(
   x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
@@ -112,7 +125,7 @@ annotation <- data.frame(
 
 fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
                     "2010-01-01", "2015-01-01", "2020-01-01"))
-    
+
 
 # Grafico
 aprob_serie <- dat_opuy %>%
@@ -128,7 +141,8 @@ aprob_serie <- dat_opuy %>%
   labs(y = "Porcentaje de aprobación",
        x = "",
        title = "Aprobación del presidente (serie histórica)",
-       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy \n 
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
   scale_color_manual(name = "",
                      values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
                                 "#013197", "#013197", "#5DADE2")) +
@@ -158,6 +172,10 @@ DT::datatable(dat_opuy %>%
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# remotes::install_github("Nicolas-Schmidt/opuy")
+
 library(opuy)
 library(tidyverse)
 
@@ -170,6 +188,7 @@ dat_opuy <- opuy %>%
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
                                         "Lacalle Pou"))) 
+
 # Anotaciones
 annotation <- data.frame(
   x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
@@ -180,7 +199,7 @@ annotation <- data.frame(
 
 fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
                     "2010-01-01", "2015-01-01", "2020-01-01"))
-    
+
 
 # Grafico
 aprob_serie <- dat_opuy %>%
@@ -196,7 +215,8 @@ aprob_serie <- dat_opuy %>%
   labs(y = "Porcentaje de aprobación",
        x = "",
        title = "Aprobación del presidente (serie histórica)",
-       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy \n 
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
   scale_color_manual(name = "",
                      values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
                                 "#013197", "#013197", "#5DADE2")) +
@@ -206,6 +226,147 @@ aprob_serie <- dat_opuy %>%
 plot(aprob_serie)
 
 ```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+<div style="text-align: center">
+#### **Serie histórica (tendencia con datos solo de Equipos Consultores)** 
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### Gráfico
+
+```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# remotes::install_github("Nicolas-Schmidt/opuy")
+
+library(opuy)
+library(tidyverse)
+
+# Descargar y manipular data desde opuy
+dat_opuy_eq <- opuy::opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente',
+         categoria_unificada == 3,
+         empresa == "Equipos") %>%
+  select(fecha, empresa, valor, presidente) %>%
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou"))) 
+# Anotaciones
+annotation <- data.frame(
+  x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
+                 "2012-06-06", "2017-06-06", "2022-01-01")),
+  y = 85,
+  label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
+            "Vázquez II", "Lacalle Pou"))
+
+fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
+                    "2010-01-01", "2015-01-01", "2020-01-01"))
+
+
+# Grafico
+aprob_serie_eq <- dat_opuy_eq %>%
+  ggplot(aes(x = fecha, y = valor, color = presidente)) +
+  geom_line() +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Porcentaje de aprobación",
+       x = "",
+       title = "Aprobación del presidente (serie histórica)",
+       subtitle = "Datos de Equipos Consultores",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie_eq)
+```
+
+```{r}
+download_this(aprob_serie_eq,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### Tabla
+
+```{r}
+DT::datatable(dat_opuy_eq %>% 
+                arrange(desc(fecha)),
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+#### Código en R
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# remotes::install_github("Nicolas-Schmidt/opuy")
+
+library(opuy)
+library(tidyverse)
+
+# Descargar y manipular data desde opuy
+dat_opuy <- opuy::opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente',
+         categoria_unificada == 3,
+         empresa == "Equipos") %>%
+  select(fecha, empresa, valor, presidente) %>%
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou"))) 
+# Anotaciones
+annotation <- data.frame(
+  x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
+                 "2012-06-06", "2017-06-06", "2022-01-01")),
+  y = 85,
+  label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
+            "Vázquez II", "Lacalle Pou"))
+
+fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
+                    "2010-01-01", "2015-01-01", "2020-01-01"))
+
+
+# Grafico
+aprob_serie_eq <- dat_opuy %>%
+  ggplot(aes(x = fecha, y = valor, color = presidente)) +
+  geom_line() +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Porcentaje de aprobación",
+       x = "",
+       title = "Aprobación del presidente (serie histórica)",
+       subtitle = "Datos de Equipos Consultores",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie_eq)
+
+```
+
 
 ## **Perspectiva comparada**
 
