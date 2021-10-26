@@ -27,7 +27,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(kableExtra))
 suppressPackageStartupMessages(library(downloadthis))
-
+suppressPackageStartupMessages(library(knitr))
 ```
 
 <br />
@@ -45,9 +45,9 @@ suppressPackageStartupMessages(library(downloadthis))
 
 <div style="text-align: justify">
 
-Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 (Aguiar, 2000). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [Roper Center](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país (Zuasnábar, 2018). Hacia finales de la década de 1990 las consultoras [Equipos](https://equipos.com.uy/), [Cifra](https://www.cifra.com.uy/), [Factum](https://factum.uy/) e Interconsult y [Radar](https://www.gruporadar.com.uy/) a la que sumaría [Opción Consultores](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. 
+Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 (Aguiar, 2000). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [**Roper Center**](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país (Zuasnábar, 2018). Hacia finales de la década de 1990 las consultoras [**Equipos**](https://equipos.com.uy/), [**Cifra**](https://www.cifra.com.uy/), [**Factum**](https://factum.uy/) e Interconsult y [**Radar**](https://www.gruporadar.com.uy/) a la que sumaría [**Opción Consultores**](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. 
 
-A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [Latinobarómetro](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [Barómetro de las Américas](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [LAPOP](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. A su vez, otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [Encuesta Mundial de Valores](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [Comparative Study of Electoral Systems](https://cses.org/) (2009 y 2019)
+A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [**Latinobarómetro**](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [**Barómetro de las Américas**](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [**LAPOP**](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. A su vez, otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [**Encuesta Mundial de Valores**](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [**Comparative Study of Electoral Systems**](https://cses.org/) (2009 y 2019)
 </div>
 
 ## **Guía de uso**
@@ -74,23 +74,35 @@ Hablar de margen de error, diferentes question wordings, etc.
 
 ## **Ciclos de aprobación presidencial**
 
-La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cíclico** con forma de tick invertido, divido en tres etapas (Stimson, 1976; Carlin et al., 2018):
+```{r , echo=FALSE, out.width= "45%", out.extra='style="float:right; padding:10px"'}
+include_graphics("www/ciclo.png")
+```
+
+<div style="text-align: justify">
+La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cíclico** con forma de tick invertido, divido en tres etapas (Stimson, 1976; Carlin et al., 2018): 
 <ol>
   <li>**Luna de miel**: los primeros meses de mandato suele ser el período donde el presidente obtiene mayor aprobación </li>
   <li>**Deterioro**: posterior a la luna de miel, usualmente antes de cumplido el primer año del mandato, suele existir un declive gradual de la aprobación hasta cerca del año antes del término de su mandato. </li>
   <li>**Recupero final**: en los últimos meses del mandato y previo a la próxima elección, la aprobación del presidente suele recuperarse, aunque sin alcanzar los niveles de la luna de miel. Uruguay es el país en América Latina que suele tener los repuntes más altos (Carlin et al., 2018) </li>
 </ol>
- 
+</div>
+
 <br />
 
 ## **Serie histórica de aprobación**
 
-El gráfico debajo muestra la serie histórica de aprobación presidencial según administración. 
+<div style="text-align: justify">
+Como se mencionó en la guía de uso, es necesario tener ciertos recabos al agregar datos de diferentes encuestas. Las consultoras de opinión pública que publican datos de evaluación del presidente suelen diferir en el fraseo de la pregunta, método de administración o esquema de ponderación. De esta forma, es necesario ser cauteloso al interpretar diferencias entre dos encuestas realizadas de forma distinta, dado que el error no muestral puede causar diferencias mayores al margen de error teórico. 
+
+Para poder analizar el cambio en el tiempo de la evaluación del presidente presentamos los datos de tres maneras (se puede acceder a los datos completos a través del paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy)): **(1)** calculamos la tendencia utilizando todos los datos disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy) mediante una regresión local (loess); **(2)** combinamos los datos de las series de cada encuestadora utilizando el algoritmo de *dyads-ratio* para estimar una sola serie; **(3)** presentamos la serie con los datos de la consultora con mayor cantidad de encuestas -en este caso Equipos-. Cada estrategia de análisis tiene ventajas y desventajas que deben ser consideradas al emplear estos datos una investigación. 
+</div>
 
 <br />
 
-<div style="text-align: center">
-#### **Serie histórica (tendencia con datos de todas las consultoras)** 
+### **1. Serie histórica (tendencia con datos de todas las consultoras)**
+
+<div style="text-align: justify">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
 </div>
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -229,9 +241,9 @@ plot(aprob_serie)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-<div style="text-align: center">
-#### **Serie histórica (tendencia con datos solo de Equipos Consultores)** 
-</div>
+### **Serie histórica (tendencia con datos solo de Equipos Consultores)**
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -528,7 +540,7 @@ hist(gapminder$lifeExp,
 
 # **Citar este documento**
 
-UMAD (2020) Opinión Pública en Uruguay. Disponible en [enlace en línea]().
+UMAD (2020) Opinión Pública en Uruguay. Disponible en [**enlace en línea**]().
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
