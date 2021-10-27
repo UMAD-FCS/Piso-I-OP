@@ -23,11 +23,13 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 htmltools::img(src = knitr::image_uri("www/logo_umad.png"), 
                alt = 'logo', 
                style = 'position:absolute; top:0; right:0; padding:15px;max-width: 45%;')
-suppressPackageStartupMessages(library(tidyverse))
-suppressPackageStartupMessages(library(DT))
-suppressPackageStartupMessages(library(kableExtra))
-suppressPackageStartupMessages(library(downloadthis))
-suppressPackageStartupMessages(library(knitr))
+
+library(tidyverse)
+library(DT)
+library(kableExtra)
+library(downloadthis)
+library(knitr)
+library(opuy)
 ```
 
 <br />
@@ -107,16 +109,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet
 
 ### {.tabset .tabset-fade .tabset-pills}
 
-#### Gráfico
+#### Gráfico (% aprobación)
 
-```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-## Instalar en caso de ser necesario
-# install.packages("tidyverse")
-# remotes::install_github("Nicolas-Schmidt/opuy")
-
-library(opuy)
-library(tidyverse)
-
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 # Descargar y manipular data desde opuy
 dat_opuy <- opuy %>%
   filter(medicion == 'Evaluacion de gestion presidente',
@@ -150,10 +145,10 @@ aprob_serie <- dat_opuy %>%
             color = "black", size = 3) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
-  labs(y = "Porcentaje de aprobación",
+  labs(y = "% de aprobación",
        x = "",
-       title = "Aprobación del presidente (serie histórica)",
-       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy \n 
+       title = "Serie histórica de aprobación del presidente",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy 
        Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
   scale_color_manual(name = "",
                      values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
@@ -170,11 +165,89 @@ download_this(aprob_serie,
               icon = "fa fa-download")
 ```
 
+#### Gráfico (saldo neto)
+
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+# Descargar y manipular data desde opuy
+dat_opuy <- opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente') %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou")))
+# Anotaciones
+annotation <- data.frame(
+  x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
+                 "2012-06-06", "2017-06-06", "2022-01-01")),
+  y = 85,
+  label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
+            "Vázquez II", "Lacalle Pou"))
+
+fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
+                    "2010-01-01", "2015-01-01", "2020-01-01"))
+
+
+# Grafico
+aprob_serie_s <- dat_opuy %>%
+  ggplot(aes(x = fecha, y = Saldo, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_hline(yintercept = 0, size = 0.3) +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = 10, xend = as.Date("1990-01-01"), yend = 25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n positivas",
+           x = as.Date("1992-06-01"), 
+           y = 15,
+           size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = -10, xend = as.Date("1990-01-01"), yend = -25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n negativas",
+           x = as.Date("1992-06-01"), 
+           y = -15,
+           size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Saldo neto",
+       x = "",
+       title = "Serie histórica de evaluación del presidente",
+       subtitle = "Saldo neto = (% aprobación - % desaprobación)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie_s)
+```
+
+```{r}
+download_this(aprob_serie_s,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
 
 #### Tabla
 
 ```{r}
-DT::datatable(dat_opuy %>% 
+DT::datatable(dat_opuy %>%
+                select(-anio_gobierno) %>% 
                 arrange(desc(fecha)),
               extensions =  'Buttons',
               options =  list(dom = 'Bfrtip',
@@ -191,17 +264,23 @@ DT::datatable(dat_opuy %>%
 library(opuy)
 library(tidyverse)
 
-# Descargar y manipular data desde opuy
+# Descargar data desde opuy y crear tabla
 dat_opuy <- opuy %>%
-  filter(medicion == 'Evaluacion de gestion presidente',
-         categoria_unificada == 3) %>%
-  select(fecha, empresa, valor, presidente) %>%
+  filter(medicion == 'Evaluacion de gestion presidente') %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
-                                        "Lacalle Pou"))) 
+                                        "Lacalle Pou")))
 
-# Anotaciones
+# Anotaciones para gráfico
 annotation <- data.frame(
   x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
                  "2012-06-06", "2017-06-06", "2022-01-01")),
@@ -213,20 +292,20 @@ fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
                     "2010-01-01", "2015-01-01", "2020-01-01"))
 
 
-# Grafico
+# Grafico % aprobación
 aprob_serie <- dat_opuy %>%
-  ggplot(aes(x = fecha, y = valor, color = presidente)) +
+  ggplot(aes(x = fecha, y = Aprueba, color = presidente)) +
   geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
   geom_point(size = 1.5, alpha = 0.3) +
   geom_vline(xintercept = as.numeric(fechas),
              linetype = "dashed", size = 0.3, color = "grey30") +
   geom_text(data = annotation, aes(x = x, y = y, label = label),
-            color = "black", size = 3) +
+            color = "black", size = 3, fontface = "bold") +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
-  labs(y = "Porcentaje de aprobación",
+  labs(y = "% de aprobación",
        x = "",
-       title = "Aprobación del presidente (serie histórica)",
+       title = "Serie histórica de aprobación del presidente",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy \n 
        Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
   scale_color_manual(name = "",
@@ -237,37 +316,114 @@ aprob_serie <- dat_opuy %>%
 
 plot(aprob_serie)
 
+# Grafico saldo neto
+aprob_serie_s <- dat_opuy %>%
+  ggplot(aes(x = fecha, y = Saldo, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_hline(yintercept = 0, size = 0.3) +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = 10, xend = as.Date("1990-01-01"), yend = 25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n positivas",
+           x = as.Date("1992-06-01"), 
+           y = 15,
+           size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = -10, xend = as.Date("1990-01-01"), yend = -25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n negativas",
+           x = as.Date("1992-06-01"), 
+           y = -15,
+           size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none",
+        title = element_text(face = "bold")) +
+  labs(y = "Saldo neto",
+       x = "",
+       title = "Serie histórica de evaluación del presidente",
+       subtitle = "Saldo neto = (% aprobación - % desaprobación)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy \n 
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie_s)
 ```
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-### **Serie histórica (tendencia con datos solo de Equipos Consultores)**
+### **2. Serie histórica (estimación mediante algoritmo de *dyad-ratios*)**
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
 
 ### {.tabset .tabset-fade .tabset-pills}
 
-#### Gráfico
+#### Gráfico (% aprobación)
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 
-```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-## Instalar en caso de ser necesario
-# install.packages("tidyverse")
-# remotes::install_github("Nicolas-Schmidt/opuy")
+```
 
-library(opuy)
-library(tidyverse)
+```{r}
 
-# Descargar y manipular data desde opuy
-dat_opuy_eq <- opuy::opuy %>%
+```
+
+#### Gráfico (saldo neto)
+
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+
+```
+
+```{r}
+
+```
+
+#### Tabla
+
+```{r}
+
+```
+
+#### Código en R
+
+```{r, echo=TRUE, eval=FALSE}
+
+```
+
+
+### **3. Serie histórica (tendencia con datos solo de Equipos Consultores)**
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### Gráfico (% aprobación)
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+# Descargar data desde opuy y crear tabla
+dat_equipos <- opuy %>%
   filter(medicion == 'Evaluacion de gestion presidente',
-         categoria_unificada == 3,
          empresa == "Equipos") %>%
-  select(fecha, empresa, valor, presidente) %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
-                                        "Lacalle Pou"))) 
-# Anotaciones
+                                        "Lacalle Pou")))
+
+# Anotaciones para gráfico
 annotation <- data.frame(
   x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
                  "2012-06-06", "2017-06-06", "2022-01-01")),
@@ -279,20 +435,20 @@ fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
                     "2010-01-01", "2015-01-01", "2020-01-01"))
 
 
-# Grafico
-aprob_serie_eq <- dat_opuy_eq %>%
-  ggplot(aes(x = fecha, y = valor, color = presidente)) +
-  geom_line() +
+# Grafico % aprobación
+aprob_serie_e <- dat_equipos %>%
+  ggplot(aes(x = fecha, y = Aprueba, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
   geom_point(size = 1.5, alpha = 0.3) +
   geom_vline(xintercept = as.numeric(fechas),
              linetype = "dashed", size = 0.3, color = "grey30") +
   geom_text(data = annotation, aes(x = x, y = y, label = label),
-            color = "black", size = 3) +
+            color = "black", size = 3, fontface = "bold") +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
-  labs(y = "Porcentaje de aprobación",
+  labs(y = "% de aprobación",
        x = "",
-       title = "Aprobación del presidente (serie histórica)",
+       title = "Serie histórica de aprobación del presidente",
        subtitle = "Datos de Equipos Consultores",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
   scale_color_manual(name = "",
@@ -301,20 +457,69 @@ aprob_serie_eq <- dat_opuy_eq %>%
   scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
                date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
 
-plot(aprob_serie_eq)
+plot(aprob_serie_e)
 ```
 
 ```{r}
-download_this(aprob_serie_eq,
+download_this(aprob_serie_e,
               button_label = "Descargar gráfico",
               icon = "fa fa-download")
 ```
 
+#### Gráfico (saldo neto)
+
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+# Grafico saldo neto
+aprob_serie_s_e <- dat_equipos %>%
+  ggplot(aes(x = fecha, y = Saldo, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_hline(yintercept = 0, size = 0.3) +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = 10, xend = as.Date("1990-01-01"), yend = 25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n positivas",
+           x = as.Date("1992-06-01"), 
+           y = 15,
+           size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = -10, xend = as.Date("1990-01-01"), yend = -25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n negativas",
+           x = as.Date("1992-06-01"), 
+           y = -15,
+           size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Saldo neto",
+       x = "",
+       title = "Serie histórica de evaluación del presidente",
+       subtitle = "Saldo neto = (% aprobación - % desaprobación), datos de Equipos Consultores",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie_s_e)
+```
+
+```{r}
+download_this(aprob_serie_s_e,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
 
 #### Tabla
 
 ```{r}
-DT::datatable(dat_opuy_eq %>% 
+DT::datatable(dat_equipos %>%
+                select(-anio_gobierno, -empresa) %>% 
                 arrange(desc(fecha)),
               extensions =  'Buttons',
               options =  list(dom = 'Bfrtip',
@@ -331,17 +536,24 @@ DT::datatable(dat_opuy_eq %>%
 library(opuy)
 library(tidyverse)
 
-# Descargar y manipular data desde opuy
-dat_opuy <- opuy::opuy %>%
+# Descargar data desde opuy y crear tabla
+dat_equipos <- opuy %>%
   filter(medicion == 'Evaluacion de gestion presidente',
-         categoria_unificada == 3,
          empresa == "Equipos") %>%
-  select(fecha, empresa, valor, presidente) %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
-                                        "Lacalle Pou"))) 
-# Anotaciones
+                                        "Lacalle Pou")))
+
+# Anotaciones para gráfico
 annotation <- data.frame(
   x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
                  "2012-06-06", "2017-06-06", "2022-01-01")),
@@ -353,20 +565,20 @@ fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
                     "2010-01-01", "2015-01-01", "2020-01-01"))
 
 
-# Grafico
-aprob_serie_eq <- dat_opuy %>%
-  ggplot(aes(x = fecha, y = valor, color = presidente)) +
-  geom_line() +
+# Grafico % aprobación
+aprob_serie_e <- dat_equipos %>%
+  ggplot(aes(x = fecha, y = Aprueba, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
   geom_point(size = 1.5, alpha = 0.3) +
   geom_vline(xintercept = as.numeric(fechas),
              linetype = "dashed", size = 0.3, color = "grey30") +
   geom_text(data = annotation, aes(x = x, y = y, label = label),
-            color = "black", size = 3) +
+            color = "black", size = 3, fontface = "bold") +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
-  labs(y = "Porcentaje de aprobación",
+  labs(y = "% de aprobación",
        x = "",
-       title = "Aprobación del presidente (serie histórica)",
+       title = "Serie histórica de aprobación del presidente",
        subtitle = "Datos de Equipos Consultores",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
   scale_color_manual(name = "",
@@ -375,7 +587,46 @@ aprob_serie_eq <- dat_opuy %>%
   scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
                date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
 
-plot(aprob_serie_eq)
+plot(aprob_serie_e)
+
+# Grafico saldo neto
+aprob_serie_s_e <- dat_equipos %>%
+  ggplot(aes(x = fecha, y = Saldo, color = presidente)) +
+  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
+  geom_point(size = 1.5, alpha = 0.3) +
+  geom_vline(xintercept = as.numeric(fechas),
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_hline(yintercept = 0, size = 0.3) +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = 10, xend = as.Date("1990-01-01"), yend = 25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n positivas",
+           x = as.Date("1992-06-01"), 
+           y = 15,
+           size = 3) +
+  annotate("segment", x = as.Date("1990-01-01"), y = -10, xend = as.Date("1990-01-01"), yend = -25,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n negativas",
+           x = as.Date("1992-06-01"), 
+           y = -15,
+           size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "Saldo neto",
+       x = "",
+       title = "Serie histórica de evaluación del presidente",
+       subtitle = "Saldo neto = (% aprobación - % desaprobación), datos de Equipos Consultores",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
+               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+
+plot(aprob_serie_s_e)
 
 ```
 
