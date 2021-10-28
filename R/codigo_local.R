@@ -10,7 +10,6 @@ library(opuy)
 
 ## Evaluación del presidente  ===============================================
 
-
 ## Serie geom_smooth (aprobación y saldo) ==================================
 
 # Descargar data desde opuy y crear tabla
@@ -49,7 +48,7 @@ aprob_serie <- dat_opuy %>%
   geom_vline(xintercept = as.numeric(fechas),
              linetype = "dashed", size = 0.3, color = "grey30") +
   geom_text(data = annotation, aes(x = x, y = y, label = label),
-            color = "black", size = 3, fontface = "bold") +
+            color = "black", size = 3) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
   labs(y = "% de aprobación",
@@ -206,7 +205,6 @@ plot(aprob_serie_s_e)
 
 ## Dyad-ratios  ============================================================
 
-
 ## Cálculo aprobacion ----
 
 rm(list = ls())
@@ -256,7 +254,6 @@ summary(output) # Loadings
 years <- output$period
 aprob_opuy <- output$latent1
 dim_latente <- data.frame(cbind(years, aprob_opuy))
-writexl::write_xlsx(dim_latente, "data/aprob-dyad-ratio/Q-series.xlsx") # Export in excel
 
 # Extract loadings
 vars <- output$varname
@@ -267,9 +264,7 @@ loadings <- loadings %>%
   arrange(desc(loads))
 writexl::write_xlsx(loadings, "data/aprob-dyad-ratio/Q-loadings.xlsx")
 
-
 ## Plots
-
 # * Serie
 dim_latente$version <- "opuy"
 aprob_serie <- dim_latente
@@ -283,7 +278,9 @@ aprob_serie <- cbind(aprob_serie, quarters$quarter)
 
 aprob_serie <- aprob_serie %>% 
   mutate(quarter = zoo::as.yearqtr(format(aprob_serie$quarter), "Q%q %Y")) %>% 
-  select(- `quarters$quarter`)
+  select(-`quarters$quarter`)
+
+writexl::write_xlsx(aprob_serie, "data/aprob-dyad-ratio/Q-series.xlsx") # Export in excel
 
 # Plot series
 ggplot(aprob_serie, aes(x = quarter, y = aprob_opuy)) +
@@ -379,7 +376,6 @@ summary(output) # Loadings
 years <- output$period
 aprob_opuy <- output$latent1
 dim_latente <- data.frame(cbind(years, aprob_opuy))
-writexl::write_xlsx(dim_latente, "data/aprob-dyad-ratio/Q-saldo-series.xlsx") # Export in excel
 
 # Extract loadings
 vars <- output$varname
@@ -407,6 +403,8 @@ aprob_serie <- cbind(aprob_serie, quarters$quarter)
 aprob_serie <- aprob_serie %>% 
   mutate(quarter = zoo::as.yearqtr(format(aprob_serie$quarter), "Q%q %Y")) %>% 
   select(- `quarters$quarter`)
+
+writexl::write_xlsx(aprob_serie, "data/aprob-dyad-ratio/Q-saldo-series.xlsx") # Export in excel
 
 # Plot series
 ggplot(aprob_serie, aes(x = quarter, y = aprob_opuy)) +
@@ -450,4 +448,106 @@ ggplot(aprob_serie, aes(x = quarter, y = valor, color = serie)) +
        x = "") +
   ylim(-100, 100) +
   scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
-%>% 
+
+## Gráfico para piso 1 OP  ----
+
+rm(list = ls())
+
+# Genero tabla primero
+aprob_serie <- readxl::read_excel("data/aprob-dyad-ratio/Q-series.xlsx") %>% 
+  rename(aprobacion = aprob_opuy)
+
+saldo_serie <- readxl::read_excel("data/aprob-dyad-ratio/Q-saldo-series.xlsx") %>% 
+  rename(saldo = aprob_opuy)
+
+serie_dyad_ratios <- cbind(aprob_serie, saldo_serie$saldo) %>% 
+  rename(saldo = `saldo_serie$saldo`) %>% 
+  select(quarter, aprobacion, saldo) %>% 
+  mutate(aprobacion = round(aprobacion, digits = 1),
+         saldo = round(saldo, digits = 1))
+
+serie_dyad_ratios$quarter <- as.character(zoo::as.yearqtr(serie_dyad_ratios$quarter))
+
+writexl::write_xlsx(serie_dyad_ratios,
+                    "data/aprob-dyad-ratio/serie_dyad_ratios.xlsx")
+
+rm(list = ls())
+
+# Cargo la tabla
+serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx") %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "%Y Q%q"))
+
+# Anotaciones para gráfico
+annotation <- data.frame(
+  x = fechas <- c(1992.25, 1997.25, 2002.25, 2007.25, 2012.25, 2017.25, 2022.25),
+  y = 85,
+  label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
+            "Vázquez II", "Lacalle Pou"))
+
+fechas <- c(1994.85, 1999.85, 2004.85, 2009.85, 2014.85, 2019.85)
+
+# Grafico % aprobación
+plot_dr_a <- serie_dr %>%
+  ggplot(aes(x = quarter, y = aprobacion, color = aprobacion)) +
+  geom_line(size = 1) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_vline(xintercept = fechas,
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "% de aprobación",
+       x = "",
+       title = "Serie histórica de aprobación del presidente",
+       subtitle = "Estimación utilizando el algoritmo de dyads-ratio",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
+  scale_colour_gradient2(low = "firebrick2", mid = "gold2" , high = "forestgreen", 
+                         midpoint = mean(serie_dr$aprobacion)) 
+
+plot(plot_dr_a)
+
+## Serie de saldo neto dyad-ratios 
+
+# Grafico % aprobación
+plot_dr_s <- serie_dr %>%
+  ggplot(aes(x = quarter, y = saldo, color = saldo)) +
+  geom_line(size = 1) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = fechas,
+             linetype = "dashed", size = 0.3, color = "grey30") +
+  geom_hline(yintercept = 0, size = 0.3) +
+  geom_text(data = annotation, aes(x = x, y = y, label = label),
+            color = "black", size = 3) +
+  annotate("segment", x = 1990.00, y = 30, xend = 1990.00, yend = 45,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n positivas",
+           x = 1992.05, 
+           y = 35,
+           size = 3) +
+  annotate("segment", x = 1990.00, y = -30, xend = 1990.00, yend = -45,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Evaluaciones \n negativas",
+           x = 1992.05, 
+           y = -35,
+           size = 3) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  labs(y = "saldo neto",
+       x = "",
+       title = "Serie histórica de evaluación del presidente",
+       subtitle = "Estimación utilizando el algoritmo de dyads-ratio (saldo neto)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar') +
+  scale_colour_gradient2(low = "firebrick2", mid = "gold2" , high = "forestgreen", 
+                         midpoint = mean(serie_dr$saldo)) +
+  ylim(-50, 90)
+
+plot(plot_dr_s)
+
+
+
