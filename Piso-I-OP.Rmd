@@ -109,7 +109,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet
 
 ### {.tabset .tabset-fade .tabset-pills}
 
-#### Gráfico (% aprobación)
+#### **Gráfico (% aprobación)**
 
 ```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 # Descargar y manipular data desde opuy
@@ -165,7 +165,7 @@ download_this(aprob_serie,
               icon = "fa fa-download")
 ```
 
-#### Gráfico (saldo neto)
+#### **Gráfico (saldo neto)**
 
 ```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 # Descargar y manipular data desde opuy
@@ -243,7 +243,7 @@ download_this(aprob_serie_s,
 ```
 
 
-#### Tabla
+#### **Tabla**
 
 ```{r}
 DT::datatable(dat_opuy %>%
@@ -254,7 +254,7 @@ DT::datatable(dat_opuy %>%
                               buttons = c('copy', 'csv', 'excel', 'print')))
 ```
 
-#### Código en R
+#### **Código en R**
 
 ```{r, echo=TRUE, eval=FALSE}
 ## Instalar en caso de ser necesario
@@ -366,7 +366,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet
 
 ### {.tabset .tabset-fade .tabset-pills}
 
-#### Gráfico (% aprobación)
+#### **Gráfico (% aprobación)**
 ```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx") %>% 
     mutate(quarter = zoo::as.yearqtr(format(quarter), "%Y Q%q"))
@@ -409,7 +409,7 @@ download_this(plot_dr,
               icon = "fa fa-download")
 ```
 
-#### Gráfico (saldo neto)
+#### **Gráfico (saldo neto)**
 
 ```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 # Grafico % aprobación
@@ -459,7 +459,8 @@ download_this(plot_dr_s,
               icon = "fa fa-download")
 ```
 
-#### Tabla
+
+#### **Tabla** 
 
 ```{r}
 serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx")
@@ -472,7 +473,8 @@ DT::datatable(serie_dr %>%
                               buttons = c('copy', 'csv', 'excel', 'print')))
 ```
 
-#### Código en R
+
+#### **Código en R**
 
 ```{r, echo=TRUE, eval=FALSE}
 ## Instalar en caso de ser necesario
@@ -561,6 +563,110 @@ plot(plot_dr_s)
 
 ```
 
+## {.toc-ignore .unlisted .unnumbered}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico (% aprobación)**
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+# Cargo la tabla
+serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx") %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "%Y Q%q"))
+
+dat_promedio <- serie_dr %>% 
+  mutate(presidencia = factor(presidencia, levels = c("Lacalle", "Sanguinetti II", 
+                                                      "Batlle", "Vázquez I", "Mujica", 
+                                                      "Vázquez II", "Lacalle Pou"))) %>%
+  group_by(presidencia) %>% 
+  filter(presidencia != "Lacalle Pou") %>% # Solo mandatos terminados
+  summarize(aprob_m = round(mean(aprobacion), digits = 1),
+            aprob_sd = round(sd(aprobacion), digits = 1)) 
+
+
+plot_promedio <- ggplot(data = dat_promedio,
+       aes(x = presidencia, y = aprob_m, color = presidencia)) +
+  geom_errorbar(aes(ymin = aprob_m - aprob_sd, ymax = aprob_m + aprob_sd), width=.1) +
+  geom_point(size=3) +
+  labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
+       subtitle = "Estimación utilizando el algoritmo de dyads-ratio (% de aprobación)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       x = "",
+       y = "") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) 
+
+plot(plot_promedio)
+```
+
+```{r}
+download_this(plot_promedio,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+#### **Tabla**
+
+```{r}
+DT::datatable(dat_promedio %>% 
+                rename(Media = aprob_m,
+                       Desvío = aprob_sd,
+                       Presidente = presidencia),
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("zoo")
+# remotes::install_github("Nicolas-Schmidt/opuy")
+
+library(opuy)
+library(tidyverse)
+
+# Cargo la tabla
+serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx") %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "%Y Q%q"))
+
+dat_promedio <- serie_dr %>% 
+  mutate(presidencia = factor(presidencia, levels = c("Lacalle", "Sanguinetti II", 
+                                                      "Batlle", "Vázquez I", "Mujica", 
+                                                      "Vázquez II", "Lacalle Pou"))) %>%
+  group_by(presidencia) %>% 
+  filter(presidencia != "Lacalle Pou") %>% # Solo mandatos terminados
+  summarize(aprob_m = mean(aprobacion),
+            aprob_sd = sd(aprobacion)) 
+
+
+ggplot(data = dat_promedio,
+       aes(x = presidencia, y = aprob_m, color = presidencia)) +
+  geom_errorbar(aes(ymin = aprob_m - aprob_sd, ymax = aprob_m + aprob_sd), width=.1) +
+  geom_point(size=3) +
+  labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
+       subtitle = "Estimación utilizando el algoritmo de dyads-ratio (% de aprobación)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       x = "",
+       y = "") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) 
+```
+
+
+
 
 ### **3. Serie histórica (tendencia con datos solo de Equipos Consultores)**
 
@@ -568,7 +674,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet
 
 ### {.tabset .tabset-fade .tabset-pills}
 
-#### Gráfico (% aprobación)
+#### **Gráfico (% aprobación)**
 ```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 # Descargar data desde opuy y crear tabla
 dat_equipos <- opuy %>%
@@ -630,7 +736,7 @@ download_this(aprob_serie_e,
               icon = "fa fa-download")
 ```
 
-#### Gráfico (saldo neto)
+#### **Gráfico (saldo neto)**
 
 ```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
 # Grafico saldo neto
@@ -679,7 +785,7 @@ download_this(aprob_serie_s_e,
               icon = "fa fa-download")
 ```
 
-#### Tabla
+#### **Tabla**
 
 ```{r}
 DT::datatable(dat_equipos %>%
@@ -690,7 +796,7 @@ DT::datatable(dat_equipos %>%
                               buttons = c('copy', 'csv', 'excel', 'print')))
 ```
 
-#### Código en R
+#### **Código en R**
 
 ```{r, echo=TRUE, eval=FALSE}
 ## Instalar en caso de ser necesario
@@ -795,6 +901,7 @@ plot(aprob_serie_s_e)
 ```
 
 
+
 ## **Perspectiva comparada**
 
 cxvcxv
@@ -836,8 +943,6 @@ g1 <- ggplot(gapminder,
 plot(g1)
 ```
 
-
-<!-- Por si no usan Plotly (que ya tiene botón de descarga) -->
 
 ```{r}
 download_this(g1,
@@ -942,6 +1047,8 @@ hist(gapminder$lifeExp,
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
 # **Autoidentificación ideológica**
+
+Geom_ridges!!
 
 <br />
 

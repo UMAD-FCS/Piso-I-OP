@@ -449,7 +449,7 @@ ggplot(aprob_serie, aes(x = quarter, y = valor, color = serie)) +
   ylim(-100, 100) +
   scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
 
-## Gráfico para piso 1 OP  ----
+## Gráficos para piso 1 OP  ----
 
 rm(list = ls())
 
@@ -464,9 +464,18 @@ serie_dyad_ratios <- cbind(aprob_serie, saldo_serie$saldo) %>%
   rename(saldo = `saldo_serie$saldo`) %>% 
   select(quarter, aprobacion, saldo) %>% 
   mutate(aprobacion = round(aprobacion, digits = 1),
-         saldo = round(saldo, digits = 1))
-
-serie_dyad_ratios$quarter <- as.character(zoo::as.yearqtr(serie_dyad_ratios$quarter))
+         saldo = round(saldo, digits = 1)) %>%
+  mutate(presidencia = case_when(
+    quarter < 1995.00 ~ "Lacalle",
+    quarter >= 1995.00 & quarter < 2000.00 ~ "Sanguinetti II",
+    quarter >= 2000.00 & quarter < 2005.00 ~ "Batlle",
+    quarter >= 2005.00 & quarter < 2010.00 ~ "Vázquez I",
+    quarter >= 2010.00 & quarter < 2015.00 ~ "Mujica",
+    quarter >= 2015.00 & quarter < 2020.00 ~ "Vázquez II",
+    quarter >= 2020.00 & quarter < 2025.00 ~ "Lacalle Pou"
+  )) %>% 
+  mutate(quarter = as.character(zoo::as.yearqtr(quarter))) %>% 
+  relocate(presidencia, .after=quarter)
 
 writexl::write_xlsx(serie_dyad_ratios,
                     "data/aprob-dyad-ratio/serie_dyad_ratios.xlsx")
@@ -550,4 +559,36 @@ plot_dr_s <- serie_dr %>%
 plot(plot_dr_s)
 
 
+# Gráfico promedio ----
 
+# Cargo la tabla
+serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx") %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "%Y Q%q"))
+
+dat_promedio <- serie_dr %>% 
+  mutate(presidencia = factor(presidencia, levels = c("Lacalle", "Sanguinetti II", 
+                                                      "Batlle", "Vázquez I", "Mujica", 
+                                                      "Vázquez II", "Lacalle Pou"))) %>%
+  group_by(presidencia) %>% 
+  filter(presidencia != "Lacalle Pou") %>% # Solo mandatos terminados
+  summarize(aprob_m = round(mean(aprobacion), digits = 1),
+            aprob_sd = round(sd(aprobacion), digits = 1)) 
+
+
+plot_promedio <- ggplot(data = dat_promedio,
+       aes(x = presidencia, y = aprob_m, color = presidencia)) +
+  geom_errorbar(aes(ymin = aprob_m - aprob_sd, ymax = aprob_m + aprob_sd), width=.1) +
+  geom_point(size=3) +
+  labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
+       subtitle = "Estimación utilizando el algoritmo de dyads-ratio (% de aprobación)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       x = "",
+       y = "") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) 
+
+plot(plot_promedio)
