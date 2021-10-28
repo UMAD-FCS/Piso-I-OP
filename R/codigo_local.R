@@ -206,13 +206,16 @@ plot(aprob_serie_s_e)
 
 ## Dyad-ratios  ============================================================
 
+
+## Cálculo aprobacion ----
+
 rm(list = ls())
 
 # Cargar data opuy
 dat_opuy <- opuy 
 
 # Cargar datos Latinobarómetro y LAPOP
-lat_lap <- readxl::read_excel("data/evpresi_lat_lapop.xlsx")
+lat_lap <- readxl::read_excel("data/aprob-dyad-ratio/evpresi_lat_lapop.xlsx")
 
 # Unir ambas bases
 dat_final <- rbind(lat_lap, dat_opuy)
@@ -230,32 +233,37 @@ dat_final <- dat_final %>%
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
-                                        "Lacalle Pou")))
+                                        "Lacalle Pou"))) %>% 
+  select(empresa, fecha, Aprueba)
 
 
 source("R/Extract.r") # Dyad-ratios function (www.stimson.web.unc.edu)
 
-range(dat_final$fecha)
+class(dat_final$empresa)
+
+dat_final$fecha <- as.Date(dat_final$fecha)
+
+class(dat_final$fecha)
+class(dat_final$Aprueba)
 
 # Algoritmo de dyad-ratios (Cada fuente cuenta como una serie aparte)
 output <- extract(dat_final$empresa, # serie
                   dat_final$fecha, # date
                   dat_final$Aprueba, # score
-                  unit = "A", # Units (A = anual)
-                  begindt = ISOdate(1990, 08, 13), # Starting date
-                  enddt = ISOdate(2021, 09, 03), # End date
+                  ncases = NULL,
+                  unit = "Q", # Units (A = anual)
                   smoothing = TRUE) # Exponential smoothing applied
 
 display(output) # Series
 summary(output) # Loadings
 
-## Results  =================================================================
+## Results
 
 # Extract series
 years <- output$period
-pmood <- output$latent1
-dim_latente <- data.frame(cbind(years, pmood))
-write_xlsx(dim_latente, "results/final-series.xlsx") # Export in excel
+aprob_opuy <- output$latent1
+dim_latente <- data.frame(cbind(years, aprob_opuy))
+writexl::write_xlsx(dim_latente, "data/aprob-dyad-ratio/Q-series.xlsx") # Export in excel
 
 # Extract loadings
 vars <- output$varname
@@ -264,28 +272,165 @@ n_cases <- as.numeric(output$N)
 loadings <- data.frame(cbind(vars, loads, n_cases))
 loadings <- loadings %>% 
   arrange(desc(loads))
-writexl::write_xlsx(loadings, "results/final-loadings.xlsx")
+writexl::write_xlsx(loadings, "data/aprob-dyad-ratio/Q-loadings.xlsx")
 
 
-## Plots  ==================================================================
+## Plots
 
-# * Series ----
-dim_latente$version <- "final"
-mood_append <- dim_latente
+# * Serie
+dim_latente$version <- "opuy"
+aprob_serie <- dim_latente
+
+quarters <- expand.grid(quarter = c("Q1", "Q2", "Q3", "Q4"),
+                        gdpPercap = seq(1990, 2021, by = 1)) %>% 
+  mutate(quarter = paste(quarter, gdpPercap)) %>% 
+  slice(3:127)
+
+aprob_serie <- cbind(aprob_serie, quarters$quarter)
+
+aprob_serie <- aprob_serie %>% 
+  mutate(quarter = zoo::as.yearqtr(format(aprob_serie$quarter), "Q%q %Y")) %>% 
+  select(- `quarters$quarter`)
 
 # Plot series
-ggplot(mood_append, aes(x = years, y = pmood)) +
-  geom_line(size = 1.5, alpha = 0.6, colour = "black") +
-  geom_point(size = 3, colour = "black") +
+ggplot(aprob_serie, aes(x = quarter, y = aprob_opuy)) +
+  geom_line(size = 1, alpha = 0.6, colour = "black") +
+  # geom_point(size = 2, colour = "black") +
   geom_hline(yintercept = 50, linetype="dashed") +
-  theme_m() +
+  theme_minimal() +
   theme(legend.position = "bottom") +
-  labs(title = "Policy Mood in Uruguay",
-       y = "Liberl score",
-       x = "Years") +
+  labs(title = "Serie de aprobación presidencial",
+       y = "% aprobación",
+       x = "") +
   scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
 
-ggsave(file="plots/pmood/final-series.png", width = 35, height = 20, units = "cm")
+## Chequeo con EAD ----
+# Leer data de exectuive approval
+ead <- read.csv("data/aprob-dyad-ratio/EAD+2.0+quarter+101019.csv") %>% 
+  as_tibble() %>% 
+  filter(Country == "Uruguay") %>% 
+  mutate(quarter = paste0("Q", quarter)) %>% 
+  mutate(quarter = paste(quarter, year)) %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "Q%q %Y")) %>% 
+  select(quarter, Approval_Smoothed)
 
+# Pegar data a estimación opuy
+aprob_serie <- aprob_serie %>% 
+  left_join(ead) %>% 
+  relocate(aprob_opuy, .after = Approval_Smoothed) %>% 
+  pivot_longer(cols = Approval_Smoothed:aprob_opuy,
+               names_to = "serie",
+               values_to = "valor")
+
+# Plot series
+ggplot(aprob_serie, aes(x = quarter, y = valor, color = serie)) +
+  geom_line(size = 1, alpha = 0.6) +
+  # geom_point(size = 2, colour = "black") +
+  geom_hline(yintercept = 50, linetype="dashed") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(title = "Serie de aprobación presidencial",
+       y = "% aprobación",
+       x = "") +
+  ylim(0, 100) +
+  scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
+
+
+## Cálculo saldo neto ----
+
+rm(list = ls())
+
+# Cargar data opuy
+dat_opuy <- opuy 
+
+# Cargar datos Latinobarómetro y LAPOP
+lat_lap <- readxl::read_excel("data/aprob-dyad-ratio/evpresi_lat_lapop.xlsx")
+
+# Unir ambas bases
+dat_final <- rbind(lat_lap, dat_opuy)
+
+dat_final <- dat_final %>%
+  filter(medicion == 'Evaluacion de gestion presidente') %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou"))) %>% 
+  select(empresa, fecha, Aprueba)
+
+
+source("R/Extract.r") # Dyad-ratios function (www.stimson.web.unc.edu)
+
+class(dat_final$empresa)
+
+dat_final$fecha <- as.Date(dat_final$fecha)
+
+class(dat_final$fecha)
+class(dat_final$Aprueba)
+
+# Algoritmo de dyad-ratios (Cada fuente cuenta como una serie aparte)
+output <- extract(dat_final$empresa, # serie
+                  dat_final$fecha, # date
+                  dat_final$Aprueba, # score
+                  ncases = NULL,
+                  unit = "Q", # Units (A = anual)
+                  smoothing = TRUE) # Exponential smoothing applied
+
+display(output) # Series
+summary(output) # Loadings
+
+## Results
+
+# Extract series
+years <- output$period
+aprob_opuy <- output$latent1
+dim_latente <- data.frame(cbind(years, aprob_opuy))
+writexl::write_xlsx(dim_latente, "data/aprob-dyad-ratio/Q-series.xlsx") # Export in excel
+
+# Extract loadings
+vars <- output$varname
+loads <- as.numeric(output$loadings1)
+n_cases <- as.numeric(output$N)
+loadings <- data.frame(cbind(vars, loads, n_cases))
+loadings <- loadings %>% 
+  arrange(desc(loads))
+writexl::write_xlsx(loadings, "data/aprob-dyad-ratio/Q-loadings.xlsx")
+
+
+## Plots
+
+# * Serie
+dim_latente$version <- "opuy"
+aprob_serie <- dim_latente
+
+quarters <- expand.grid(quarter = c("Q1", "Q2", "Q3", "Q4"),
+                        gdpPercap = seq(1990, 2021, by = 1)) %>% 
+  mutate(quarter = paste(quarter, gdpPercap)) %>% 
+  slice(3:127)
+
+aprob_serie <- cbind(aprob_serie, quarters$quarter)
+
+aprob_serie <- aprob_serie %>% 
+  mutate(quarter = zoo::as.yearqtr(format(aprob_serie$quarter), "Q%q %Y")) %>% 
+  select(- `quarters$quarter`)
+
+# Plot series
+ggplot(aprob_serie, aes(x = quarter, y = aprob_opuy)) +
+  geom_line(size = 1, alpha = 0.6, colour = "black") +
+  # geom_point(size = 2, colour = "black") +
+  geom_hline(yintercept = 50, linetype="dashed") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(title = "Serie de aprobación presidencial",
+       y = "% aprobación",
+       x = "") +
+  scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
 
 
