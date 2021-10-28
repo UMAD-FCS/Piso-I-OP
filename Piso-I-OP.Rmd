@@ -358,6 +358,158 @@ aprob_serie_s <- dat_opuy %>%
 plot(aprob_serie_s)
 ```
 
+
+## {.toc-ignore .unlisted .unnumbered}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico (% aprobación)**
+
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+# Descargar y manipular data desde opuy
+dat_opuy <- opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente') %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou")))
+
+# Boxplot aprobación
+promedio_aprob <- ggplot(dat_opuy %>% 
+         filter(presidente != "Lacalle Pou"),
+       aes(x = presidente, y = Aprueba)) +
+  geom_boxplot(aes(fill = presidente), outlier.shape = NA, lwd = 1, alpha = 0.4) +
+  geom_jitter(aes(color = presidente), size = 2, alpha = 0.5) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Evaluación del presidente",
+       subtitle = "Diagrama de caja, % de aprobación",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       y = "% de Aprobación",
+       x = "") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_fill_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2"))
+plot(promedio_aprob)
+
+```
+
+```{r}
+download_this(promedio_aprob,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+#### **Gráfico (saldo neto)**
+
+```{r, echo=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+# Boxplot saldo neto
+promedio_saldo <- ggplot(dat_opuy %>% 
+         filter(presidente != "Lacalle Pou"),
+       aes(x = presidente, y = Saldo)) +
+  geom_boxplot(aes(fill = presidente), outlier.shape = NA, lwd = 1, alpha = 0.4) +
+  geom_jitter(aes(color = presidente), size = 2, alpha = 0.5) +
+  geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Evaluación del presidente",
+       subtitle = "Diagrama de caja, saldo neto",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy 
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       y = "% de Aprobación",
+       x = "") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_fill_manual(name = "",
+                    values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                               "#013197", "#013197", "#5DADE2"))
+
+plot(promedio_saldo)
+```
+
+```{r}
+download_this(aprob_serie_s,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(dat_opuy %>%
+                select(-anio_gobierno) %>% 
+                arrange(desc(fecha)),
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# remotes::install_github("Nicolas-Schmidt/opuy")
+
+library(opuy)
+library(tidyverse)
+
+# Descargar y manipular data desde opuy
+dat_opuy <- opuy %>%
+  filter(medicion == 'Evaluacion de gestion presidente') %>%
+  select(fecha, anio_gobierno, empresa, valor, presidente, categoria_unificada)  %>%
+  mutate(categoria_unificada = case_when(
+    categoria_unificada == 3 ~ "Aprueba",  
+    categoria_unificada == 2 ~ "Ni aprueba ni desaprueba",
+    categoria_unificada == 1 ~ "Desaprueba",
+    categoria_unificada == 0 ~ "NSNC")) %>%
+  pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
+  mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(presidente = factor(presidente, 
+                             levels = c("Lacalle", "Sanguinetti 2", "Batlle",
+                                        "Vazquez 1", "Mujica", "Vazquez 2",
+                                        "Lacalle Pou")))
+
+# Distribución aprobación
+ggplot(dat_opuy %>% 
+         filter(presidente != "Lacalle Pou"),
+       aes(x = presidente, y = Aprueba)) +
+  geom_boxplot(aes(fill = presidente), outlier.shape = NA, lwd = 1, alpha = 0.4) +
+  geom_jitter(aes(color = presidente), size = 2, alpha = 0.5) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Evaluación del presidente",
+       subtitle = "Diagrama de caja, % de aprobación",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       y = "% de Aprobación",
+       x = "") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_fill_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2"))
+```
+
+
+
 ## {.toc-ignore .unlisted .unnumbered}
 
 ### **2. Estimación mediante algoritmo de *dyad-ratios* **

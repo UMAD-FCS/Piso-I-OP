@@ -107,7 +107,51 @@ aprob_serie_s <- dat_opuy %>%
 plot(aprob_serie_s)
 
 # Distribución aprobación
+promedio_aprob <- ggplot(dat_opuy %>% 
+         filter(presidente != "Lacalle Pou"),
+       aes(x = presidente, y = Aprueba)) +
+  geom_boxplot(aes(fill = presidente), outlier.shape = NA, lwd = 1, alpha = 0.4) +
+  geom_jitter(aes(color = presidente), size = 2, alpha = 0.5) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Evaluación del presidente",
+       subtitle = "Diagrama de caja, % de aprobación",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       y = "% de Aprobación",
+       x = "") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_fill_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2"))
+plot(promedio_aprob)
 
+
+# Distribución saldo neto
+promedio_saldo <- ggplot(dat_opuy %>% 
+         filter(presidente != "Lacalle Pou"),
+       aes(x = presidente, y = Saldo)) +
+  geom_boxplot(aes(fill = presidente), outlier.shape = NA, lwd = 1, alpha = 0.4) +
+  geom_jitter(aes(color = presidente), size = 2, alpha = 0.5) +
+  geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Evaluación del presidente",
+       subtitle = "Diagrama de caja, saldo neto",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy 
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       y = "% de Aprobación",
+       x = "") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) +
+  scale_fill_manual(name = "",
+                    values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                               "#013197", "#013197", "#5DADE2"))
+
+plot(promedio_saldo)
 
 ## Por empresa (Equipos solo)   =============================================
 
