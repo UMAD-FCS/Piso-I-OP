@@ -12,6 +12,8 @@ library(opuy)
 
 ## Serie geom_smooth (aprobación y saldo) ==================================
 
+rm(list = ls())
+
 # Descargar data desde opuy y crear tabla
 dat_opuy <- opuy %>%
   filter(medicion == 'Evaluacion de gestion presidente') %>%
@@ -103,6 +105,8 @@ aprob_serie_s <- dat_opuy %>%
                date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
 
 plot(aprob_serie_s)
+
+# Distribución aprobación
 
 
 ## Por empresa (Equipos solo)   =============================================
@@ -201,7 +205,49 @@ aprob_serie_s_e <- dat_equipos %>%
 
 plot(aprob_serie_s_e)
 
+# Tabla final
+dat_equipos_avg <- dat_equipos %>% 
+  filter(presidente != "Lacalle Pou") %>% # Solo mandatos terminados
+  group_by(presidente) %>% 
+  summarize(aprob_m = round(mean(Aprueba), digits = 1),
+            aprob_sd = round(sd(Saldo), digits = 1),
+            saldo_m = round(mean(Saldo), digits = 1),
+            saldo_sd = round(sd(Saldo), digits = 1)) 
 
+# % Aprobacion
+plot_promedio <- ggplot(data = dat_equipos_avg,
+                        aes(x = presidente, y = aprob_m, color = presidente)) +
+  geom_errorbar(aes(ymin = aprob_m - aprob_sd, ymax = aprob_m + aprob_sd), width=.1) +
+  geom_point(size=3) +
+  labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
+       subtitle = "Cálculos sobre datos de Equipos Consultores (% de aprobación)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy',
+       y = "", x = "") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) 
+
+plot(plot_promedio)
+
+# Saldo neto
+plot_promedio_s <- ggplot(data = dat_equipos_avg,
+                        aes(x = presidente, y = saldo_m, color = presidente)) +
+  geom_errorbar(aes(ymin = saldo_m - saldo_sd, ymax = saldo_m + saldo_sd), width=.1) +
+  geom_point(size=3) +
+  geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
+  labs(title = "Promedio y desvío estandar de evaluación del presidente según administración",
+       subtitle = "Cálculos sobre datos de Equipos Consultores (saldo neto)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy',
+       y = "", x = "") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) 
+
+plot(plot_promedio_s)
 
 ## Dyad-ratios  ============================================================
 
@@ -572,15 +618,17 @@ dat_promedio <- serie_dr %>%
   group_by(presidencia) %>% 
   filter(presidencia != "Lacalle Pou") %>% # Solo mandatos terminados
   summarize(aprob_m = round(mean(aprobacion), digits = 1),
-            aprob_sd = round(sd(aprobacion), digits = 1)) 
+            aprob_sd = round(sd(aprobacion), digits = 1),
+            saldo_m = round(mean(saldo), digits = 1),
+            saldo_sd = round(sd(saldo), digits = 1)) 
 
-
+# Gráfico Aprobación
 plot_promedio <- ggplot(data = dat_promedio,
        aes(x = presidencia, y = aprob_m, color = presidencia)) +
   geom_errorbar(aes(ymin = aprob_m - aprob_sd, ymax = aprob_m + aprob_sd), width=.1) +
   geom_point(size=3) +
   labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
-       subtitle = "Estimación utilizando el algoritmo de dyads-ratio (% de aprobación)",
+       subtitle = "Cálculos sobre datos estimados mediante el algoritmo de dyads-ratio (% de aprobación)",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
        Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
        x = "",
@@ -592,3 +640,23 @@ plot_promedio <- ggplot(data = dat_promedio,
                                 "#013197", "#013197", "#5DADE2")) 
 
 plot(plot_promedio)
+
+
+# Saldo neto
+plot_promedio_s <- ggplot(data = dat_promedio,
+                          aes(x = presidencia, y = saldo_m, color = presidencia)) +
+  geom_errorbar(aes(ymin = saldo_m - saldo_sd, ymax = saldo_m + saldo_sd), width=.1) +
+  geom_point(size=3) +
+  geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
+  labs(title = "Promedio y desvío estandar de evaluación del presidente según administración",
+       subtitle = "Cálculos sobre datos estimados mediante el algoritmo de dyads-ratio (saldo neto)",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
+       Datos originales de Equipos, Cifra, Factum, Opción, Interconsult y Radar',
+       y = "", x = "") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_manual(name = "",
+                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+                                "#013197", "#013197", "#5DADE2")) 
+
+plot(plot_promedio_s)
