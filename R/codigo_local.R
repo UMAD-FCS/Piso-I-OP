@@ -211,6 +211,8 @@ plot(aprob_serie_s_e)
 
 rm(list = ls())
 
+source("R/Extract.r") # Dyad-ratios function (www.stimson.web.unc.edu)
+
 # Cargar data opuy
 dat_opuy <- opuy 
 
@@ -230,21 +232,12 @@ dat_final <- dat_final %>%
     categoria_unificada == 0 ~ "NSNC")) %>%
   pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
   mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(fecha = as.Date(fecha)) %>%
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
                                         "Lacalle Pou"))) %>% 
   select(empresa, fecha, Aprueba)
-
-
-source("R/Extract.r") # Dyad-ratios function (www.stimson.web.unc.edu)
-
-class(dat_final$empresa)
-
-dat_final$fecha <- as.Date(dat_final$fecha)
-
-class(dat_final$fecha)
-class(dat_final$Aprueba)
 
 # Algoritmo de dyad-ratios (Cada fuente cuenta como una serie aparte)
 output <- extract(dat_final$empresa, # serie
@@ -340,6 +333,8 @@ ggplot(aprob_serie, aes(x = quarter, y = valor, color = serie)) +
 
 rm(list = ls())
 
+source("R/Extract.r") # Dyad-ratios function (www.stimson.web.unc.edu)
+
 # Cargar data opuy
 dat_opuy <- opuy 
 
@@ -359,26 +354,18 @@ dat_final <- dat_final %>%
     categoria_unificada == 0 ~ "NSNC")) %>%
   pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
   mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(fecha = as.Date(fecha)) %>% 
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
                                         "Lacalle Pou"))) %>% 
-  select(empresa, fecha, Aprueba)
+  select(empresa, fecha, Saldo)
 
-
-source("R/Extract.r") # Dyad-ratios function (www.stimson.web.unc.edu)
-
-class(dat_final$empresa)
-
-dat_final$fecha <- as.Date(dat_final$fecha)
-
-class(dat_final$fecha)
-class(dat_final$Aprueba)
 
 # Algoritmo de dyad-ratios (Cada fuente cuenta como una serie aparte)
 output <- extract(dat_final$empresa, # serie
                   dat_final$fecha, # date
-                  dat_final$Aprueba, # score
+                  dat_final$Saldo, # score
                   ncases = NULL,
                   unit = "Q", # Units (A = anual)
                   smoothing = TRUE) # Exponential smoothing applied
@@ -392,7 +379,7 @@ summary(output) # Loadings
 years <- output$period
 aprob_opuy <- output$latent1
 dim_latente <- data.frame(cbind(years, aprob_opuy))
-writexl::write_xlsx(dim_latente, "data/aprob-dyad-ratio/Q-series.xlsx") # Export in excel
+writexl::write_xlsx(dim_latente, "data/aprob-dyad-ratio/Q-saldo-series.xlsx") # Export in excel
 
 # Extract loadings
 vars <- output$varname
@@ -401,7 +388,7 @@ n_cases <- as.numeric(output$N)
 loadings <- data.frame(cbind(vars, loads, n_cases))
 loadings <- loadings %>% 
   arrange(desc(loads))
-writexl::write_xlsx(loadings, "data/aprob-dyad-ratio/Q-loadings.xlsx")
+writexl::write_xlsx(loadings, "data/aprob-dyad-ratio/Q-saldo-loadings.xlsx")
 
 
 ## Plots
@@ -425,12 +412,42 @@ aprob_serie <- aprob_serie %>%
 ggplot(aprob_serie, aes(x = quarter, y = aprob_opuy)) +
   geom_line(size = 1, alpha = 0.6, colour = "black") +
   # geom_point(size = 2, colour = "black") +
+  geom_hline(yintercept = 0, linetype="dashed") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(title = "Serie de aprobación presidencial",
+       y = "% saldo neto",
+       x = "") +
+  scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
+
+## Chequeo con EAD ----
+# Leer data de exectuive approval
+ead <- read.csv("data/aprob-dyad-ratio/EAD+2.0+quarter+101019.csv") %>% 
+  as_tibble() %>% 
+  filter(Country == "Uruguay") %>% 
+  mutate(quarter = paste0("Q", quarter)) %>% 
+  mutate(quarter = paste(quarter, year)) %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "Q%q %Y")) %>% 
+  select(quarter, NET_Smoothed)
+
+# Pegar data a estimación opuy
+aprob_serie <- aprob_serie %>% 
+  left_join(ead) %>% 
+  relocate(aprob_opuy, .after = NET_Smoothed) %>% 
+  pivot_longer(cols = NET_Smoothed:aprob_opuy,
+               names_to = "serie",
+               values_to = "valor")
+
+# Plot series
+ggplot(aprob_serie, aes(x = quarter, y = valor, color = serie)) +
+  geom_line(size = 1, alpha = 0.6) +
+  # geom_point(size = 2, colour = "black") +
   geom_hline(yintercept = 50, linetype="dashed") +
   theme_minimal() +
   theme(legend.position = "bottom") +
   labs(title = "Serie de aprobación presidencial",
        y = "% aprobación",
        x = "") +
+  ylim(-100, 100) +
   scale_x_continuous(breaks = seq(1993, 2020, by = 2)) 
-
-
+%>% 
