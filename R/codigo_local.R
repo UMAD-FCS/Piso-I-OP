@@ -706,3 +706,83 @@ plot_promedio_s <- ggplot(data = dat_promedio,
                                 "#013197", "#013197", "#5DADE2")) 
 
 plot(plot_promedio_s)
+
+## Ciclos de aprobación ----
+
+rm(list = ls())
+
+# Cargo la tabla
+serie_dr <- readxl::read_excel("data/aprob-dyad-ratio/serie_dyad_ratios.xlsx") %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "%Y Q%q"))
+
+
+trimestres <- c(seq(1, 18, 1), seq(1, 20, 1), seq(1, 20, 1), seq(1, 20, 1),
+                seq(1, 20, 1), seq(1, 20, 1))
+
+serie_dr <- serie_dr %>% 
+  filter(presidencia != "Lacalle Pou") # Quito por no estar completo
+
+serie_dr$trimestre <- trimestres
+
+## Promedio general
+promedios <- serie_dr %>% 
+  group_by(trimestre) %>% 
+  summarize(aprobacion = mean(aprobacion),
+            saldo = mean(saldo))
+
+ggplot(promedios,
+       aes(x = trimestre, y = aprobacion)) +
+  geom_point(size=3) +
+  geom_smooth(se = FALSE) +
+  theme_minimal(base_size = 10) 
+
+## Mean center
+# Calculo promedios
+avgs <- serie_dr %>% 
+  group_by(presidencia) %>% 
+  summarise(media_aprob = mean(aprobacion))
+
+serie_dr <- serie_dr %>% 
+  left_join(avgs) %>% 
+  mutate(dif = aprobacion - media_aprob)
+  
+promedios <- serie_dr %>% 
+  mutate(anio = trimestre/ 4) %>% 
+  group_by(anio) %>% 
+  summarize(aprob_dif = mean(dif))
+
+ggplot(promedios,
+       aes(x = anio, y = aprob_dif)) +
+  geom_point(size = 3, alpha = .4, colour = "#2c3e50") +
+  geom_smooth(se = FALSE, span = 1, size = 1.5, colour = "#2c3e50") +
+  theme_minimal(base_size = 12) +
+  geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
+  labs(title = "Ciclos de aprobación presidencial en Uruguay",
+       subtitle = "Tendencia de aprobación trimestral respecto a la media de cada período",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy',
+       y = "", x = "Años de gobierno") +
+  annotate("segment", x = 1.5, y = 7.5, xend = 1, yend = 7.5,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Luna de miel",
+           x = 1.25, 
+           y = 8,
+           size = 4)  +
+  annotate("segment", x = 2, y = 5, xend = 2, yend = 2.5,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Declive",
+           x = 2.35, 
+           y = 3.75,
+           size = 4)  +
+  annotate("segment", x = 4, y = 2.5, xend = 4.5, yend = 2.5,
+           arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
+  annotate("text",
+           label = "Repunte",
+           x = 4.25, 
+           y = 3,
+           size = 4) 
+
+ggsave("www/ciclos.png", units = "cm", width = 15, height = 20)
+
+

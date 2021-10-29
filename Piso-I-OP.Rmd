@@ -76,8 +76,8 @@ Hablar de margen de error, diferentes question wordings, etc.
 
 ## **Ciclos de aprobación presidencial**
 
-```{r , echo=FALSE, out.width= "45%", out.extra='style="float:right; padding:10px"'}
-include_graphics("www/ciclo.png")
+```{r , echo=FALSE, out.width= "55%", out.extra='style="float:right; padding:5px"'}
+include_graphics("www/ciclos.png")
 ```
 
 <div style="text-align: justify">
