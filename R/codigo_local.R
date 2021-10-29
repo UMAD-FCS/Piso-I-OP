@@ -671,6 +671,7 @@ plot_promedio <- ggplot(data = dat_promedio,
        aes(x = presidencia, y = aprob_m, color = presidencia)) +
   geom_errorbar(aes(ymin = aprob_m - aprob_sd, ymax = aprob_m + aprob_sd), width=.1) +
   geom_point(size=3) +
+  geom_text(aes(label = aprob_m),hjust = -.5, vjust = .5) +
   labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
        subtitle = "Cálculos sobre datos estimados mediante el algoritmo de dyads-ratio (% de aprobación)",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy  
@@ -691,6 +692,7 @@ plot_promedio_s <- ggplot(data = dat_promedio,
                           aes(x = presidencia, y = saldo_m, color = presidencia)) +
   geom_errorbar(aes(ymin = saldo_m - saldo_sd, ymax = saldo_m + saldo_sd), width=.1) +
   geom_point(size=3) +
+  geom_text(aes(label = saldo_m),hjust = -.5, vjust = .5) +
   geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
   labs(title = "Promedio y desvío estandar de evaluación del presidente según administración",
        subtitle = "Cálculos sobre datos estimados mediante el algoritmo de dyads-ratio (saldo neto)",
