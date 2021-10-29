@@ -169,83 +169,83 @@ dat_equipos <- opuy %>%
     categoria_unificada == 0 ~ "NSNC")) %>%
   pivot_wider(names_from = categoria_unificada, values_from = valor) %>% 
   mutate(Saldo = Aprueba - Desaprueba) %>% 
+  mutate(trimestre = lubridate::floor_date(fecha, "3 months" )) %>%
+  mutate(trimestre = zoo::as.yearqtr(trimestre, format = "%Y-%m-%d")) %>% 
+  mutate(quarter = zoo::as.yearqtr(format(trimestre), "%Y Q%q")) %>% 
   mutate(presidente = factor(presidente, 
                              levels = c("Lacalle", "Sanguinetti 2", "Batlle",
                                         "Vazquez 1", "Mujica", "Vazquez 2",
-                                        "Lacalle Pou")))
+                                        "Lacalle Pou"))) %>% 
+  group_by(quarter) %>% 
+  summarize(Aprueba = mean(Aprueba),
+            Saldo = mean(Saldo),
+            presidente = first(presidente)) %>% 
+  relocate(presidente, .after = quarter)
 
 # Anotaciones para gráfico
 annotation <- data.frame(
-  x = as.Date(c( "1992-01-01","1997-06-06", "2002-06-06", "2007-06-06", 
-                 "2012-06-06", "2017-06-06", "2022-01-01")),
+  x = fechas <- c(1992.25, 1997.25, 2002.25, 2007.25, 2012.25, 2017.25, 2022.25),
   y = 85,
   label = c("Lacalle","Sanguinetti II", "Batlle", "Vázquez I", "Mujica",
             "Vázquez II", "Lacalle Pou"))
 
-fechas <- as.Date(c("1995-01-01","2000-01-01", "2005-01-01",
-                    "2010-01-01", "2015-01-01", "2020-01-01"))
-
+fechas <- c(1994.85, 1999.85, 2004.85, 2009.85, 2014.85, 2019.85)
 
 # Grafico % aprobación
 aprob_serie_e <- dat_equipos %>%
-  ggplot(aes(x = fecha, y = Aprueba, color = presidente)) +
-  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
-  geom_point(size = 1.5, alpha = 0.3) +
-  geom_vline(xintercept = as.numeric(fechas),
+  ggplot(aes(x = quarter, y = Aprueba, color = Aprueba)) +
+  geom_line(size = 1) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_vline(xintercept = fechas,
              linetype = "dashed", size = 0.3, color = "grey30") +
   geom_text(data = annotation, aes(x = x, y = y, label = label),
-            color = "black", size = 3, fontface = "bold") +
+            color = "black", size = 3) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
   labs(y = "% de aprobación",
        x = "",
-       title = "Serie histórica de aprobación del presidente",
-       subtitle = "Datos de Equipos Consultores",
+       title = "Serie trimestral de aprobación del presidente",
+       subtitle = "Promedio a partir de datos de Equipos",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
-  scale_color_manual(name = "",
-                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
-                                "#013197", "#013197", "#5DADE2")) +
-  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
-               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+  scale_colour_gradient2(low = "firebrick2", mid = "gold2" , high = "forestgreen", 
+                         midpoint = mean(dat_equipos$Aprueba)) 
 
 plot(aprob_serie_e)
 
 # Grafico saldo neto
 aprob_serie_s_e <- dat_equipos %>%
-  ggplot(aes(x = fecha, y = Saldo, color = presidente)) +
-  geom_smooth(aes(group = presidente), method ="loess", se = FALSE) +
-  geom_point(size = 1.5, alpha = 0.3) +
-  geom_vline(xintercept = as.numeric(fechas),
+  ggplot(aes(x = quarter, y = Saldo, color = Saldo)) +
+  geom_line(size = 1) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = fechas,
              linetype = "dashed", size = 0.3, color = "grey30") +
   geom_hline(yintercept = 0, size = 0.3) +
   geom_text(data = annotation, aes(x = x, y = y, label = label),
             color = "black", size = 3) +
-  annotate("segment", x = as.Date("1990-01-01"), y = 10, xend = as.Date("1990-01-01"), yend = 25,
+  annotate("segment", x = 1990.00, y = 15, xend = 1990.00, yend = 30,
            arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
   annotate("text",
            label = "Evaluaciones \n positivas",
-           x = as.Date("1992-06-01"), 
-           y = 15,
+           x = 1992.05, 
+           y = 20,
            size = 3) +
-  annotate("segment", x = as.Date("1990-01-01"), y = -10, xend = as.Date("1990-01-01"), yend = -25,
+  annotate("segment", x = 1990.00, y = -15, xend = 1990.00, yend = -30,
            arrow = arrow(type = "closed", length = unit(0.01, "npc"))) +
   annotate("text",
            label = "Evaluaciones \n negativas",
-           x = as.Date("1992-06-01"), 
-           y = -15,
+           x = 1992.05, 
+           y = -20,
            size = 3) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none") +
   labs(y = "Saldo neto",
        x = "",
-       title = "Serie histórica de evaluación del presidente",
-       subtitle = "Saldo neto = (% aprobación - % desaprobación), datos de Equipos Consultores",
+       title = "Serie trimestral de evaluación del presidente",
+       subtitle = "Promedio de saldo neto a partir de datos de Equipos",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de opuy') +
-  scale_color_manual(name = "",
-                     values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
-                                "#013197", "#013197", "#5DADE2")) +
-  scale_x_date(date_breaks = "2 years", date_minor_breaks = "1 year",
-               date_labels = "%Y", limits = c(as.Date("1990-01-01"), NA))   
+  scale_colour_gradient2(low = "firebrick2", mid = "gold2" , high = "forestgreen", 
+                         midpoint = mean(dat_equipos$Saldo)) 
 
 plot(aprob_serie_s_e)
 
