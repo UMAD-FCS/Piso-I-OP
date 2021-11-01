@@ -786,3 +786,205 @@ ggplot(promedios,
 ggsave("www/ciclos.png", units = "cm", width = 15, height = 20)
 
 
+## EAD COMPARADO ----
+
+rm(list = ls())
+
+ead <- read.csv("data/aprob-dyad-ratio/EAD+2.0+quarter+101019.csv") %>% 
+  as_tibble() %>% 
+  mutate(quarter = paste0("Q", quarter)) %>% 
+  mutate(quarter = paste(quarter, year)) %>% 
+  mutate(quarter = zoo::as.yearqtr(format(quarter), "Q%q %Y")) %>% 
+  mutate(color_uru = case_when(
+    Country == "Uruguay" ~ "Uruguay",
+    TRUE ~ "Others"
+  )) %>% 
+  filter(year >= 1989)
+
+table(ead$Country)
+
+paises <- c("Argentina", "Chile", "Brazil", "Bolivia", "Colombia",
+            "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela")
+
+ead_latam <- ead %>% 
+  filter(Country %in% paises)
+
+## No usar, series crudas
+ggplot(ead_latam,
+       aes(x = quarter, y = Approval_Smoothed, group = Country, color = color_uru)) +
+  geom_line(size = 1) +
+  scale_color_manual(values = c(adjustcolor("grey60", alpha = .4),
+                                "deepskyblue3")) +
+  theme_minimal()
+
+
+ggplot(ead %>% 
+         filter(Country %in% paises),
+       aes(x = quarter, y = NET_Smoothed, group = Country, color = color_uru)) +
+  geom_line(size = 1) +
+  geom_hline(yintercept = 0, size = .3, linetype = "dashed") +
+  scale_color_manual(values = c(adjustcolor("grey60", alpha = .4),
+                                "deepskyblue3")) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(x = "", 
+       y = "Saldo neto")
+
+## Promedio por presidente
+
+# Data de mandatos
+presidencias <- readxl::read_excel("data/presidencias-asur.xlsx") %>% 
+  mutate(Comienzo_qtr = zoo::as.yearqtr(Comienzo, format = "%Y-%m-%d")) %>% 
+  mutate(Final_qtr = zoo::as.yearqtr(Final, format = "%Y-%m-%d")) %>% 
+  pivot_longer(Comienzo_qtr:Final_qtr,
+               names_to = "tipo",
+               values_to = "quarter") %>% 
+  mutate(key = paste0(as.character(quarter), "-", Pais)) 
+  
+# Base vacía
+quarters <- expand.grid(quarter = c("Q1", "Q2", "Q3", "Q4"),
+                        gdpPercap = seq(1989, 2021, by = 1)) %>% 
+  mutate(quarter = paste(quarter, gdpPercap)) %>% 
+  mutate(quarter = zoo::as.yearqtr(quarter, format = "Q%q %Y")) 
+
+data <- expand.grid(quarter = quarters$quarter,
+                    paises = paises) %>%
+  mutate(key = paste0(as.character(quarter), "-", paises)) %>% 
+  left_join(presidencias, by = "key")
+
+# Completo
+dat <- data %>% 
+  group_by(paises) %>% 
+  fill(Presidencia, Ciclo_Cumplido) %>% 
+  ungroup() %>% 
+  fill(Presidencia, Ciclo_Cumplido, .direction = "up") 
+
+# Pego a data EAD
+ead_latam <- ead_latam %>% 
+  mutate(key = paste0(as.character(quarter), "-", Country)) %>% 
+  left_join(dat) %>% 
+  select(quarter, Country, Approval_Smoothed, Presidencia, Ciclo_Cumplido)
+  
+writexl::write_xlsx(ead_latam, "data/ead_latam.xlsx")
+
+# Asignar trimestres con dos presidentes al que tiene más 
+ead_latam <- ead_latam %>% 
+  filter(
+    !(quarter == "1995 Q2" & Presidencia == "Carlos Menem"),
+    !(quarter == "1999 Q3" & Presidencia == "Fernando de la Rúa"),
+    !(quarter == "2001 Q4" & Presidencia == "Adolfo Rodriguez Saá"),
+    !(quarter == "2011 Q4" & Presidencia == "Cristina Fernández de Kirchner II"),
+    !(quarter == "2015 Q4" & Presidencia == "Mauricio Macri"),
+    !(quarter == "2001 Q3" & Presidencia == "Jorge Quiroga Ramírez"),
+    !(quarter == "2002 Q3" & Presidencia == "Jorge Quiroga Ramírez"),
+    !(quarter == "2003 Q4" & Presidencia == "Carlos Mesa Gisbert"),
+    !(quarter == "2005 Q2" & Presidencia == "Eduardo Rodríguez Veltzé"),
+    !(quarter == "2006 Q1" & Presidencia == "Eduardo Rodríguez Veltzé"),
+    !(quarter == "2010 Q1" & Presidencia == "Evo Morales"),
+    !(quarter == "2015 Q1" & Presidencia == "Evo Morales II"),
+    !(quarter == "1992 Q4" & Presidencia == "Itamar Franco"),
+    !(quarter == "2016 Q3" & Presidencia == "Michel Temer"),
+    !(quarter == "1994 Q1" & Presidencia == "Eduardo Frei Ruiz-Tagle"),
+    !(quarter == "2000 Q1" & Presidencia == "Ricardo Lagos"),
+    !(quarter == "2006 Q1" & Presidencia == "Michelle Bachelet"),
+    !(quarter == "2010 Q1" & Presidencia == "Sebastián Piñera"),
+    !(quarter == "2014 Q1" & Presidencia == "Michelle Bachelet II"),
+    !(quarter == "2018 Q1" & Presidencia == "Sebastián Piñera II"),
+    !(quarter == "1994 Q3" & Presidencia == "Ernesto Samper"),
+    !(quarter == "1998 Q3" & Presidencia == "Andrés Pastrana"),
+    !(quarter == "2002 Q3" & Presidencia == "Álvaro Uribe"),
+    !(quarter == "2006 Q3" & Presidencia == "Álvaro Uribe II"),
+    !(quarter == "2018 Q3" & Presidencia == "Iván Duque"),
+    !(quarter == "1992 Q3" & Presidencia == "Rodrigo Borja"),
+    !(quarter == "1996 Q3" & Presidencia == "Sixto Durán-Ballén"),
+    !(quarter == "1997 Q1" & Presidencia == "Abdalá Bucaram"),
+    !(quarter == "1998 Q3" & Presidencia == "Fabían Alarcón"),
+    !(quarter == "2000 Q1" & Presidencia == "Jamil Mahuad Witt"),
+    !(quarter == "2003 Q1" & Presidencia == "Gustavo Noboa"),
+    !(quarter == "2005 Q2" & Presidencia == "Alfredo Palacio González"),
+    !(quarter == "2007 Q1" & Presidencia == "Alfredo Palacio González"),
+    !(quarter == "2009 Q3" & Presidencia == "Rafael Correa"),
+    !(quarter == "2013 Q2" & Presidencia == "Rafael Correa III"),
+    !(quarter == "2017 Q2" & Presidencia == "Lenin Moreno"),
+    !(quarter == "1998 Q3" & Presidencia == "Raúl Cubas"),
+    !(quarter == "1999 Q1" & Presidencia == "Luis Ángel González"),
+    !(quarter == "2008 Q3" & Presidencia == "Nicanor Duarte"),
+    !(quarter == "2012 Q2" & Presidencia == "Federico Franco"),
+    !(quarter == "2013 Q3" & Presidencia == "Federico Franco"),
+    !(quarter == "2018 Q3" & Presidencia == "Mario Abdo"),
+    !(quarter == "2001 Q3" & Presidencia == "Valentín Paniagua"),
+    !(quarter == "2006 Q3" & Presidencia == "Alejandro Toledo"),
+    !(quarter == "2011 Q3" & Presidencia == "Alan Garcúa"),
+    !(quarter == "2016 Q3" & Presidencia == "Ollanta Humala"),
+    !(quarter == "1995 Q1" & Presidencia == "Luis Alberto Lacalle"),
+    !(quarter == "2000 Q1" & Presidencia == "Julio María Sanguinetti"),
+    !(quarter == "2005 Q1" & Presidencia == "Jorge Batlle"),
+    !(quarter == "2010 Q1" & Presidencia == "Tabaré Vázquez"),
+    !(quarter == "2015 Q1" & Presidencia == "José Mujica"),
+    !(quarter == "1993 Q2" & Presidencia == "Octavio Lepage"),
+    !(quarter == "1994 Q1" & Presidencia == "Ramón José Velásquez"),
+    !(quarter == "1999 Q1" & Presidencia == "Rafael Caldera"),
+    !(quarter == "1999 Q4" & Presidencia == "Hugo Chávez II"),
+    !(quarter == "2001 Q1" & Presidencia == "Hugo Chávez II"),
+    !(quarter == "2002 Q2" & Presidencia == "Hugo Chávez III"),
+    !(quarter == "2007 Q1" & Presidencia == "Hugo Chávez IIII"),
+    !(quarter == "2013 Q1" & Presidencia == "Hugo Chávez IIIII"),
+    !(quarter == "2013 Q2" & Presidencia == "Nicolás Maduro II")
+  )
+
+# Promedio según presidente
+ead_latam_r <- ead_latam %>%
+  filter(Ciclo_Cumplido == 1) %>% 
+  group_by(Presidencia) %>% 
+  summarize(aprob = mean(Approval_Smoothed, na.rm=T),
+            pais = first(Country))
+
+
+tibble(
+  val1 = c(3, 2, 4),
+  val2 = c(1, 4, 5),
+  val3 = c(5, 8, 6),
+  cat = factor(month.name[1:3], levels = rev(month.name[1:3]))
+) -> xdf
+
+ggplot(ead_latam_r,
+       aes(x = pais, y = aprob, group = Presidencia, color = pais)) +
+  geom_point(size = 3) +
+  theme_minimal() + 
+  coord_flip() + 
+  theme(legend.position = "none")
+
+library(hrbrthemes)
+
+ggplot() +
+  # reshape the data frame & get min value so you can draw an eye-tracking line (this is one geom)
+  geom_segment(
+    data = ead_latam_r %>% 
+      group_by(pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = aprob, y = reorder(pais, desc(pais)), yend = reorder(pais, desc(pais))),
+    linetype = "dotted", size = 0.5, color = "gray80"
+  ) +
+  # reshape the data frame & get min/max category values so you can draw the segment (this is another geom)
+  geom_segment(
+    data = ead_latam_r %>% 
+      group_by(pais) %>% 
+      summarise(start = range(aprob)[1], end = range(aprob)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(pais, desc(pais)), yend = reorder(pais, desc(pais))),
+    color = "gray80", size = 2
+  ) +
+  # reshape the data frame & plot the points
+  geom_point(
+    data = ead_latam_r,
+    aes(aprob, reorder(pais, desc(pais)), group = Presidencia), 
+    size = 4
+  ) +
+  labs(
+    x = "% Promedio de aprobación", y = NULL,
+    title = "Promedio de aprobación presidencial por país (ciclos completos)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top") 
