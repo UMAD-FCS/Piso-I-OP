@@ -94,9 +94,9 @@ La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cícl
 ## **Serie histórica de aprobación**
 
 <div style="text-align: justify">
-Como se mencionó en la guía de uso, es necesario tener ciertos recabos al agregar datos de diferentes encuestas. Las consultoras de opinión pública que publican datos de evaluación del presidente suelen diferir en el fraseo de la pregunta, método de administración o esquema de ponderación. De esta forma, es necesario ser cauteloso al interpretar diferencias entre dos encuestas realizadas de forma distinta, dado que el error no muestral puede causar diferencias mayores al margen de error teórico. 
+Como se menciona en la guía de uso, es necesario tener ciertos recabos al agregar datos de diferentes encuestas. Las consultoras de opinión pública que publican datos de evaluación del presidente suelen diferir en el fraseo de la pregunta, método de administración o esquema de ponderación. De esta forma, es necesario ser cauteloso al interpretar diferencias entre dos encuestas realizadas de forma distinta, dado que el error no muestral puede causar diferencias mayores al margen de error teórico. 
 
-Para poder analizar el cambio en el tiempo de la evaluación del presidente presentamos los datos de tres maneras (se puede acceder a los datos completos a través del paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy)): **(1)** calculamos la tendencia utilizando todos los datos disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy) mediante una regresión local (loess); **(2)** combinamos los datos de las series de cada encuestadora utilizando el algoritmo de *dyads-ratio* para estimar una sola serie; **(3)** presentamos la serie con los datos de la consultora con mayor cantidad de encuestas -en este caso Equipos-. Cada estrategia de análisis tiene ventajas y desventajas que deben ser consideradas al emplear estos datos una investigación. 
+Para poder analizar el cambio en el tiempo de la evaluación del presidente presentamos los datos de tres maneras, para que el usuario pueda utilizar la que más se ajuste a sus necesidades (se puede acceder a los datos completos a través del paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy)): **(1)** calculamos la tendencia utilizando todos los datos disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy) mediante una regresión local (loess); **(2)** combinamos los datos de las series de cada encuestadora utilizando el algoritmo de *dyads-ratio* para estimar una sola serie; **(3)** presentamos la serie con los datos de la consultora con mayor cantidad de encuestas -en este caso Equipos-. Cada estrategia de análisis tiene ventajas y desventajas que deben ser consideradas al emplear estos datos una investigación. 
 </div>
 
 <br />
@@ -104,7 +104,9 @@ Para poder analizar el cambio en el tiempo de la evaluación del presidente pres
 ### **1. Datos crudos de todas las fuentes**
 
 <div style="text-align: justify">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Los datos de evaluación del presidente disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy) conforman distintas series que no son estrictamente comparables, es decir, la serie de una consultora puede presentar de forma sistemática evaluaciones superiores o inferiores a la de otra consultora debido a los métodos utilizados (método de administración, pregunta, categorías de respuesta, esquema de ponderación, etc.). Por esto desaconsejamos el uso lineal de los datos combinados, y simplemente presentamos una línea de tendencia -estimada con una regresión local- que permite estimar a grandes rasgos los niveles absolutos de evaluación en cada período y la variación en cada período.
+
+Los gráficos debajo muestran datos para 7 períodos presidenciales aunque solo existe información para todo el perído entre el segundo gobierno de Sanguinetti y el segundo gobierno de Vázquez. 4 de las 5 administraciones para las que tenemos datos del período completo se ajustan al ciclo típico de aprobación presidencial: luna de miel, declive y repunte final, con la excepción del segundo gobierno de Sanguinetti, que muestra un repunte final pero no una luna de miel. 
 </div>
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -361,7 +363,9 @@ plot(aprob_serie_s)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+<div style="text-align: justify">
+Por otra parte, los gráficos debajo resume mediante diagramas de caja (aunque manteniendo el valor de cada encuesta, con error aleatorio en el eje horizontal para mejorar la visualización) la distribución tanto del % de aprobación como del saldo neto, para los gobiernos donde tenemos datos para la totalidad del período. El primer gobierno de Vázquez junto al gobierno de Mujica son los gobiernos con mayor aprobación presidencial. El gobierno de Batlle es el que presenta mayor variación, con niveles de aprobación cercanos al 50% al comienzo pero alvanzando los niveles más bajos de los que hay registro, cercanos al 10% de aprobación.
+</div>
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -514,7 +518,10 @@ ggplot(dat_opuy %>%
 
 ### **2. Estimación mediante algoritmo de *dyad-ratios* **
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Para obtener una estimación concreta que permita maximizar los datos de todas las fuentes sin comparar linealmente series de distintas consultoras, estimamos una dimensión latente de aprobación presidencial con el algoritmo de *dyad-ratios* siguiendo el enfoque del [Executive Approval Project](http://www.executiveapproval.org/datasets) (ver Carlin et al., 2015). El algoritmo de dyad-ratios fue creado por James Stimson en 1991 y es parte fundamental del estudio temporal de la opinión pública agregada. El algoritmo funciona bajo el supuesto de que la proporción entre dos valores cualquiera dentro de una serie -en este caso series de evaluación del presidente de distintas consultoras, con sus diferencias metodológicas- son indicadores válidos de del cambio relativo en la dimensión latente. Si estos cambios relativos verdaderamente reflejan a una dimensión latente común, deberían variar en conjunto -por más detalles sobre el funcionamiento del algoritmo ver (Stimson, 2018)-. 
+
+Los gráficos debajo musetran la estimación de la evaluación presidencial (tanto en % de aprobación como en saldo neto) para cada trimestre desde 1990 a 2021. La estimación explica el 90%de la varianza, al mismo tiempo que todas las series correlacionan de forma positiva con la estimación. La principal ventaja de este método nos permite obtener una estimación concreta para cada trimestre, maximizando la información de todas las fuentes. En términos generales la estimación trimestral también permite ver los patrones cíclicos de la evaluación presidencial, aunque evidenciando ciertas oscilaciones a mitad de mandato, por ejemplo Mujica alcanza su menor nivel de aprobación en el segundo trimestre del segundo año, Jorge Batlle durante la mitad del período (primer trimestre de 2003) mientras que el segundo gobierno de Vázquez obtiene su menor nivel de aprobación en el primer trimestre de su último año demandato.
+
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -720,7 +727,8 @@ plot(plot_dr_s)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Los gráficos debajo muestran la media de nuestra estimación trimestral para % de aprobación y saldo neto, con las barras de error representando la desviación estandar. Las medias de la aprobación trimestral presentan un escenario similar al descripto anteriormente, con el primer gobierno de Vázquez y el gobierno de Mujica como los de mayor aprobación, y un nivel simiilar para el segundo gobierno de Sanguinetti y Vázquez. A su vez, la administración de Batlle es la que presenta mayor desviación debido a su luna de miel con altos % de aprobación y su posterior marcado declive hasta posiciones mayoritariamente negativas.
+
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -880,13 +888,9 @@ plot_promedio_s <- ggplot(data = dat_equipos_avg,
 plot(plot_promedio_s)
 ```
 
-
-
-
-
 ### **3. Datos solo de Equipos Consultores **
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Por último, también es posible analizar la serie utilizando los datos de una única consultora, para mantener lo más constante posible la metodología de las encuestas. Si bien pueden existir cambios en la serie de una misma consultora, normalmente los grandes aspectos metodológicos presentan pocos cambios permitiendo la comparación lineal. En este caso presentamos la serie de Equipos Consultores porque es la mayor dentro de los datos de opuy (64% de las encuestas disponibles fueron realizadas por Equipos). 
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -1486,6 +1490,8 @@ Martinez-Gallardo, C. (2012). Out of the cabinet: what drives defections from th
 Pérez-Liñán, A. (2007). Presidential impeachment and the new political instability in Latin America. Cambridge University Press.
 
 Stimson, J. A. (1976). Public support for American presidents: A cyclical model. Public Opinion Quarterly, 40(1), 1-21.
+
+Stimson, J. A. (2018). The Dyad ratios algorithm for estimating latent public opinion: estimation, testing, and comparison to other approaches. Bulletin of Sociological Methodology/Bulletin de Méthodologie Sociologique, 137(1), 201-218.
 
 Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Montevideo: Konrad Adenauer Stiftung.
 
