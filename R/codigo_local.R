@@ -939,7 +939,6 @@ ead_latam_r <- ead_latam %>%
   summarize(aprob = mean(Approval_Smoothed, na.rm=T),
             pais = first(Country))
 
-
 tibble(
   val1 = c(3, 2, 4),
   val2 = c(1, 4, 5),
@@ -947,14 +946,7 @@ tibble(
   cat = factor(month.name[1:3], levels = rev(month.name[1:3]))
 ) -> xdf
 
-ggplot(ead_latam_r,
-       aes(x = pais, y = aprob, group = Presidencia, color = pais)) +
-  geom_point(size = 3) +
-  theme_minimal() + 
-  coord_flip() + 
-  theme(legend.position = "none")
-
-library(hrbrthemes)
+# library(hrbrthemes)
 
 ggplot() +
   # reshape the data frame & get min value so you can draw an eye-tracking line (this is one geom)
@@ -965,7 +957,7 @@ ggplot() +
       slice(1) %>%
       ungroup(),
     aes(x = 0, xend = aprob, y = reorder(pais, desc(pais)), yend = reorder(pais, desc(pais))),
-    linetype = "dotted", size = 0.5, color = "gray80"
+    linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   # reshape the data frame & get min/max category values so you can draw the segment (this is another geom)
   geom_segment(
@@ -974,17 +966,39 @@ ggplot() +
       summarise(start = range(aprob)[1], end = range(aprob)[2]) %>% 
       ungroup(),
     aes(x = start, xend = end, y = reorder(pais, desc(pais)), yend = reorder(pais, desc(pais))),
-    color = "gray80", size = 2
+     size = 2, alpha = .2
   ) +
   # reshape the data frame & plot the points
   geom_point(
     data = ead_latam_r,
-    aes(aprob, reorder(pais, desc(pais)), group = Presidencia), 
-    size = 4
+    aes(aprob, reorder(pais, desc(pais)), group = Presidencia, fill = pais), 
+    size = 4, alpha = .9, shape = 21
   ) +
   labs(
     x = "% Promedio de aprobación", y = NULL,
-    title = "Promedio de aprobación presidencial por país (ciclos completos)"
+    title = "Promedio de aprobación presidencial por país (ciclos completos)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Executive Approval Project'
   ) +
   theme_minimal() +
-  theme(legend.position = "top") 
+  theme(legend.position = "none",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_manual(values = c("lightblue2",
+                                "forestgreen",
+                                "gold2",
+                                "firebrick2",
+                                "gold2",
+                                "gold2",
+                                "firebrick2",
+                                "firebrick2",
+                                "lightblue2",
+                                "darkorchid4"))
+
+ggsave("data/aprob_comparada.png", width = 17.5, height = 22, units = "cm")
+
+
+
+
+
+
+
+
