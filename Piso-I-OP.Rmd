@@ -1318,131 +1318,131 @@ Es importante considerar que la aprobación presidencial condiciona la probabili
 
 # **Intención de voto**
 
-## **Tabaré Vázquez II (2014-2019)**
+<!-- ## **Tabaré Vázquez II (2014-2019)** -->
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
+<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum. -->
 
-<br />
+<!-- <br /> -->
 
-<br />
+<!-- <br /> -->
 
-<div style="text-align: center">
-#### **Nombre de Indicador I** 
-</div>
+<!-- <div style="text-align: center"> -->
+<!-- #### **Nombre de Indicador I**  -->
+<!-- </div> -->
 
-### {.tabset .tabset-fade .tabset-pills}
+<!-- ### {.tabset .tabset-fade .tabset-pills} -->
 
-#### Gráfico
+<!-- #### Gráfico -->
 
-```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-gapminder <- gapminder::gapminder %>% 
-  filter(country == "Uruguay")
+<!-- ```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"} -->
+<!-- gapminder <- gapminder::gapminder %>%  -->
+<!--   filter(country == "Uruguay") -->
 
-g1 <- ggplot(gapminder,
-       aes(x = year, y = lifeExp)) +
-  geom_point(size = 3, colour = "#2c3e50") +
-  geom_line(size = 1, colour = "#2c3e50", alpha = .6) +
-  theme_minimal() +
-  labs(x = "", y = "",
-       title = "Esperanza de vida en Uruguay")
+<!-- g1 <- ggplot(gapminder, -->
+<!--        aes(x = year, y = lifeExp)) + -->
+<!--   geom_point(size = 3, colour = "#2c3e50") + -->
+<!--   geom_line(size = 1, colour = "#2c3e50", alpha = .6) + -->
+<!--   theme_minimal() + -->
+<!--   labs(x = "", y = "", -->
+<!--        title = "Esperanza de vida en Uruguay") -->
 
-plot(g1)
-```
-
-
-```{r}
-download_this(g1,
-              button_label = "Descargar gráfico",
-              icon = "fa fa-download")
-```
+<!-- plot(g1) -->
+<!-- ``` -->
 
 
-#### Tabla
-
-```{r}
-DT::datatable(gapminder,
-              extensions =  'Buttons',
-              options =  list(dom = 'Bfrtip',
-                              buttons = c('copy', 'csv', 'excel', 'print')))
-```
-
-#### Código en R
-
-```{r, echo=TRUE, eval=FALSE}
-gapminder <- gapminder::gapminder %>% 
-  filter(year == 2007)
-
-hist(gapminder$lifeExp,
-     main = "Distribución de esperanza de vida en 2007",
-     col = "skyblue3",
-     border ="black",
-     density = 75)
-
-```
+<!-- ```{r} -->
+<!-- download_this(g1, -->
+<!--               button_label = "Descargar gráfico", -->
+<!--               icon = "fa fa-download") -->
+<!-- ``` -->
 
 
-## {.toc-ignore .unlisted .unnumbered}
+<!-- #### Tabla -->
 
-## **José Mujica (2014-2019)**
+<!-- ```{r} -->
+<!-- DT::datatable(gapminder, -->
+<!--               extensions =  'Buttons', -->
+<!--               options =  list(dom = 'Bfrtip', -->
+<!--                               buttons = c('copy', 'csv', 'excel', 'print'))) -->
+<!-- ``` -->
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
+<!-- #### Código en R -->
 
-<div style="text-align: center">
-#### **Nombre de Indicador II** 
-</div>
+<!-- ```{r, echo=TRUE, eval=FALSE} -->
+<!-- gapminder <- gapminder::gapminder %>%  -->
+<!--   filter(year == 2007) -->
 
-### {.tabset .tabset-fade .tabset-pills}
+<!-- hist(gapminder$lifeExp, -->
+<!--      main = "Distribución de esperanza de vida en 2007", -->
+<!--      col = "skyblue3", -->
+<!--      border ="black", -->
+<!--      density = 75) -->
 
-#### Gráfico
-
-```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"}
-gapminder <- gapminder::gapminder %>% 
-  filter(country == "Uruguay")
-
-g1 <- ggplot(gapminder,
-       aes(x = year, y = lifeExp)) +
-  geom_point(size = 3, colour = "#2c3e50") +
-  geom_line(size = 1, colour = "#2c3e50", alpha = .6) +
-  theme_minimal() +
-  labs(x = "", y = "",
-       title = "Esperanza de vida en Uruguay")
-
-plot(g1)
-```
+<!-- ``` -->
 
 
-<!-- Por si no usan Plotly (que ya tiene botón de descarga) -->
+<!-- ## {.toc-ignore .unlisted .unnumbered} -->
 
-```{r}
-download_this(g1,
-              button_label = "Descargar gráfico",
-              icon = "fa fa-download")
-```
+<!-- ## **José Mujica (2014-2019)** -->
 
-#### Tabla
+<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum. -->
 
-```{r}
-DT::datatable(gapminder,
-              extensions =  'Buttons',
-              options =  list(dom = 'Bfrtip',
-                              buttons = c('copy', 'csv', 'excel', 'print')))
-```
+<!-- <div style="text-align: center"> -->
+<!-- #### **Nombre de Indicador II**  -->
+<!-- </div> -->
 
-#### Código en R
+<!-- ### {.tabset .tabset-fade .tabset-pills} -->
 
-```{r, echo=TRUE, eval=FALSE}
-gapminder <- gapminder::gapminder %>% 
-  filter(year == 2007)
+<!-- #### Gráfico -->
 
-hist(gapminder$lifeExp,
-     main = "Distribución de esperanza de vida en 2007",
-     col = "skyblue3",
-     border ="black",
-     density = 75)
+<!-- ```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"} -->
+<!-- gapminder <- gapminder::gapminder %>%  -->
+<!--   filter(country == "Uruguay") -->
 
-```
+<!-- g1 <- ggplot(gapminder, -->
+<!--        aes(x = year, y = lifeExp)) + -->
+<!--   geom_point(size = 3, colour = "#2c3e50") + -->
+<!--   geom_line(size = 1, colour = "#2c3e50", alpha = .6) + -->
+<!--   theme_minimal() + -->
+<!--   labs(x = "", y = "", -->
+<!--        title = "Esperanza de vida en Uruguay") -->
 
-## {.toc-ignore .unlisted .unnumbered}
+<!-- plot(g1) -->
+<!-- ``` -->
+
+
+<!-- <!-- Por si no usan Plotly (que ya tiene botón de descarga) --> -->
+
+<!-- ```{r} -->
+<!-- download_this(g1, -->
+<!--               button_label = "Descargar gráfico", -->
+<!--               icon = "fa fa-download") -->
+<!-- ``` -->
+
+<!-- #### Tabla -->
+
+<!-- ```{r} -->
+<!-- DT::datatable(gapminder, -->
+<!--               extensions =  'Buttons', -->
+<!--               options =  list(dom = 'Bfrtip', -->
+<!--                               buttons = c('copy', 'csv', 'excel', 'print'))) -->
+<!-- ``` -->
+
+<!-- #### Código en R -->
+
+<!-- ```{r, echo=TRUE, eval=FALSE} -->
+<!-- gapminder <- gapminder::gapminder %>%  -->
+<!--   filter(year == 2007) -->
+
+<!-- hist(gapminder$lifeExp, -->
+<!--      main = "Distribución de esperanza de vida en 2007", -->
+<!--      col = "skyblue3", -->
+<!--      border ="black", -->
+<!--      density = 75) -->
+
+<!-- ``` -->
+
+<!-- ## {.toc-ignore .unlisted .unnumbered} -->
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 

@@ -996,9 +996,52 @@ ggplot() +
 ggsave("data/aprob_comparada.png", width = 17.5, height = 22, units = "cm")
 
 
+## Autoidentificación ideológica ----
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  pivot_longer(`0`:n, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(valor = as.numeric(valor))
+
+# * Evolución Uruguay ----
+autid_uy <- autid %>% 
+  filter(pais == "Uruguay") %>% 
+  filter(cat != "Media",
+         cat != "n",
+         cat != "sd") %>% 
+  mutate(valor = valor * 1000) %>% 
+  select(-pais) %>% 
+  filter(!is.na(valor))
+
+expanded <- data.frame(autid = rep(autid_uy$cat, autid_uy$valor),
+                       year = rep(autid_uy$year, autid_uy$valor)) %>% 
+  mutate(Partido = case_when(
+    year >= 1995 & year <= 2004 ~ "Partido Colorado",
+    year >= 2005 & year <= 2019 ~ "Frente Amplio",
+    year >= 2020  ~ "Partido Nacional",
+  ))
 
 
+ggplot(expanded, 
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = Partido)) + 
+  ggridges::geom_density_ridges(rel_min_height = 0.005, 
+                                scale = 3,
+                                alpha = .4,
+                                color = "black",
+                                linetype = 1, # Tipo de línea
+                                lwd = 0.5,
+                                quantile_lines = TRUE, 
+                                quantile_fun = mean) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  # stat_density_ridges(quantile_lines = TRUE, alpha = 0.75, quantiles = 2) +
+  labs(title = "Distribución de autoidentificación ideológica por año",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+       x = "", y = "") +
+  scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
+  scale_x_continuous(breaks = seq(0, 10, by = 2))
 
+ggsave("data/latino/ideo.png", height = 30, width = 20, units = "cm")
 
 
 
