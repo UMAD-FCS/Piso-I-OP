@@ -890,7 +890,7 @@ plot(plot_promedio_s)
 
 ### **3. Datos solo de Equipos Consultores **
 
-Por último, también es posible analizar la serie utilizando los datos de una única consultora, para mantener lo más constante posible la metodología de las encuestas. Si bien pueden existir cambios en la serie de una misma consultora, normalmente los grandes aspectos metodológicos presentan pocos cambios permitiendo la comparación lineal. En este caso presentamos la serie de Equipos Consultores porque es la mayor dentro de los datos de opuy (64% de las encuestas disponibles fueron realizadas por Equipos). 
+Por último, también es posible analizar la serie utilizando los datos de una única consultora, para mantener lo más constante posible la metodología de las encuestas. Si bien pueden existir cambios en la serie de una misma consultora, normalmente los grandes aspectos metodológicos presentan pocos cambios permitiendo la comparación lineal. En este caso presentamos la serie de Equipos Consultores porque es la mayor dentro de los datos de opuy (64% de las encuestas disponibles fueron realizadas por Equipos). Al igual que con la estimación mediante el algortimo de *dyad-ratios* la serie es trimestral. Como es de esperarse, los resultados son similares a los anteriormente descriptos. 
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -1118,9 +1118,9 @@ aprob_serie_s_e <- dat_equipos %>%
 plot(aprob_serie_s_e)
 ```
 
+## {.toc-ignore .unlisted .unnumbered}
 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Los gráficos debajon presentan las medias por gobierno con barras de error que representan el desvío estandar. 
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -1305,11 +1305,11 @@ include_graphics("data/aprob_comparada.png")
 ```
 
 <div style="text-align: justify">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Para poder comparar los niveles de aprobación presidencial entre países es necesario partir de estimaciones comparables y tener en cuenta los ciclos en la aprobación, es decir, comparar ciclos completos, o ciclos a la misma altura. En este caso para visualizar los promedios de aprobación de distintos presidentes en los países de América del Sur, utilizamos las series estimadas con el algoritmo de *dyad-ratios* publicadas por el [Executive Approval Project](http://www.executiveapproval.org/). Utilizando estas series trimestrales de aprobación en cada país calculamos el promedio para cada presidente que haya terminado su ciclo.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+El gráfico muestra que el rango de aprobación es similar para la mayoría de los países. Tanto Argentina, Brasil, Chile, Colombia, Ecuador y Uruguay muestran un rango de entre poco menos de 40% y 60% de aprobación promedio de los presidentes con ciclos cumplidos. Por otra parte, Paraguay y Venezuela muestrna un valor máximo inferior, cercano al 45% mientras que Perú es el país que presenta los dos pormedios de aprobación más bajos para gobiernos que cumplieron el ciclo. 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet aliquet magna a facilisis. Donec nec neque tellus. Integer aliquam metus et ex ullamcorper rutrum. Phasellus in ex sit amet magna hendrerit sagittis at eu leo. Quisque posuere tortor mi, at feugiat nisl aliquam a. Vestibulum venenatis felis vitae elit finibus, nec pretium sapien laoreet. Proin et diam ante. Integer eleifend massa mi, vitae eleifend lectus pharetra sed. Integer laoreet elit id dolor efficitur varius.
+Es importante considerar que la aprobación presidencial condiciona la probabilidad de que el presidente termine su ciclo. De esta forma, al considerar solamente gobiernos que hayan terminado su ciclo, se excluyen algunos mandatos con menor aprobación promedio 
 </div>
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
@@ -1446,12 +1446,6 @@ hist(gapminder$lifeExp,
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
-# **Principal problema del país**
-
-<br />
-
-<hr style="border:1.5px solid #2c3e50"> </hr>
-
 # **Autoidentificación ideológica**
 
 Geom_ridges!!
@@ -1461,6 +1455,18 @@ Geom_ridges!!
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
 # **Actitudes hacia la democracia**
+
+<br />
+
+<hr style="border:1.5px solid #2c3e50"> </hr>
+
+# **Principal problema del país**
+
+<br />
+
+<hr style="border:1.5px solid #2c3e50"> </hr>
+
+# **Principal problema del país**
 
 <br />
 
