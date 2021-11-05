@@ -1633,7 +1633,8 @@ plot_autid_c <- ggplot(df_expanded,
   scale_fill_manual(name = "",
                     values = c("gold2", 
                                "dodgerblue3")) +
-  labs(title = "Distribución de autoidentificación ideológica por año, Uruguay y Total América Latina",
+  labs(title = "Distribución de autoidentificación ideológica por año",
+       subtitle = "Comparación total América Latina y Uruguay",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   theme_minimal() +
@@ -1713,7 +1714,8 @@ ggplot(df_expanded,
   scale_fill_manual(name = "",
                     values = c("gold2", 
                                "dodgerblue3")) +
-  labs(title = "Distribución de autoidentificación ideológica por año, Uruguay y Total América Latina",
+  labs(title = "Distribución de autoidentificación ideológica por año",
+       subtitle = "Comparación total América Latina y Uruguay",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   theme_minimal() +
