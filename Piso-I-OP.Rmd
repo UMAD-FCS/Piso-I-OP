@@ -30,6 +30,7 @@ library(kableExtra)
 library(downloadthis)
 library(knitr)
 library(opuy)
+library(ggridges)
 ```
 
 <br />
@@ -1448,8 +1449,271 @@ Es importante considerar que la aprobación presidencial condiciona la probabili
 
 # **Autoidentificación ideológica**
 
-Geom_ridges!!
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum. 
 
+<div class="boxed">
+**Latinobarómetro pregunta por la autoidentificación ideoógica de la siguiente manera:** *En política se habla normalmente de "izquierda" y "derecha" En una escala dónde “00" es la “izquierda” y “10" la “derecha”, ¿Dónde se ubicaría Ud?*.  
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 6, fig.height = 8, fig.align = "center"}
+# Cargar tabla con datos y cambiar formato a largo
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  pivot_longer(`0`:n, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(valor = as.numeric(valor))
+
+# Filtrar por Uruguay y preparar datos para gráfico
+autid_uy <- autid %>% 
+  filter(pais == "Uruguay") %>% 
+  filter(cat != "Media",
+         cat != "n",
+         cat != "sd") %>% 
+  mutate(valor = valor * 1000) %>% 
+  select(-pais) %>% 
+  filter(!is.na(valor))
+
+# Expandir datos agregados a observaciones
+expanded <- data.frame(autid = rep(autid_uy$cat, autid_uy$valor),
+                       year = rep(autid_uy$year, autid_uy$valor)) %>% 
+  mutate(Partido = case_when(
+    year >= 1995 & year <= 2004 ~ "Partido Colorado",
+    year >= 2005 & year <= 2019 ~ "Frente Amplio",
+    year >= 2020  ~ "Partido Nacional",
+  ))
+
+# Distribución 
+plot_autid <-  ggplot(expanded, 
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = Partido)) + 
+  ggridges::geom_density_ridges(rel_min_height = 0.005, 
+                                scale = 3,
+                                alpha = .4,
+                                color = "black",
+                                linetype = 1, # Tipo de línea
+                                lwd = 0.5,
+                                quantile_lines = TRUE, 
+                                quantile_fun = mean) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  # stat_density_ridges(quantile_lines = TRUE, alpha = 0.75, quantiles = 2) +
+  labs(title = "Distribución de autoidentificación ideológica por año",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+       x = "", y = "") +
+  scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
+  scale_x_continuous(breaks = seq(0, 10, by = 2))
+
+plot(plot_autid)
+```
+
+```{r}
+download_this(plot_autid,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(readxl::read_excel("data/latino/autid.xlsx") %>%
+                filter(pais == "Uruguay") %>% 
+                pivot_longer(`0`:sd,
+                             names_to = "cat",
+                             values_to = "valor") %>%
+                mutate(valor = as.numeric(valor)) %>%
+                pivot_wider(values_from = "valor",
+                            names_from = "cat"),
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("ggridges")
+
+library(tidyverse)
+library(ggridges)
+
+# Cargar tabla con datos y cambiar formato a largo
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  pivot_longer(`0`:n, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(valor = as.numeric(valor))
+
+# Filtrar por Uruguay y preparar datos para gráfico
+autid_uy <- autid %>% 
+  filter(pais == "Uruguay") %>% 
+  filter(cat != "Media",
+         cat != "n",
+         cat != "sd") %>% 
+  mutate(valor = valor * 1000) %>% 
+  select(-pais) %>% 
+  filter(!is.na(valor))
+
+# Expandir datos agregados a observaciones
+expanded <- data.frame(autid = rep(autid_uy$cat, autid_uy$valor),
+                       year = rep(autid_uy$year, autid_uy$valor)) %>% 
+  mutate(Partido = case_when(
+    year >= 1995 & year <= 2004 ~ "Partido Colorado",
+    year >= 2005 & year <= 2019 ~ "Frente Amplio",
+    year >= 2020  ~ "Partido Nacional",
+  ))
+
+# Distribución 
+ggplot(expanded, 
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = Partido)) + 
+  ggridges::geom_density_ridges(rel_min_height = 0.005, 
+                                scale = 3,
+                                alpha = .4,
+                                color = "black",
+                                linetype = 1, # Tipo de línea
+                                lwd = 0.5,
+                                quantile_lines = TRUE, 
+                                quantile_fun = mean) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  # stat_density_ridges(quantile_lines = TRUE, alpha = 0.75, quantiles = 2) +
+  labs(title = "Distribución de autoidentificación ideológica por año",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+       x = "", y = "") +
+  scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
+  scale_x_continuous(breaks = seq(0, 10, by = 2))
+
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo=FALSE, fig.width=6, fig.height= 8, fig.align="center"}
+# Cargar tabla con datos y cambiar formato a largo
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  pivot_longer(`0`:n, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(valor = as.numeric(valor)) 
+
+# Comparación Uru vs la región
+autid_la <- autid %>% 
+  filter(pais %in% c("Total América Latina", "Uruguay")) 
+
+autid_la_uy <- autid_la %>% 
+  filter(cat != "Media",
+         cat != "n",
+         cat != "sd") %>% 
+  mutate(valor = valor * 1000) %>% 
+  filter(!is.na(valor))
+
+# Expandir datos agregados a observaciones
+df_expanded <- data.frame(autid = rep(autid_la_uy$cat, autid_la_uy$valor),
+                       year = rep(autid_la_uy$year, autid_la_uy$valor),
+                       pais = rep(autid_la_uy$pais, autid_la_uy$valor))
+
+# Gráfico
+plot_autid_c <- ggplot(df_expanded,
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = pais)) + 
+  geom_density_ridges(alpha = .6) +
+  scale_fill_manual(name = "",
+                    values = c("gold2", 
+                               "dodgerblue3")) +
+  labs(title = "Distribución de autoidentificación ideológica por año",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+       x = "", y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+    scale_x_continuous(breaks = seq(0, 10, by = 2)) 
+
+plot(plot_autid_c)
+```
+
+```{r}
+download_this(plot_autid_c,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(readxl::read_excel("data/latino/autid.xlsx") %>%
+                filter(pais %in% c("Uruguay", "Total América Latina")) %>% 
+                pivot_longer(`0`:sd,
+                             names_to = "cat",
+                             values_to = "valor") %>%
+                mutate(valor = as.numeric(valor)) %>%
+                pivot_wider(values_from = "valor",
+                            names_from = "cat"),
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("ggridges")
+
+library(tidyverse)
+library(ggridges)
+
+# Cargar tabla con datos y cambiar formato a largo
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  pivot_longer(`0`:n, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(valor = as.numeric(valor)) 
+
+# Comparación Uru vs la región
+autid_la <- autid %>% 
+  filter(pais %in% c("Total América Latina", "Uruguay")) 
+
+autid_la_uy <- autid_la %>% 
+  filter(cat != "Media",
+         cat != "n",
+         cat != "sd") %>% 
+  mutate(valor = valor * 1000) %>% 
+  filter(!is.na(valor))
+
+# Expandir datos agregados a observaciones
+df_expanded <- data.frame(autid = rep(autid_la_uy$cat, autid_la_uy$valor),
+                       year = rep(autid_la_uy$year, autid_la_uy$valor),
+                       pais = rep(autid_la_uy$pais, autid_la_uy$valor))
+
+# Gráfico
+ggplot(df_expanded,
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = pais)) + 
+  geom_density_ridges(alpha = .6) +
+  scale_fill_manual(name = "",
+                    values = c("gold2", 
+                               "dodgerblue3")) +
+  labs(title = "Distribución de autoidentificación ideológica por año, Uruguay y Total América Latina",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+       x = "", y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+    scale_x_continuous(breaks = seq(0, 10, by = 2))
+
+ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
+```
+
+## {.toc-ignore .unlisted .unnumbered}
 <br />
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
@@ -1531,3 +1795,5 @@ Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Mo
 
 
 &nbsp;
+
+

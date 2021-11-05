@@ -7,6 +7,7 @@
 
 library(tidyverse)
 library(opuy)
+library(ggridges)
 
 ## Evaluación del presidente  ===============================================
 
@@ -997,13 +998,15 @@ ggsave("data/aprob_comparada.png", width = 17.5, height = 22, units = "cm")
 
 
 ## Autoidentificación ideológica ----
+
+# Cargar tabla con datos y cambiar formato a largo
 autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
   pivot_longer(`0`:n, 
                names_to = "cat",
                values_to = "valor") %>% 
-  mutate(valor = as.numeric(valor))
+  mutate(valor = as.numeric(valor)) 
 
-# * Evolución Uruguay ----
+# Filtrar por Uruguay y preparar datos para gráfico
 autid_uy <- autid %>% 
   filter(pais == "Uruguay") %>% 
   filter(cat != "Media",
@@ -1013,6 +1016,7 @@ autid_uy <- autid %>%
   select(-pais) %>% 
   filter(!is.na(valor))
 
+# Expandir datos agregados a observaciones
 expanded <- data.frame(autid = rep(autid_uy$cat, autid_uy$valor),
                        year = rep(autid_uy$year, autid_uy$valor)) %>% 
   mutate(Partido = case_when(
@@ -1021,7 +1025,7 @@ expanded <- data.frame(autid = rep(autid_uy$cat, autid_uy$valor),
     year >= 2020  ~ "Partido Nacional",
   ))
 
-
+# Distribución 
 ggplot(expanded, 
        aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = Partido)) + 
   ggridges::geom_density_ridges(rel_min_height = 0.005, 
@@ -1039,9 +1043,71 @@ ggplot(expanded,
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
-  scale_x_continuous(breaks = seq(0, 10, by = 2))
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) 
 
 ggsave("data/latino/ideo.png", height = 30, width = 20, units = "cm")
+
+
+# Comparación Uru vs la región
+autid_la <- autid %>% 
+  filter(pais %in% c("Total América Latina", "Uruguay")) 
+
+autid_la_uy <- autid_la %>% 
+  filter(cat != "Media",
+         cat != "n",
+         cat != "sd") %>% 
+  mutate(valor = valor * 1000) %>% 
+  filter(!is.na(valor))
+
+# Expandir datos agregados a observaciones
+df_expanded <- data.frame(autid = rep(autid_la_uy$cat, autid_la_uy$valor),
+                       year = rep(autid_la_uy$year, autid_la_uy$valor),
+                       pais = rep(autid_la_uy$pais, autid_la_uy$valor))
+
+# Gráfico
+ggplot(df_expanded,
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = pais)) + 
+  geom_density_ridges(alpha = .6) +
+  scale_fill_manual(name = "",
+                    values = c("gold2", 
+                               "dodgerblue3")) +
+  labs(title = "Distribución de autoidentificación ideológica por año, Uruguay y Total América Latina",
+       caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+       x = "", y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) 
+
+ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
+
+# # Media y desvío
+# autid_avg <- expanded %>% 
+#   mutate(autid = as.numeric(autid)) %>% 
+#   filter(!is.na(autid)) %>% 
+#   group_by(year) %>% 
+#   summarize(autid_m = round(mean(autid, na.rm = T), digits = 1),
+#             autid_sd = round(sd(autid, na.rm = T), digits = 1),
+#             Partido = first(Partido)) 
+# 
+# # Gráfico media
+# ggplot(data = autid_avg,
+#                         aes(x = year, y = autid_m, color = Partido)) +
+#   geom_errorbar(aes(ymin = autid_m - autid_sd, ymax = autid_m + autid_sd), width=.1) +
+#   geom_point(size=3) +
+#   geom_text(aes(label = autid_m), vjust = -.5) +
+#   labs(title = "Promedio y desvío estandar de aprobación del presidente según administración",
+#        subtitle = "Cálculos sobre datos estimados mediante el algoritmo de dyads-ratio (% de aprobación)",
+#        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
+#        x = "",
+#        y = "") +
+#   theme_minimal(base_size = 10) +
+#   theme(legend.position = "none") +
+#   scale_color_manual(name = "",
+#                      values = c("#5DADE2", "#BA0200", "#BA0200", "#013197",
+#                                 "#013197", "#013197", "#5DADE2")) +
+#   ylim(0, 10)
+
+
 
 
 
