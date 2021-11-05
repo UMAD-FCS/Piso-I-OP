@@ -1449,7 +1449,11 @@ Es importante considerar que la aprobación presidencial condiciona la probabili
 
 # **Autoidentificación ideológica**
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum. 
+La ideología es generalmente entendida como un resumen de una visión del mundo representada por las posiciones respecto a distintos temas económicos y sociales. Usualmente estas posiciones pueden ser ubicadas a lo largo de una dimensión: izquierda/derecha o liberal/conservador. Se suele referir a la distinción entre izquierda y derecha, como un atajo que proporciona una orientación general hacia los líderes políticos y las políticas sociales de una sociedad (Inglehart y Sidjanski 1976).
+
+Originalmente la ideología era vista como un sistema de creencias, es decir, un conjunto de opiniones coherente respecto a distintos temas (Converse, 1964) o **ideología operacional**. Sin embargo, la literatura reciente sugiere que las posiciones respecto a políticas forman un elemento de la ideología, pero que existe un segundo elemento basado en las identidades sociales llamado **ideología simbólica** (Ellis y Stimson, 2012; Mason, 2018). La identificación con las etiquetas de izquierda o derecha son parte de la identidad social de los individuos y no necesariamente se explican por preferencias por políticas. De hecho, es posible que, en el agregado, el electorado en su conjunto mantenga posiciones principalmente de izquierda, aunque se identifica en mayor medida con la derecha, o viceversa (Ellis y Stimson, 2012)
+
+De esta forma, es necesario tener en cuenta estos dos elementos de la ideología a la hora de operacionalizar este concepto. Normalmente las encuestas de opinión pública preguntan al individuo por cómo este se identifica ideológicamente. Estos datos -como los que se pueden visualizar en los gráficos debajo- nos permiten captar el elemento de la identidad social pero no necesariamente sus preferencias por políticas o posiciones respecto a temas relevantes.  Existen otras medidas para operacionalizar las preferencias por políticas concretas como el *Policy Mood* a nivel agregado (Stimson, 1991) o a través de temas claves a nivel individual (ver Baker y Greene, 2011 para América Latina)
 
 <div class="boxed">
 **Latinobarómetro pregunta por la autoidentificación ideoógica de la siguiente manera:** *En política se habla normalmente de "izquierda" y "derecha" En una escala dónde “00" es la “izquierda” y “10" la “derecha”, ¿Dónde se ubicaría Ud?*.  
@@ -1742,12 +1746,6 @@ ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
-# **Principal problema del país**
-
-<br />
-
-<hr style="border:1.5px solid #2c3e50"> </hr>
-
 # **Citar este documento**
 
 UMAD (2020) Opinión Pública en Uruguay. Disponible en [**enlace en línea**]().
@@ -1761,17 +1759,29 @@ Apellido, Nombre (2010) Nombre de trabajo. Revista
 
 Aguiar, C. A. (2000). La Historia y la historia: Opinión Pública y opinión pública en el Uruguay. Prisma, (15), 7-45.
 
+Baker, A., & Greene, K. F. (2011). The Latin American left's mandate: free-market policies and issue voting in new democracies. World Politics, 63(1), 43-77.
+
 Calvo, E. (2007). The responsive legislature: Public opinion and law making in a highly disciplined legislature. British Journal of Political Science, 37(2), 263-280.
 
 Carlin, R. E., Love, G. J., & Martínez-Gallardo, C. (2015). Cushioning the fall: Scandals, economic conditions, and executive approval. Political Behavior, 37(1), 109-130.
 
 Carlin, R. E., Hartlyn, J., Hellwig, T., Love, G. J., Martínez-Gallardo, C., & Singer, M. M. (2018). Public support for Latin American presidents: The cyclical model in comparative perspective. Research & Politics, 5(3), 2053168018787690.
 
+Converse, P. E. (2006). The nature of belief systems in mass publics (1964). Critical review, 18(1-3), 1-74.
+
+Ellis, C., & Stimson, J. A. (2012). Ideology in America. Cambridge University Press.
+
+Inglehart, R., & Sidjanski, D. (1976). The left, the right, the establishment and the Swiss electorate. Party identification and beyond, 240-41.
+
 Martinez-Gallardo, C. (2012). Out of the cabinet: what drives defections from the government in presidential systems?. Comparative Political Studies, 45(1), 62-90.
+
+Mason, L. (2018). Ideologues without issues: The polarizing consequences of ideological identities. Public Opinion Quarterly, 82(S1), 866-887.
 
 Pérez-Liñán, A. (2007). Presidential impeachment and the new political instability in Latin America. Cambridge University Press.
 
 Stimson, J. A. (1976). Public support for American presidents: A cyclical model. Public Opinion Quarterly, 40(1), 1-21.
+
+Stimson, J. A., MacKuen, M. B., & Erikson, R. S. (1994). Opinion and policy: A global view. PS: Political Science & Politics, 27(1), 29-35.
 
 Stimson, J. A. (2018). The Dyad ratios algorithm for estimating latent public opinion: estimation, testing, and comparison to other approaches. Bulletin of Sociological Methodology/Bulletin de Méthodologie Sociologique, 137(1), 201-218.
 
@@ -1807,5 +1817,8 @@ Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Mo
 
 
 &nbsp;
+
+
+
 
 
