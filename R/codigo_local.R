@@ -1066,8 +1066,13 @@ df_expanded <- data.frame(autid = rep(autid_la_uy$cat, autid_la_uy$valor),
 
 # Gráfico
 ggplot(df_expanded,
-       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = pais)) + 
-  geom_density_ridges(alpha = .6) +
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), 
+           fill = pais, linetype = pais)) + 
+  geom_density_ridges(alpha = .6, 
+                      quantile_lines = TRUE, 
+                      quantile_fun = mean) +
+  scale_linetype_manual(name = "",
+                        values = c("solid", "dashed")) +
   scale_fill_manual(name = "",
                     values = c("gold2", 
                                "dodgerblue3")) +

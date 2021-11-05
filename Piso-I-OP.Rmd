@@ -1623,17 +1623,22 @@ df_expanded <- data.frame(autid = rep(autid_la_uy$cat, autid_la_uy$valor),
 
 # Gráfico
 plot_autid_c <- ggplot(df_expanded,
-       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = pais)) + 
-  geom_density_ridges(alpha = .6) +
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), 
+           fill = pais, linetype = pais)) + 
+  geom_density_ridges(alpha = .6, 
+                      quantile_lines = TRUE, 
+                      quantile_fun = mean) +
+  scale_linetype_manual(name = "",
+                        values = c("solid", "dashed")) +
   scale_fill_manual(name = "",
                     values = c("gold2", 
                                "dodgerblue3")) +
-  labs(title = "Distribución de autoidentificación ideológica por año",
+  labs(title = "Distribución de autoidentificación ideológica por año, Uruguay y Total América Latina",
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   theme_minimal() +
   theme(legend.position = "bottom") +
-    scale_x_continuous(breaks = seq(0, 10, by = 2)) 
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) 
 
 plot(plot_autid_c)
 ```
@@ -1698,8 +1703,13 @@ df_expanded <- data.frame(autid = rep(autid_la_uy$cat, autid_la_uy$valor),
 
 # Gráfico
 ggplot(df_expanded,
-       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = pais)) + 
-  geom_density_ridges(alpha = .6) +
+       aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), 
+           fill = pais, linetype = pais)) + 
+  geom_density_ridges(alpha = .6, 
+                      quantile_lines = TRUE, 
+                      quantile_fun = mean) +
+  scale_linetype_manual(name = "",
+                        values = c("solid", "dashed")) +
   scale_fill_manual(name = "",
                     values = c("gold2", 
                                "dodgerblue3")) +
@@ -1708,7 +1718,7 @@ ggplot(df_expanded,
        x = "", y = "") +
   theme_minimal() +
   theme(legend.position = "bottom") +
-    scale_x_continuous(breaks = seq(0, 10, by = 2))
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) 
 
 ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
 ```
