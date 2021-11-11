@@ -1449,26 +1449,42 @@ Es importante considerar que la aprobación presidencial condiciona la probabili
 
 # **Autoidentificación ideológica**
 
+<div style="text-align: justify">
 La ideología es generalmente entendida como un resumen de una visión del mundo representada por las posiciones respecto a distintos temas económicos y sociales. Usualmente estas posiciones pueden ser ubicadas a lo largo de una dimensión: izquierda/derecha o liberal/conservador. Se suele referir a la distinción entre izquierda y derecha, como un atajo que proporciona una orientación general hacia los líderes políticos y las políticas sociales de una sociedad (Inglehart y Sidjanski 1976).
 
-Originalmente la ideología era vista como un sistema de creencias, es decir, un conjunto de opiniones coherente respecto a distintos temas (Converse, 1964) o **ideología operacional**. Sin embargo, la literatura reciente sugiere que las posiciones respecto a políticas forman un elemento de la ideología, pero que existe un segundo elemento basado en las identidades sociales llamado **ideología simbólica** (Ellis y Stimson, 2012; Mason, 2018). La identificación con las etiquetas de izquierda o derecha son parte de la identidad social de los individuos y no necesariamente se explican por preferencias por políticas. De hecho, es posible que, en el agregado, el electorado en su conjunto mantenga posiciones principalmente de izquierda, aunque se identifica en mayor medida con la derecha, o viceversa (Ellis y Stimson, 2012)
+Originalmente la ideología era vista como un sistema de creencias, es decir, un conjunto de opiniones coherentes respecto a distintos temas (Converse, 1964). Sin embargo, la literatura reciente sugiere que las posiciones respecto a políticas forman un elemento de la ideología (llamado **ideología operacional**), pero que existe un segundo elemento basado en las identidades sociales llamado **ideología simbólica** (Ellis y Stimson, 2012; Mason, 2018). La identificación con las etiquetas de izquierda o derecha son parte de la identidad social de los individuos y no necesariamente se explican por preferencias por políticas. De hecho, es posible que, en el agregado, el electorado en su conjunto mantenga posiciones principalmente de izquierda, aunque se identifica en mayor medida con la derecha, o viceversa (Ellis y Stimson, 2012)
+</div>
 
-De esta forma, es necesario tener en cuenta estos dos elementos de la ideología a la hora de operacionalizar este concepto. Normalmente las encuestas de opinión pública preguntan al individuo por cómo este se identifica ideológicamente. Estos datos -como los que se pueden visualizar en los gráficos debajo- nos permiten captar el elemento de la identidad social pero no necesariamente sus preferencias por políticas o posiciones respecto a temas relevantes.  Existen otras medidas para operacionalizar las preferencias por políticas concretas como el *Policy Mood* a nivel agregado (Stimson, 1991) o a través de temas claves a nivel individual (ver Baker y Greene, 2011 para América Latina)
+<br />
 
 <div class="boxed">
-**Latinobarómetro pregunta por la autoidentificación ideoógica de la siguiente manera:** *En política se habla normalmente de "izquierda" y "derecha" En una escala dónde “00" es la “izquierda” y “10" la “derecha”, ¿Dónde se ubicaría Ud?*.  
+**Latinobarómetro pregunta por la autoidentificación ideoógica de la siguiente manera:** *En política se habla normalmente de "izquierda" y "derecha" En una escala dónde “0" es la “izquierda” y “10" la “derecha”, ¿Dónde se ubicaría Ud?*.  
 </div>
+
+<br />
+
+<div style="text-align: justify">
+De esta forma, es necesario tener en cuenta estos dos elementos de la ideología a la hora de operacionalizar este concepto. Normalmente las encuestas de opinión pública preguntan al individuo por cómo este se identifica ideológicamente. Estos datos -como los que se pueden visualizar en los gráficos debajo- nos permiten captar el elemento de la identidad social pero no necesariamente sus preferencias por políticas o posiciones respecto a temas relevantes.  Existen otras medidas para operacionalizar las preferencias por políticas concretas como el *Policy Mood* a nivel agregado (Stimson, 1991) o a través de temas claves a nivel individual (ver Baker y Greene, 2011 para América Latina)
+</div>
+
 
 ### {.tabset .tabset-fade .tabset-pills}
 
 #### **Gráfico**
-```{r, echo = FALSE, fig.width = 6, fig.height = 8, fig.align = "center"}
+```{r, echo = FALSE, fig.width = 8, fig.height = 9, fig.align = "center"}
 # Cargar tabla con datos y cambiar formato a largo
-autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+autid <- readxl::read_excel("data/latino/autid.xlsx") 
+
+uy_media <- autid %>% 
+  filter(pais == "Uruguay") %>% 
+  mutate(Media = round(as.numeric(Media), digits = 1)) %>% 
+  mutate(sd = round(as.numeric(sd), digits = 1))
+
+autid <- autid %>% 
   pivot_longer(`0`:n, 
                names_to = "cat",
                values_to = "valor") %>% 
-  mutate(valor = as.numeric(valor))
+  mutate(valor = as.numeric(valor)) 
 
 # Filtrar por Uruguay y preparar datos para gráfico
 autid_uy <- autid %>% 
@@ -1507,7 +1523,23 @@ plot_autid <-  ggplot(expanded,
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
-  scale_x_continuous(breaks = seq(0, 10, by = 2))
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) +
+  geom_label(data = uy_media,
+             aes(label = Media , x= 12), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  geom_label(data = uy_media,
+             aes(label = sd , x= 13.5), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  annotate("text",
+           label = "Media",
+           x = 12, 
+           y = 23.5,
+           fontface = "bold") +
+  annotate("text",
+           label = "Desvío",
+           x = 13.5, 
+           y = 23.5,
+           fontface = "bold") 
 
 plot(plot_autid)
 ```
@@ -1547,11 +1579,18 @@ library(tidyverse)
 library(ggridges)
 
 # Cargar tabla con datos y cambiar formato a largo
-autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+autid <- readxl::read_excel("data/latino/autid.xlsx") 
+
+uy_media <- autid %>% 
+  filter(pais == "Uruguay") %>% 
+  mutate(Media = round(as.numeric(Media), digits = 1)) %>% 
+  mutate(sd = round(as.numeric(sd), digits = 1))
+
+autid <- autid %>% 
   pivot_longer(`0`:n, 
                names_to = "cat",
                values_to = "valor") %>% 
-  mutate(valor = as.numeric(valor))
+  mutate(valor = as.numeric(valor)) 
 
 # Filtrar por Uruguay y preparar datos para gráfico
 autid_uy <- autid %>% 
@@ -1573,7 +1612,7 @@ expanded <- data.frame(autid = rep(autid_uy$cat, autid_uy$valor),
   ))
 
 # Distribución 
-ggplot(expanded, 
+plot_autid <-  ggplot(expanded, 
        aes(x = as.numeric(autid), y = fct_rev(as.factor(year)), fill = Partido)) + 
   ggridges::geom_density_ridges(rel_min_height = 0.005, 
                                 scale = 3,
@@ -1590,13 +1629,34 @@ ggplot(expanded,
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
-  scale_x_continuous(breaks = seq(0, 10, by = 2))
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) +
+  geom_label(data = uy_media,
+             aes(label = Media , x= 13.5), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  geom_label(data = uy_media,
+             aes(label = sd , x= 14.5), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  annotate("text",
+           label = "Media",
+           x = 13.5, 
+           y = 23.5,
+           fontface = "bold") +
+  annotate("text",
+           label = "Desvío",
+           x = 14.5, 
+           y = 23.5,
+           fontface = "bold") 
 
 ```
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum.
+<div style="text-align: justify">
+El gráfico anterior muestra la distribución de la autoidentificación ideológica de los uruguayos a lo largo del tiempo utilizando datos de Latinobarómetro. La linea vertical dentro de la distribución indica la media de cada año. Al igual que en la mayoría de los países, la autoidentificación ideológica de los uruguayos tiene a grandes rasgos una forma de campana, con la mayoría de los votantes ubicándose en las categorías del medio de la distribución (valores de 4 a 6 en la escala de 0 a 10). Sin embargo, se pueden observar variaciones considerables en el período 1995-2020. 
+
+En la década de 1990 la autopercepción ideológica de los uruguayos estaba ligeramente inclinada a la derecha, aunque con cierta variación interanual. El procentaje de personas autoidentificadas con los valores más hacia a la izquierda en la escala era menor que hacia a la derecha. Ya a mediados de la década del 2000, en coincidencia con el cambio la llegada del Frente Amplio al gobierno, la autoidentificación ideológica de los uruguayos pasa a estar ligeramente inclinada hacia a la izquierda, disminuyendo el porcentaje de personas en la cola derecha de la distribución, al mismo tiempo que aumentando en la cola izquierda, alcanzando los valores máximos en 2011 (media de 4.4). Por último, a partir de 2016 la tendencia para cambiar hacia una autoidentificación más cercana al centro en promedio (cercana al 5). Los datos de 2020 sugieren un aumento en ambas colas de la distribución (mayor % de encuestados autoidentificándose con los valores hacia los dos extremos de la escala ideológica, reflejado en el nivel máximo de desviación estandar de la serie), aunque solo con las siguientes encuestas podremos ver si esto se consolida como una tendencia.
+</div>
+
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -1730,6 +1790,12 @@ ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
 ```
 
 ## {.toc-ignore .unlisted .unnumbered}
+
+<div style="text-align: justify">
+El gráfico anterior compara la distribución de la autoidentificación ideológica de los uruguayos y del total de 18 países de América Latina, con datos de Latinobarómetro. Si bien existe una importante superposición entre ambas distribuciones también es posible observar diferencias. Durante gran parte del período 1995-2020 los lationamericanos en promedio se ubican mas hacía la derecha, particularmente con un mayor porcentaje del electorado ubicado en la sobre el extremo derecho de la distribución. Por el contrario, los uruguayos se ubican en mayor medida en los valores medianos de la distribución, particularmente hacia la izquierda, entre el 2 y el 4. En los últimos años parece haber un mayor acople de la distribución de la ideología simbólica de los uruguayos con el resto de América Latina.
+
+</div>
+
 <br />
 
 <hr style="border:1.5px solid #2c3e50"> </hr>

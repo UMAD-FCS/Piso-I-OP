@@ -1000,7 +1000,14 @@ ggsave("data/aprob_comparada.png", width = 17.5, height = 22, units = "cm")
 ## Autoidentificación ideológica ----
 
 # Cargar tabla con datos y cambiar formato a largo
-autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+autid <- readxl::read_excel("data/latino/autid.xlsx") 
+
+uy_media <- autid %>% 
+  filter(pais == "Uruguay") %>% 
+  mutate(Media = round(as.numeric(Media), digits = 1)) %>% 
+  mutate(sd = round(as.numeric(sd), digits = 1))
+
+autid <- autid %>% 
   pivot_longer(`0`:n, 
                names_to = "cat",
                values_to = "valor") %>% 
@@ -1043,7 +1050,24 @@ ggplot(expanded,
        caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro',
        x = "", y = "") +
   scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
-  scale_x_continuous(breaks = seq(0, 10, by = 2)) 
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) +
+  geom_label(data = uy_media,
+             aes(label = Media , x= 12), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  geom_label(data = uy_media,
+             aes(label = sd , x= 13), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  annotate("text",
+           label = "Media",
+           x = 12, 
+           y = 23.5,
+           fontface = "bold") +
+  annotate("text",
+           label = "Desvío",
+           x = 13, 
+           y = 23.5,
+           fontface = "bold") 
+
 
 ggsave("data/latino/ideo.png", height = 30, width = 20, units = "cm")
 
