@@ -1525,19 +1525,19 @@ plot_autid <-  ggplot(expanded,
   scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
   scale_x_continuous(breaks = seq(0, 10, by = 2)) +
   geom_label(data = uy_media,
-             aes(label = Media , x= 12), fill = "white",
+             aes(label = Media , x= 12.5), fill = "white",
              fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
   geom_label(data = uy_media,
-             aes(label = sd , x= 13.5), fill = "white",
+             aes(label = sd , x= 14), fill = "white",
              fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
   annotate("text",
            label = "Media",
-           x = 12, 
+           x = 12.5, 
            y = 23.5,
            fontface = "bold") +
   annotate("text",
            label = "Desvío",
-           x = 13.5, 
+           x = 14, 
            y = 23.5,
            fontface = "bold") 
 
@@ -1631,19 +1631,19 @@ plot_autid <-  ggplot(expanded,
   scale_fill_manual(values = c("#013197", "#BA0200",  "#5DADE2")) +
   scale_x_continuous(breaks = seq(0, 10, by = 2)) +
   geom_label(data = uy_media,
-             aes(label = Media , x= 13.5), fill = "white",
+             aes(label = Media , x= 12.5), fill = "white",
              fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
   geom_label(data = uy_media,
-             aes(label = sd , x= 14.5), fill = "white",
+             aes(label = sd , x= 14), fill = "white",
              fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
   annotate("text",
            label = "Media",
-           x = 13.5, 
+           x = 12.5, 
            y = 23.5,
            fontface = "bold") +
   annotate("text",
            label = "Desvío",
-           x = 14.5, 
+           x = 14, 
            y = 23.5,
            fontface = "bold") 
 
