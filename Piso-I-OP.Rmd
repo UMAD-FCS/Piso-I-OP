@@ -1798,6 +1798,76 @@ El gráfico anterior compara la distribución de la autoidentificación ideológ
 
 <br />
 
+```{r, echo=FALSE, fig.align="center"}
+library(gt)
+library(scales)
+library(gtExtras)
+
+# Cargar tabla con datos y cambiar formato a largo
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  mutate(Media = round(as.numeric(Media), digits = 1)) %>% 
+  mutate(sd = round(as.numeric(sd), digits = 1))
+
+autid20 <- autid %>% 
+  filter(year == '2020\r') %>% 
+  select(pais, Media, sd) 
+
+autid_n <- readxl::read_excel("data/latino/autid_ninguno.xlsx") %>% 
+  arrange(desc(ninguno)) %>% 
+  mutate(Ninguno = round(ninguno * 100, digits = 0)) %>% 
+  # mutate(Ninguno = paste(round(ninguno * 100, digits = 0), "%")) %>% 
+  select(-ninguno, -year) %>% 
+  left_join(autid20) %>% 
+  relocate(Ninguno, .after = last_col()) 
+
+tab <- gt(autid_n) %>% 
+  cols_label(pais = "País",
+             sd = "Desvío estandar",
+             Ninguno = "% sin identificación") %>% 
+  tab_header(title = md("Ideología simbólica en América Latina en 2020")) %>% 
+  tab_source_note(source_note = "Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro")
+
+tab <- tab %>% 
+    #Apply new style to all column headers
+    tab_style(
+      locations = cells_column_labels(columns = everything()),
+      style     = list(
+        #Give a thick border below
+        cell_borders(sides = "bottom", weight = px(3)),
+        #Make text bold
+        cell_text(weight = "bold")
+      )
+    ) %>% 
+    #Apply different style to the title
+    tab_style(
+      locations = cells_title(groups = "title"),
+      style     = list(
+        cell_text(weight = "bold", size = 24)
+      )
+    ) %>% 
+    cols_align(
+      align = c("center"),
+    ) %>% 
+    cols_align(
+      align = c("left"),
+      columns = pais
+    )
+
+# Con bar
+tab %>%
+    gt_plt_bar(column = Ninguno, scaled = TRUE, 
+                   color = "#2c3e50", scale_type = "number") %>% 
+    gt_highlight_rows(rows = 18, fill = "lightblue",
+                      bold_target_only = TRUE, target_col = pais) %>% 
+    gt_highlight_rows(rows = 8, fill = "lightgrey",
+                      bold_target_only = TRUE, target_col = pais)
+```
+
+
+
+
+<br />
+
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
 # **Actitudes hacia la democracia**

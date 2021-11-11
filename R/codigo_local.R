@@ -1000,12 +1000,12 @@ ggsave("data/aprob_comparada.png", width = 17.5, height = 22, units = "cm")
 ## Autoidentificación ideológica ----
 
 # Cargar tabla con datos y cambiar formato a largo
-autid <- readxl::read_excel("data/latino/autid.xlsx") 
-
-uy_media <- autid %>% 
-  filter(pais == "Uruguay") %>% 
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
   mutate(Media = round(as.numeric(Media), digits = 1)) %>% 
   mutate(sd = round(as.numeric(sd), digits = 1))
+
+uy_media <- autid %>% 
+  filter(pais == "Uruguay") 
 
 autid <- autid %>% 
   pivot_longer(`0`:n, 
@@ -1055,19 +1055,21 @@ ggplot(expanded,
              aes(label = Media , x= 12), fill = "white",
              fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
   geom_label(data = uy_media,
-             aes(label = sd , x= 13), fill = "white",
+             aes(label = Media , x= 12.5), fill = "white",
+             fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
+  geom_label(data = uy_media,
+             aes(label = sd , x= 14), fill = "white",
              fontface="bold", size=4, show.legend = FALSE, vjust=-.25) +
   annotate("text",
            label = "Media",
-           x = 12, 
+           x = 12.5, 
            y = 23.5,
            fontface = "bold") +
   annotate("text",
            label = "Desvío",
-           x = 13, 
+           x = 14, 
            y = 23.5,
            fontface = "bold") 
-
 
 ggsave("data/latino/ideo.png", height = 30, width = 20, units = "cm")
 
@@ -1137,6 +1139,102 @@ ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
 #   ylim(0, 10)
 
 
+library(gt)
+library(scales)
+library(gtExtras)
+
+# Cargar tabla con datos y cambiar formato a largo
+autid <- readxl::read_excel("data/latino/autid.xlsx") %>% 
+  mutate(Media = round(as.numeric(Media), digits = 1)) %>% 
+  mutate(sd = round(as.numeric(sd), digits = 1))
+
+autid20 <- autid %>% 
+  filter(year == '2020\r') %>% 
+  select(pais, Media, sd) 
+
+autid_n <- readxl::read_excel("data/latino/autid_ninguno.xlsx") %>% 
+  arrange(desc(ninguno)) %>% 
+  mutate(Ninguno = round(ninguno * 100, digits = 0)) %>% 
+  # mutate(Ninguno = paste(round(ninguno * 100, digits = 0), "%")) %>% 
+  select(-ninguno, -year) %>% 
+  left_join(autid20) %>% 
+  relocate(Ninguno, .after = last_col()) 
+
+(tab <- gt(autid_n) %>% 
+  cols_label(pais = "País",
+             sd = "Desvío estandar",
+             Ninguno = "% sin identificación") %>% 
+  tab_header(title = md("Ideología simbólica en América Latina en 2020")) %>% 
+  tab_source_note(source_note = "Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro"))
+
+(tab <- tab %>% 
+    #Apply new style to all column headers
+    tab_style(
+      locations = cells_column_labels(columns = everything()),
+      style     = list(
+        #Give a thick border below
+        cell_borders(sides = "bottom", weight = px(3)),
+        #Make text bold
+        cell_text(weight = "bold")
+      )
+    ) %>% 
+    #Apply different style to the title
+    tab_style(
+      locations = cells_title(groups = "title"),
+      style     = list(
+        cell_text(weight = "bold", size = 24)
+      )
+    ) %>% 
+    cols_align(
+      align = c("center"),
+    ) %>% 
+    cols_align(
+      align = c("left"),
+      columns = pais
+    ))
+    
+min_id <- min(autid_n$Ninguno)
+max_id <- max(autid_n$Ninguno)
+id_palette <- col_numeric(c("#FEF0D9", "#990000"),
+                          domain = c(min_id, max_id), 
+                          alpha = 0.75)
+
+# Con color
+(tab_1 <- tab %>%
+      data_color(columns = c(Ninguno),
+               colors = id_palette)) %>% 
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )) 
+
+# Con bar
+(tab_2 <- tab %>%
+    gt_plt_bar(column = Ninguno, scaled = TRUE, 
+                   color = "#2c3e50", scale_type = "number") %>% 
+    gt_highlight_rows(rows = 18, fill = "lightblue",
+                      bold_target_only = TRUE, target_col = pais) %>% 
+    gt_highlight_rows(rows = 8, fill = "lightgrey",
+                      bold_target_only = TRUE, target_col = pais))
+  
+# Con bar 2
+(tab_3 <- tab %>%
+      gtExtras::gt_plt_bar(
+        Ninguno, color = "#2874A6",
+        width = 40, scale_type = "number"))
 
 
+
+gt(autid_n) %>% 
+  gtExtras::gt_duplicate_column(
+    Ninguno, dupe_name = "mean_plot") %>% 
+  gtExtras::gt_plt_bar(
+    mean_plot, color = "lightblue",
+    width = 40, scale_type = "number") %>% 
+  gtExtras::gt_theme_nytimes() %>% 
+  cols_label(
+    mean = html("Average<br>2013-17"),
+    mean_plot = ""
+  )
 
