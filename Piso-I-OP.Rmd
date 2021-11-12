@@ -48,7 +48,7 @@ library(ggridges)
 
 <div style="text-align: justify">
 
-Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 (Aguiar, 2000). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [**Roper Center**](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país (Zuasnábar, 2018). Hacia finales de la década de 1990 las consultoras [**Equipos**](https://equipos.com.uy/), [**Cifra**](https://www.cifra.com.uy/), [**Factum**](https://factum.uy/) e Interconsult y [**Radar**](https://www.gruporadar.com.uy/) a la que sumaría [**Opción Consultores**](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. 
+Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 ([Aguiar, 2000](https://dialnet.unirioja.es/servlet/articulo?codigo=3162414)). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [**Roper Center**](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país ([Zuasnábar, 2018](https://dialogopolitico.org/wp-content/uploads/2018/08/libro_30_anios_de_opinion_publica_en_el_uruguay.pdf)). Hacia finales de la década de 1990 las consultoras [**Equipos**](https://equipos.com.uy/), [**Cifra**](https://www.cifra.com.uy/), [**Factum**](https://factum.uy/) e Interconsult y [**Radar**](https://www.gruporadar.com.uy/) a la que sumaría [**Opción Consultores**](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. 
 
 A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [**Latinobarómetro**](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [**Barómetro de las Américas**](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [**LAPOP**](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. A su vez, otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [**Encuesta Mundial de Valores**](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [**Comparative Study of Electoral Systems**](https://cses.org/) (2009 y 2019)
 </div>
@@ -1450,9 +1450,13 @@ Es importante considerar que la aprobación presidencial condiciona la probabili
 # **Autoidentificación ideológica**
 
 <div style="text-align: justify">
-La ideología es generalmente entendida como un resumen de una visión del mundo representada por las posiciones respecto a distintos temas económicos y sociales. Usualmente estas posiciones pueden ser ubicadas a lo largo de una dimensión: izquierda/derecha o liberal/conservador. Se suele referir a la distinción entre izquierda y derecha, como un atajo que proporciona una orientación general hacia los líderes políticos y las políticas sociales de una sociedad (Inglehart y Sidjanski 1976).
+La ideología es generalmente entendida como un resumen de una visión del mundo representada por las posiciones respecto a distintos temas económicos y sociales. Usualmente estas posiciones pueden ser ubicadas a lo largo de una dimensión: izquierda/derecha o liberal/conservador. Se suele referir a la distinción entre izquierda y derecha, como un atajo que proporciona una orientación general hacia los líderes políticos y las políticas sociales de una sociedad (Inglehart y Sidjanski 1976). 
 
-Originalmente la ideología era vista como un sistema de creencias, es decir, un conjunto de opiniones coherentes respecto a distintos temas (Converse, 1964). Sin embargo, la literatura reciente sugiere que las posiciones respecto a políticas forman un elemento de la ideología (llamado **ideología operacional**), pero que existe un segundo elemento basado en las identidades sociales llamado **ideología simbólica** (Ellis y Stimson, 2012; Mason, 2018). La identificación con las etiquetas de izquierda o derecha son parte de la identidad social de los individuos y no necesariamente se explican por preferencias por políticas. De hecho, es posible que, en el agregado, el electorado en su conjunto mantenga posiciones principalmente de izquierda, aunque se identifica en mayor medida con la derecha, o viceversa (Ellis y Stimson, 2012)
+Originalmente la ideología era vista como un sistema de creencias, es decir, un conjunto de opiniones coherentes respecto a distintos temas ([Converse, 1964](https://www.tandfonline.com/doi/pdf/10.1080/08913810608443650)). Sin embargo, la literatura reciente sugiere que las posiciones respecto a políticas forman un elemento de la ideología (llamado **ideología operacional**), pero que existe un segundo elemento basado en las identidades sociales llamado **ideología simbólica** ([Ellis y Stimson, 2012](https://books.google.es/books?hl=es&lr=&id=ruz0PJP4JRgC&oi=fnd&pg=PR5&dq=ellis+and+stimson+2012&ots=EcE_3-5oOn&sig=zUQcpmJgwLwXyut77sbOdHaGvQ8#v=onepage&q=ellis%20and%20stimson%202012&f=false); [Mason, 2018](https://academic.oup.com/poq/article/82/S1/866/4951269?login=true)). La identificación con las etiquetas de izquierda o derecha son parte de la identidad social de los individuos y no necesariamente se explican por preferencias por políticas. De hecho, es posible que, en el agregado, el electorado en su conjunto mantenga posiciones principalmente de izquierda, aunque se identifica en mayor medida con la derecha, o viceversa ([Ellis y Stimson, 2012](https://books.google.es/books?hl=es&lr=&id=ruz0PJP4JRgC&oi=fnd&pg=PR5&dq=ellis+and+stimson+2012&ots=EcE_3-5oOn&sig=zUQcpmJgwLwXyut77sbOdHaGvQ8#v=onepage&q=ellis%20and%20stimson%202012&f=false)). 
+
+La ideología es un tema fundamental en la ciencia política. Entre algunos de sus aplicaciones se encuentran los estudios sobre **congruencia política** (ver [Buquet y Selios, 2017](https://link.springer.com/chapter/10.1057/978-1-137-59955-1_8)), **modelos espaciales** de voto (ver [Moraes y Luján, 2016](https://www.researchgate.net/profile/Diego-Lujan-2/publication/309239966_Un_centro_vacio_de_candidatos_evaluando_modelos_espaciales_para_las_elecciones_presidenciales_en_Uruguay/links/58069fb408ae0075d82c7747/Un-centro-vacio-de-candidatos-evaluando-modelos-espaciales-para-las-elecciones-presidenciales-en-Uruguay.pdf)), **predicción del voto** (ver para América Latina Zechmeister, 2015) y **polarización política** (ver [Singer, 2016](https://www.jstor.org/stable/43998428?casa_token=N-4omVqMSSUAAAAA%3A4PbgYNJG7nNx1ATtFdX3ToaQECbXI-ri-B4H-17MUb5sQ1EkhpuRdq543e6udVtXw1u0wPDtEdLQoumfTunEAZKLz5gn6akkWgZvVbUjR9JJjvHMIU1N) [Webster y Abramowitz, 2017](https://journals.sagepub.com/doi/full/10.1177/1532673X17703132?casa_token=IrledtZHVnMAAAAA%3A26tvuWusuCkZa2Vk_IjFX-v5aMriMuQM6h7_u-IEUa7UKjnAT2xI016LWi3RcKclowyMIDmS-kJIiQ)). 
+
+Una de las conclusiones más relevantes del estudio de la autodientificación ideológica en América Latina es que la relevencia de las etiquetas ideológicas en América Latina varía según cada país, con países donde no existe una correlación entre la autoidentificación ideológica y el voto o las preferencias por políticas concretas y con una importante proporción del electorado que no se ubica en la escala de izquierda a derecha (Zechmeister, 2016). Sin embargo, la evidencia muestra que este no es el caso de Uruguay, donde la mayoría del electorado es capaz de ubicarse en la escala ideología y la autoidentificación ideológica está fuertemente correlacionada con el voto y las posiciones en políticas concretas.
 </div>
 
 <br />
@@ -1465,6 +1469,10 @@ Originalmente la ideología era vista como un sistema de creencias, es decir, un
 
 <div style="text-align: justify">
 De esta forma, es necesario tener en cuenta estos dos elementos de la ideología a la hora de operacionalizar este concepto. Normalmente las encuestas de opinión pública preguntan al individuo por cómo este se identifica ideológicamente. Estos datos -como los que se pueden visualizar en los gráficos debajo- nos permiten captar el elemento de la identidad social pero no necesariamente sus preferencias por políticas o posiciones respecto a temas relevantes.  Existen otras medidas para operacionalizar las preferencias por políticas concretas como el *Policy Mood* a nivel agregado (Stimson, 1991) o a través de temas claves a nivel individual (ver Baker y Greene, 2011 para América Latina)
+
+El gráfico debajo muestra la distribución de la autoidentificación ideológica de los uruguayos a lo largo del tiempo utilizando datos de Latinobarómetro. La linea vertical dentro de la distribución indica la media de cada año. Al igual que en la mayoría de los países, la autoidentificación ideológica de los uruguayos tiene a grandes rasgos una forma de campana, con la mayoría de los votantes ubicándose en las categorías del medio de la distribución (valores de 4 a 6 en la escala de 0 a 10). Sin embargo, se pueden observar variaciones considerables en el período 1995-2020. 
+
+En la década de 1990 la autopercepción ideológica de los uruguayos estaba ligeramente inclinada a la derecha, aunque con cierta variación interanual. El procentaje de personas autoidentificadas con los valores más hacia a la izquierda en la escala era menor que hacia a la derecha. Ya a mediados de la década del 2000, en coincidencia con el cambio la llegada del Frente Amplio al gobierno, la autoidentificación ideológica de los uruguayos pasa a estar ligeramente inclinada hacia a la izquierda, disminuyendo el porcentaje de personas en la cola derecha de la distribución, al mismo tiempo que aumentando en la cola izquierda, alcanzando los valores máximos en 2011 (media de 4.4). Por último, a partir de 2016 la tendencia para cambiar hacia una autoidentificación más cercana al centro en promedio (cercana al 5). Los datos de 2020 sugieren un aumento en ambas colas de la distribución (mayor % de encuestados autoidentificándose con los valores hacia los dos extremos de la escala ideológica, reflejado en el nivel máximo de desviación estandar de la serie), aunque solo con las siguientes encuestas podremos ver si esto se consolida como una tendencia.
 </div>
 
 
@@ -1652,9 +1660,7 @@ plot_autid <-  ggplot(expanded,
 ## {.toc-ignore .unlisted .unnumbered}
 
 <div style="text-align: justify">
-El gráfico anterior muestra la distribución de la autoidentificación ideológica de los uruguayos a lo largo del tiempo utilizando datos de Latinobarómetro. La linea vertical dentro de la distribución indica la media de cada año. Al igual que en la mayoría de los países, la autoidentificación ideológica de los uruguayos tiene a grandes rasgos una forma de campana, con la mayoría de los votantes ubicándose en las categorías del medio de la distribución (valores de 4 a 6 en la escala de 0 a 10). Sin embargo, se pueden observar variaciones considerables en el período 1995-2020. 
-
-En la década de 1990 la autopercepción ideológica de los uruguayos estaba ligeramente inclinada a la derecha, aunque con cierta variación interanual. El procentaje de personas autoidentificadas con los valores más hacia a la izquierda en la escala era menor que hacia a la derecha. Ya a mediados de la década del 2000, en coincidencia con el cambio la llegada del Frente Amplio al gobierno, la autoidentificación ideológica de los uruguayos pasa a estar ligeramente inclinada hacia a la izquierda, disminuyendo el porcentaje de personas en la cola derecha de la distribución, al mismo tiempo que aumentando en la cola izquierda, alcanzando los valores máximos en 2011 (media de 4.4). Por último, a partir de 2016 la tendencia para cambiar hacia una autoidentificación más cercana al centro en promedio (cercana al 5). Los datos de 2020 sugieren un aumento en ambas colas de la distribución (mayor % de encuestados autoidentificándose con los valores hacia los dos extremos de la escala ideológica, reflejado en el nivel máximo de desviación estandar de la serie), aunque solo con las siguientes encuestas podremos ver si esto se consolida como una tendencia.
+El gráfico anterior compara la distribución de la autoidentificación ideológica de los uruguayos y del total de 18 países de América Latina, con datos de Latinobarómetro. Si bien existe una importante superposición entre ambas distribuciones también es posible observar diferencias. Durante gran parte del período 1995-2020 los lationamericanos en promedio se ubican mas hacía la derecha, particularmente con un mayor porcentaje del electorado ubicado en la sobre el extremo derecho de la distribución. Por el contrario, los uruguayos se ubican en mayor medida en los valores medianos de la distribución, particularmente hacia la izquierda, entre el 2 y el 4. En los últimos años parece haber un mayor acople de la distribución de la ideología simbólica de los uruguayos con el resto de América Latina.
 </div>
 
 
@@ -1792,9 +1798,11 @@ ggsave("data/latino/ideo_comp.png", height = 30, width = 20, units = "cm")
 ## {.toc-ignore .unlisted .unnumbered}
 
 <div style="text-align: justify">
-El gráfico anterior compara la distribución de la autoidentificación ideológica de los uruguayos y del total de 18 países de América Latina, con datos de Latinobarómetro. Si bien existe una importante superposición entre ambas distribuciones también es posible observar diferencias. Durante gran parte del período 1995-2020 los lationamericanos en promedio se ubican mas hacía la derecha, particularmente con un mayor porcentaje del electorado ubicado en la sobre el extremo derecho de la distribución. Por el contrario, los uruguayos se ubican en mayor medida en los valores medianos de la distribución, particularmente hacia la izquierda, entre el 2 y el 4. En los últimos años parece haber un mayor acople de la distribución de la ideología simbólica de los uruguayos con el resto de América Latina.
 
 </div>
+Un último aspecto importante a considerar al analizar la ideología simbólica es el porcentaje del electorado que no se ubica en la escala de izquierda a derecha. Al analizar estadísticas de resumen (media, desvío) o distribuciones como en los gráficos anteriores, puede pasarse por alto el % de los encuestados que no quisieron ubicarse en la escala ideológica. La tabla debajo muestra además de la media y el desvío, el % de encuestados que no se ubican en la escala ideológica. Como se puede apreciar, existe una importante variación en este número, desde casi la mitad del electorado en Chile (41%), cerca de un tercio en Argentina (32%) a sectores minoritarios como en Uruguay (4%), con un promedio de 13% para los 18 países donde se llevaron a cabo encuestas de Latinobarómetro. El promedio de la región es similar a la de países de Europa Occidental y un poco menor al de Europa del Este ([Mair, 2007](https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199270125.001.0001/oxfordhb-9780199270125-e-011))
+
+Esta variación es sumamente importante a la hora de interpretar la distribución de la autoidentificación ideológica del electorado. (...)
 
 <br />
 
@@ -1851,7 +1859,8 @@ tab <- tab %>%
     cols_align(
       align = c("left"),
       columns = pais
-    )
+    ) %>% 
+    tab_options(data_row.padding = px(2))
 
 # Con bar
 tab %>%
@@ -1897,6 +1906,8 @@ Aguiar, C. A. (2000). La Historia y la historia: Opinión Pública y opinión p�
 
 Baker, A., & Greene, K. F. (2011). The Latin American left's mandate: free-market policies and issue voting in new democracies. World Politics, 63(1), 43-77.
 
+Buquet, D., & Selios, L. (2017). Political congruence in Uruguay, 2014. In Malaise in Representation in Latin American Countries (pp. 187-210). Palgrave Macmillan, New York.
+
 Calvo, E. (2007). The responsive legislature: Public opinion and law making in a highly disciplined legislature. British Journal of Political Science, 37(2), 263-280.
 
 Carlin, R. E., Love, G. J., & Martínez-Gallardo, C. (2015). Cushioning the fall: Scandals, economic conditions, and executive approval. Political Behavior, 37(1), 109-130.
@@ -1911,15 +1922,23 @@ Inglehart, R., & Sidjanski, D. (1976). The left, the right, the establishment an
 
 Martinez-Gallardo, C. (2012). Out of the cabinet: what drives defections from the government in presidential systems?. Comparative Political Studies, 45(1), 62-90.
 
+Moraes, J. A., & Luján, D. (2016). Un centro vacío de candidatos: evaluando modelos espaciales para las elecciones presidenciales en Uruguay (Doctoral dissertation, Instituto de Ciencia Política, Facultad de Ciencias Sociales, Universidad de la República).
+
 Mason, L. (2018). Ideologues without issues: The polarizing consequences of ideological identities. Public Opinion Quarterly, 82(S1), 866-887.
 
 Pérez-Liñán, A. (2007). Presidential impeachment and the new political instability in Latin America. Cambridge University Press.
+
+Singer, M. (2016). Elite polarization and the electoral impact of left-right placements: Evidence from Latin América, 1995-2009. Latin American Research Review, 174-194.
 
 Stimson, J. A. (1976). Public support for American presidents: A cyclical model. Public Opinion Quarterly, 40(1), 1-21.
 
 Stimson, J. A., MacKuen, M. B., & Erikson, R. S. (1994). Opinion and policy: A global view. PS: Political Science & Politics, 27(1), 29-35.
 
 Stimson, J. A. (2018). The Dyad ratios algorithm for estimating latent public opinion: estimation, testing, and comparison to other approaches. Bulletin of Sociological Methodology/Bulletin de Méthodologie Sociologique, 137(1), 201-218.
+
+Webster, S. W., & Abramowitz, A. I. (2017). The ideological foundations of affective polarization in the US electorate. American Politics Research, 45(4), 621-647.
+
+Zechmeister, E. J. (2015). Left-right identifications and the Latin American voter. The Latin American voter: Pursuing representation and accountability in challenging contexts, 195-225.
 
 Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Montevideo: Konrad Adenauer Stiftung.
 
