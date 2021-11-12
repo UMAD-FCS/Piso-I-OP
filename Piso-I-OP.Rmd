@@ -1881,6 +1881,279 @@ tab %>%
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
+# **Confianza en instituciones** 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 7, fig.height = 7, fig.align = "center"}
+confianza <- readxl::read_excel("data/latino/confianzas2020.xlsx") %>% 
+  mutate(Mucha = round(Mucha * 100, digits = 0),
+         Algo = round(Algo * 100, digits = 0),
+         Poca = round(Poca * 100, digits = 0),
+         Ninguna = round(Ninguna * 100, digits = 0)) %>% 
+  mutate(Saldo = (Mucha + Algo) - (Poca + Ninguna))  
+
+conf_rec <- confianza %>% 
+  mutate(confia = Mucha + Algo) %>% 
+  pivot_longer(Mucha:confia,
+               names_to = "cat",
+               values_to = "valor") 
+
+# Confianza - Instituciones Políticas
+confia_pol <- conf_rec %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Congreso", "Gobierno", "Presidente",
+                         "Partidos Políticos"))
+
+plot_conf_pol <- ggplot() +
+  geom_segment(
+    data = confia_pol %>% 
+      group_by(Pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    linetype = "dotted", size = 0.5, color = "gray50"
+  ) +
+  geom_segment(
+    data = confia_pol %>% 
+      group_by(Pais) %>% 
+      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    size = 2, alpha = .2
+  ) +
+  geom_point(
+    data = confia_pol,
+    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
+    size = 4, alpha = .9, shape = 21
+  ) +
+  labs(
+    x = "% que confía mucho o algo", y = NULL,
+    title = "Confianza en insituciones políticas en 2020 según país",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_brewer(name = "", palette = "Dark2") +
+  xlim(0, 100)
+
+plot(plot_conf_pol)
+```
+
+```{r}
+download_this(plot_autid,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(confianza,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Leer data (descargar tabla a la izquierda)
+confianza <- readxl::read_excel("data/latino/confianza.xlsx")
+
+# Formato largo
+conf_rec <- confianza %>% 
+  mutate(confia = Mucha + Algo) %>% 
+  pivot_longer(Mucha:confia,
+               names_to = "cat",
+               values_to = "valor") 
+
+# Confianza - Instituciones Políticas
+confia_pol <- conf_rec %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Congreso", "Gobierno", "Presidente",
+                         "Partidos Políticos"))
+
+plot_conf_pol <- ggplot() +
+  geom_segment(
+    data = confia_pol %>% 
+      group_by(Pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    linetype = "dotted", size = 0.5, color = "gray50"
+  ) +
+  geom_segment(
+    data = confia_pol %>% 
+      group_by(Pais) %>% 
+      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    size = 2, alpha = .2
+  ) +
+  geom_point(
+    data = confia_pol,
+    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
+    size = 4, alpha = .9, shape = 21
+  ) +
+  labs(
+    x = "% que confía mucho o algo", y = NULL,
+    title = "Confianza en insituciones políticas en 2020 según país",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_brewer(name = "", palette = "Dark2")
+
+plot(plot_conf_pol)
+
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 7, fig.height = 7, fig.align = "center"}
+confianza <- readxl::read_excel("data/latino/confianzas2020.xlsx") %>% 
+  mutate(Mucha = round(Mucha * 100, digits = 0),
+         Algo = round(Algo * 100, digits = 0),
+         Poca = round(Poca * 100, digits = 0),
+         Ninguna = round(Ninguna * 100, digits = 0)) %>% 
+  mutate(Saldo = (Mucha + Algo) - (Poca + Ninguna))  
+
+conf_rec <- confianza %>% 
+  mutate(confia = Mucha + Algo) %>% 
+  pivot_longer(Mucha:confia,
+               names_to = "cat",
+               values_to = "valor") 
+
+# Confianza - Otras Instituciones
+confia_otr <- conf_rec %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Policía", "Fuerzas armadas", "Iglesia", "Poder Judicial"))
+
+plot_ins <- ggplot() +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    linetype = "dotted", size = 0.5, color = "gray50"
+  ) +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    size = 2, alpha = .2
+  ) +
+  geom_point(
+    data = confia_otr,
+    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
+    size = 4, alpha = .9, shape = 21
+  ) +
+  labs(
+    x = "% que confía mucho o algo", y = NULL,
+    title = "Confianza en insituciones en 2020 según país",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_brewer(name = "", palette = "Dark2") +
+  xlim(0, 100)
+
+plot(plot_ins)
+```
+
+```{r}
+download_this(plot_ins,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(confianza,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Leer data (descargar tabla a la izquierda)
+confianza <- readxl::read_excel("data/latino/confianza.xlsx")
+
+# Formato largo
+conf_rec <- confianza %>% 
+  mutate(confia = Mucha + Algo) %>% 
+  pivot_longer(Mucha:confia,
+               names_to = "cat",
+               values_to = "valor") 
+
+# Confianza - Otras Instituciones
+confia_otr <- conf_rec %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Policía", "Fuerzas armadas", "Iglesia", "Poder Judicial"))
+
+plot_ins <- ggplot() +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    linetype = "dotted", size = 0.5, color = "gray50"
+  ) +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    size = 2, alpha = .2
+  ) +
+  geom_point(
+    data = confia_otr,
+    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
+    size = 4, alpha = .9, shape = 21
+  ) +
+  labs(
+    x = "% que confía mucho o algo", y = NULL,
+    title = "Confianza en insituciones en 2020 según país",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_brewer(name = "", palette = "Dark2") 
+
+plot(plot_ins)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
 # **Actitudes hacia la democracia**
 
 <br />
