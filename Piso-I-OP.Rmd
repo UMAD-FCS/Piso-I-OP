@@ -2350,6 +2350,70 @@ plot(conf_serie_otr)
 
 # **Actitudes hacia la democracia**
 
+
+```{r, echo=FALSE, fig.align="center"}
+library(gt)
+library(scales)
+library(gtExtras)
+
+demo <- readxl::read_excel("data/latino/tabla_demo.xlsx") %>% 
+  select(-satisfecho) %>% 
+  arrange(desc(preferible))
+
+tab <- gt(demo) %>% 
+    cols_label(Pais = "País",
+               preferible = "% que cree que la democracia es preferible a cualquier otra forma de gobierno",
+               churchil = "% de acuerdo o muy de acuerdo con \"La democracia puede tener problemas pero es el mejor sistema de gobierno\"") %>% 
+    tab_header(title = md("Actitudes hacia la democracia en América Latina en 2020")) %>% 
+    tab_source_note(source_note = "Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro")
+
+tab <- tab %>% 
+    #Apply new style to all column headers
+    tab_style(
+      locations = cells_column_labels(columns = everything()),
+      style     = list(
+        #Give a thick border below
+        cell_borders(sides = "bottom", weight = px(3)),
+        #Make text bold
+        cell_text(weight = "bold")
+      )
+    ) %>% 
+    #Apply different style to the title
+    tab_style(
+      locations = cells_title(groups = "title"),
+      style     = list(
+        cell_text(weight = "bold", size = 24)
+      )
+    ) %>% 
+    cols_align(
+      align = c("center"),
+    ) %>% 
+    cols_align(
+      align = c("left"),
+      columns = Pais
+    ) %>% 
+    opt_table_font(
+      font = list(
+        google_font("Chivo"),
+        default_fonts())
+    )
+
+# Con bar
+(tab_2 <- tab %>%
+    gt_plt_bar(column = preferible, scaled = TRUE, 
+               color = "#76448A", scale_type = "number") %>% 
+    gt_plt_bar(column = churchil, scaled = TRUE, 
+               color = "#1F618D", scale_type = "number") %>% 
+    gt_highlight_rows(rows = 1, fill = "lightblue",
+                      bold_target_only = TRUE, target_col = Pais) %>% 
+    gt_highlight_rows(rows = 9, fill = "lightgrey",
+                      bold_target_only = TRUE, target_col = Pais) %>% 
+        cols_width(
+      Pais ~ px(150),
+      everything() ~ px(300)
+    ))
+```
+
 <br />
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
