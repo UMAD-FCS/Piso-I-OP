@@ -1267,7 +1267,7 @@ ggplot() +
       top_n(-1) %>% 
       slice(1) %>%
       ungroup(),
-    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
     linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   geom_segment(
@@ -1307,7 +1307,7 @@ ggplot() +
       top_n(-1) %>% 
       slice(1) %>%
       ungroup(),
-    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
     linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   geom_segment(
@@ -1334,4 +1334,64 @@ ggplot() +
   scale_fill_brewer(name = "", palette = "Dark2")
 
 
+# Series
+confianza <- readxl::read_excel("data/latino/confianzas_serie.xlsx") %>% 
+  mutate(confia = `Mucha confianza` + `Algo de confianza`) %>%
+  mutate(year = as.numeric(year))
 
+confianza <- confianza%>% 
+  pivot_longer(cols = `Mucha confianza`:confia,
+               names_to = "cat",
+               values_to = "value") %>% 
+  mutate(value = round(value * 100, digits = 0))
+  
+# Confianza - Instituciones Políticas
+confia_pol <- confianza %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Congreso", "Gobierno", "Presidente", "Partidos Políticos")) %>% 
+  select(-cat)
+
+# Tabla
+confia_tabla <- confia_pol %>% 
+  pivot_wider(names_from = Institucion,
+              values_from = value)
+
+ggplot(confia_pol,
+       aes(x = year, y = value, 
+           color = Institucion, fill = Institucion)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = "% que confía mucho o algo", x = NULL,
+    title = "Confianza en insituciones políticas en Uruguay",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+
+# Confianza - Otras Instituciones 
+confia_pol <- confianza %>% 
+  filter(cat == "confia") %>% 
+  filter(!(Institucion %in% c("Congreso", "Gobierno", "Presidente", "Partidos Políticos"))) %>% 
+  select(-cat)
+
+# Tabla
+confia_tabla <- confia_pol %>% 
+  pivot_wider(names_from = Institucion,
+              values_from = value)
+
+ggplot(confia_pol,
+       aes(x = year, y = value, 
+           color = Institucion, fill = Institucion)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = "% que confía mucho o algo", x = NULL,
+    title = "Confianza en insituciones en Uruguay",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  

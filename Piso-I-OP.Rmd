@@ -1915,7 +1915,7 @@ plot_conf_pol <- ggplot() +
       top_n(-1) %>% 
       slice(1) %>%
       ungroup(),
-    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
     linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   geom_segment(
@@ -1988,7 +1988,7 @@ plot_conf_pol <- ggplot() +
       top_n(-1) %>% 
       slice(1) %>%
       ungroup(),
-    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
     linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   geom_segment(
@@ -2051,7 +2051,7 @@ plot_ins <- ggplot() +
       top_n(-1) %>% 
       slice(1) %>%
       ungroup(),
-    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
     linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   geom_segment(
@@ -2102,7 +2102,7 @@ DT::datatable(confianza,
 
 ```{r, echo=TRUE, eval=FALSE}
 # Leer data (descargar tabla a la izquierda)
-confianza <- readxl::read_excel("data/latino/confianza.xlsx")
+confianza <- readxl::read_excel("confianza2020.xlsx")
 
 # Formato largo
 conf_rec <- confianza %>% 
@@ -2123,7 +2123,7 @@ plot_ins <- ggplot() +
       top_n(-1) %>% 
       slice(1) %>%
       ungroup(),
-    aes(x = 0, xend = valor, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
     linetype = "dotted", size = 0.5, color = "gray50"
   ) +
   geom_segment(
@@ -2150,6 +2150,200 @@ plot_ins <- ggplot() +
   scale_fill_brewer(name = "", palette = "Dark2") 
 
 plot(plot_ins)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+confianza <- readxl::read_excel("data/latino/confianzas_serie.xlsx") %>% 
+  mutate(confia = `Mucha confianza` + `Algo de confianza`) %>%
+  mutate(year = as.numeric(year))
+
+confianza <- confianza%>% 
+  pivot_longer(cols = `Mucha confianza`:confia,
+               names_to = "cat",
+               values_to = "value") %>% 
+  mutate(value = round(value * 100, digits = 0))
+  
+# Confianza - Instituciones Políticas
+confia_pol <- confianza %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Congreso", "Gobierno", "Presidente", "Partidos Políticos")) %>% 
+  select(-cat)
+
+# Tabla
+confia_tabla <- confia_pol %>% 
+  pivot_wider(names_from = Institucion,
+              values_from = value)
+
+conf_serie_pol <- ggplot(confia_pol,
+       aes(x = year, y = value, 
+           color = Institucion, fill = Institucion)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = "% que confía mucho o algo", x = NULL,
+    title = "Confianza en insituciones políticas en Uruguay",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(conf_serie_pol)
+```
+
+```{r}
+download_this(conf_serie_pol,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(confia_tabla,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("readxl")
+
+library(tidyverse)
+library(readxl)
+
+# Leer de tabla a la izquierda
+confianza <- readxl::read_excel("confianzas_serie.xlsx") %>% 
+  pivot_longer(cols = `Mucha confianza`:confia,
+               names_to = "cat",
+               values_to = "value") %>% 
+  mutate(value = round(value * 100, digits = 0))
+  
+# Tabla
+confia_tabla <- confia_pol %>% 
+  pivot_wider(names_from = Institucion,
+              values_from = value)
+
+conf_serie_pol <- ggplot(confia_pol,
+       aes(x = year, y = value, 
+           color = Institucion, fill = Institucion)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = "% que confía mucho o algo", x = NULL,
+    title = "Confianza en insituciones políticas en Uruguay",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(conf_serie_pol)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+# Confianza - Otras Instituciones 
+confia_pol <- confianza %>% 
+  filter(cat == "confia") %>% 
+  filter(!(Institucion %in% c("Congreso", "Gobierno", "Presidente", "Partidos Políticos"))) %>% 
+  select(-cat)
+
+# Tabla
+confia_tabla <- confia_pol %>% 
+  pivot_wider(names_from = Institucion,
+              values_from = value)
+
+conf_serie_otr <- ggplot(confia_pol,
+       aes(x = year, y = value, 
+           color = Institucion, fill = Institucion)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = "% que confía mucho o algo", x = NULL,
+    title = "Confianza en insituciones en Uruguay",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(conf_serie_otr)
+```
+
+```{r}
+download_this(conf_serie_otr,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(confia_tabla,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("readxl")
+
+library(tidyverse)
+library(readxl)
+
+# Leer de tabla a la izquierda
+confianza <- readxl::read_excel("confianzas_serie.xlsx") %>% 
+  pivot_longer(cols = `Mucha confianza`:confia,
+               names_to = "cat",
+               values_to = "value") %>% 
+  mutate(value = round(value * 100, digits = 0))
+
+# Tabla
+confia_tabla <- confia_pol %>% 
+  pivot_wider(names_from = Institucion,
+              values_from = value)
+
+conf_serie_otr <- ggplot(confia_pol,
+       aes(x = year, y = value, 
+           color = Institucion, fill = Institucion)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = "% que confía mucho o algo", x = NULL,
+    title = "Confianza en insituciones en Uruguay",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(conf_serie_otr)
 ```
 
 ## {.toc-ignore .unlisted .unnumbered}
