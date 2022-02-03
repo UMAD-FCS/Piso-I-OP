@@ -1883,7 +1883,23 @@ tab %>%
 
 # **Confianza en instituciones** 
 
-La confianza en instituciones suelen ser estables en el tiempo (Newton, 2019). A su vez, Uslaner (2002) encuentra que estas actitudes presentan una remarcable estabilidad en el tiempo a nivel individual.
+Los proyectos de opinión pública a nivel internacional suelen preguntar cuánta confianza tienen los ciudadanos en distintas instituciones, políticas y no políticas. Algunas de las instituciones por las que suele preguntar son: el congreso o parlamento, el gobierno, el presidente, los partidos políticos, así como la policía, las fuerzas armadas, el poder judicial y la iglesia. Estas preguntas suelen ser utilizadas, entre otras cosas, como indicadores de confianza política. La confianza política suele estar asociada a mayor pariticipación política, apoyo a los líderes en gobierno y mayores niveles de cumplimiento tributario ([Uslaner, 2018](https://books.google.es/books?hl=es&lr=&id=mg5EDwAAQBAJ&oi=fnd&pg=PP1&dq=Uslaner,+E.+M.+(Ed.).+(2018).+The+Oxford+handbook+of+social+and+political+trust.+Oxford+University+Press.&ots=1jl1wvKiOx&sig=LC8buc3bKb3mSyglnQfIZ8Kf1ro#v=onepage&q=Uslaner%2C%20E.%20M.%20(Ed.).%20(2018).%20The%20Oxford%20handbook%20of%20social%20and%20political%20trust.%20Oxford%20University%20Press.&f=false)). Al mismo tiempo, la confianza institucional se acerca al concepto de legitimidad, y puede ser entendida como una medida de apoyo al regimen político ([Newton, 2007](https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199270125.001.0001/oxfordhb-9780199270125-e-018))
+
+Los indicadores de confianza en instituciones suelen mostrar cierta estabilidad en el tiempo ([Newton, 2007](https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199270125.001.0001/oxfordhb-9780199270125-e-018)). Sin embargo, existen diferencias entre las distintas instituciones/personas por las que se pregunta. Por ejemplo, la confianza en el presidente y en el gobierno suelen mostrar mayores oscilaciones que la confianza en los partidos políticos o el poder judicial ([Torcal y Bargsted, 2015]( https://www.torrossa.com/gs/resourceProxy?an=4324401&publisher=FZQ370)).
+
+<br />
+
+<div class="boxed">
+**Latinobarómetro pregunta por la confianza en instituciones de la siguiente manera:** *Por favor, mire esta tarjeta y dígame, para cada uno de los grupos, instituciones o personas de la lista ¿cuánta confianza tiene usted en ellas: mucha (1), algo (2), poca (3) o ninguna (4) confianza en...?*.  
+</div>
+
+<br />
+
+
+
+
+
+
 
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -2463,7 +2479,7 @@ Moraes, J. A., & Luján, D. (2016). Un centro vacío de candidatos: evaluando mo
 
 Mason, L. (2018). Ideologues without issues: The polarizing consequences of ideological identities. Public Opinion Quarterly, 82(S1), 866-887.
 
-Newton, K. (2009). Social and Political Ttrust. En The Oxford handbook of political behavior. Oxford University Press.
+Newton, K. (2007). Social and political trust. In The Oxford handbook of political behavior.
 
 Pérez-Liñán, A. (2007). Presidential impeachment and the new political instability in Latin America. Cambridge University Press.
 
@@ -2475,7 +2491,11 @@ Stimson, J. A., MacKuen, M. B., & Erikson, R. S. (1994). Opinion and policy: A g
 
 Stimson, J. A. (2018). The Dyad ratios algorithm for estimating latent public opinion: estimation, testing, and comparison to other approaches. Bulletin of Sociological Methodology/Bulletin de Méthodologie Sociologique, 137(1), 201-218.
 
+Torcal, M., & Bargsted, M. (2015). Confianza política en Europa y América Latina: estudio comparado con datos y causas. Confianza política en Europa y América Latina: estudio comparado con datos y causas, 163-200.
+
 Uslaner, E. M. (2002). The moral foundations of trust. Disponible en SSRN 824504.
+
+Uslaner, E. M. (Ed.). (2018). The Oxford handbook of social and political trust. Oxford University Press.
 
 Webster, S. W., & Abramowitz, A. I. (2017). The ideological foundations of affective polarization in the US electorate. American Politics Research, 45(4), 621-647.
 
