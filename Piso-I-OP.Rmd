@@ -1874,9 +1874,6 @@ tab %>%
                       bold_target_only = TRUE, target_col = pais)
 ```
 
-
-
-
 <br />
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
@@ -1895,12 +1892,9 @@ Los indicadores de confianza en instituciones suelen mostrar cierta estabilidad 
 
 <br />
 
+Estudios han mostrado importantes diferencias regionales en la confianza hacia instituciones políticas. Por ejemplo, los ciudadanos de las democracias latinoamericanas y del sur de Europa confían significativamente menos en las instituciones políticas que los países del norte de Europa, con algunas excepciones como Uruguay ([Torcal y Bargsted, 2015]( https://www.torrossa.com/gs/resourceProxy?an=4324401&publisher=FZQ370)). 
 
-
-
-
-
-
+En el gráfico debajo se puede ver el porcentaje de personas que confian mucho o algo en el congreso, gobierno, presidente y los partidos políticos, por país en 2020 según datos de Latinobarómetro. Más allá de algunos casos puntuales, el gráfico muestra como en general las instituciones políticas en América Latina gozan de escaso a moderada confianza por parte de los ciudadanos. Dentro de las instituciones incluidas en el gráfico, los partidos políticos son los que generan menor confianza; solo supera el 25% en Uruguay (34%). Por otra parte, el gobierno y el presidente cuentan con mayor confianza en algunos países como El Salvador, República Dominicana y Uruguay.
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -1972,7 +1966,9 @@ download_this(plot_autid,
 #### **Tabla**
 
 ```{r}
-DT::datatable(confianza,
+DT::datatable(confianza %>%
+                filter(Institucion %in% c("Congreso", "Gobierno",
+                                          "Presidente", "Partidos Políticos")),
               extensions =  'Buttons',
               options =  list(dom = 'Bfrtip',
                               buttons = c('copy', 'csv', 'excel', 'print')))
@@ -2037,141 +2033,7 @@ plot(plot_conf_pol)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-### {.tabset .tabset-fade .tabset-pills}
-
-#### **Gráfico**
-```{r, echo = FALSE, fig.width = 7, fig.height = 7, fig.align = "center"}
-confianza <- readxl::read_excel("data/latino/confianzas2020.xlsx") %>% 
-  mutate(Mucha = round(Mucha * 100, digits = 0),
-         Algo = round(Algo * 100, digits = 0),
-         Poca = round(Poca * 100, digits = 0),
-         Ninguna = round(Ninguna * 100, digits = 0)) %>% 
-  mutate(Saldo = (Mucha + Algo) - (Poca + Ninguna))  
-
-conf_rec <- confianza %>% 
-  mutate(confia = Mucha + Algo) %>% 
-  pivot_longer(Mucha:confia,
-               names_to = "cat",
-               values_to = "valor") 
-
-# Confianza - Otras Instituciones
-confia_otr <- conf_rec %>% 
-  filter(cat == "confia") %>% 
-  filter(Institucion %in% c("Policía", "Fuerzas armadas", "Iglesia", "Poder Judicial"))
-
-plot_ins <- ggplot() +
-  geom_segment(
-    data = confia_otr %>% 
-      group_by(Pais) %>% 
-      top_n(-1) %>% 
-      slice(1) %>%
-      ungroup(),
-    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
-    linetype = "dotted", size = 0.5, color = "gray50"
-  ) +
-  geom_segment(
-    data = confia_otr %>% 
-      group_by(Pais) %>% 
-      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
-      ungroup(),
-    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
-    size = 2, alpha = .2
-  ) +
-  geom_point(
-    data = confia_otr,
-    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
-    size = 4, alpha = .9, shape = 21
-  ) +
-  labs(
-    x = "% que confía mucho o algo", y = NULL,
-    title = "Confianza en insituciones en 2020 según país",
-    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
-  ) +
-  theme_minimal() +
-  theme(legend.position = "bottom",
-        axis.text.y = element_text(size = 12)) +
-  scale_fill_brewer(name = "", palette = "Dark2") +
-  xlim(0, 100)
-
-plot(plot_ins)
-```
-
-```{r}
-download_this(plot_ins,
-              button_label = "Descargar gráfico",
-              icon = "fa fa-download")
-```
-
-
-#### **Tabla**
-
-```{r}
-DT::datatable(confianza,
-              extensions =  'Buttons',
-              options =  list(dom = 'Bfrtip',
-                              buttons = c('copy', 'csv', 'excel', 'print')))
-```
-
-
-#### **Código en R**
-
-```{r, echo=TRUE, eval=FALSE}
-# Leer data (descargar tabla a la izquierda)
-confianza <- readxl::read_excel("confianza2020.xlsx")
-
-# Formato largo
-conf_rec <- confianza %>% 
-  mutate(confia = Mucha + Algo) %>% 
-  pivot_longer(Mucha:confia,
-               names_to = "cat",
-               values_to = "valor") 
-
-# Confianza - Otras Instituciones
-confia_otr <- conf_rec %>% 
-  filter(cat == "confia") %>% 
-  filter(Institucion %in% c("Policía", "Fuerzas armadas", "Iglesia", "Poder Judicial"))
-
-plot_ins <- ggplot() +
-  geom_segment(
-    data = confia_otr %>% 
-      group_by(Pais) %>% 
-      top_n(-1) %>% 
-      slice(1) %>%
-      ungroup(),
-    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
-    linetype = "dotted", size = 0.5, color = "gray50"
-  ) +
-  geom_segment(
-    data = confia_otr %>% 
-      group_by(Pais) %>% 
-      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
-      ungroup(),
-    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
-    size = 2, alpha = .2
-  ) +
-  geom_point(
-    data = confia_otr,
-    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
-    size = 4, alpha = .9, shape = 21
-  ) +
-  labs(
-    x = "% que confía mucho o algo", y = NULL,
-    title = "Confianza en insituciones en 2020 según país",
-    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
-  ) +
-  theme_minimal() +
-  theme(legend.position = "bottom",
-        axis.text.y = element_text(size = 12)) +
-  scale_fill_brewer(name = "", palette = "Dark2") 
-
-plot(plot_ins)
-```
-
-## {.toc-ignore .unlisted .unnumbered}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+El gráfico debajo muestra la serie de tiempo de confianza en instituciones políticas en Uruguay desde que existen datos de Latinobarómetro (1995-2020). Los datos sugieren una correlación entre las cuatro series, aunque la confianza en el presidente y el gobierno muestran mayores oscilaciones. Luego de una estabilidad con niveles de confianza moderados en la segunda mitad de la década de los 90s, la serie muestra los valores de confianza más bajos en 2002 y 2003 -en coincidencia con una fuerte crisis económica-. Con el cambio de gobierno en 2005 la confianza tanto en el preisdente como en el gobierno y el congreso aumentan drásticamente, así como también aumenta aunque de forma más moderada la confianza en los partidos políticos. Durante el período de 2005 a 2015 la confianza en las instituciones políticas presenta valores altos con relativa estabilidad. Entre 2016 y 2019 la confianza en el congreso, gobierno y partidos políticos se disminuyó mostrando niveles similares a los del comienzo de la serie. Por último, la medición de 2020 muestra un repunte en la confianza en instituciones políticas, aunque más mediciones son necesarias para confirmar si la tendencia se mantiene. 
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -2273,12 +2135,162 @@ plot(conf_serie_pol)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+La confianza en instituciones del estado más neutrales e imparciales (el poder judicial, la policía o las fuerzas armadas por ejemplo) tiende a estar correlacionada y ser mayor que la confianza en instituciones meramente políticas ([Newton et al, 2018](https://books.google.es/books?hl=es&lr=&id=mg5EDwAAQBAJ&oi=fnd&pg=PA37&dq=Social+and+Political+Trust+Kenneth+Newton,+Dietlind+Stolle,+and+Sonja+Zmerli&ots=1jl2nvQiJu&sig=-GKO3k2--ZQ7r42A7tJqoBqIIlg#v=onepage&q=Social%20and%20Political%20Trust%20Kenneth%20Newton%2C%20Dietlind%20Stolle%2C%20and%20Sonja%20Zmerli&f=false)). El gráfico debajo muestra la confianza en las fuerzas armadas, la iglesia, el poder judicial y la policía en 2020 por país, según datos de Latinobarómetro. Efectivamente se puede observar como la confianza en estas instituciones es mayor que a la confianza en las instituciones meramente políticas, En particular la iglesia es la institución en la que más confían los latinoamericanos, en todos los países a excepción de Argentina, Chile y Uruguay. 
+
+Por otra parte, dentro de las instituciones seleccionadas, el poder judicial suele ser la que menos confianza genera, con Uruguay como la más notable excepción donde más de la mitad de la población dice confiar mucho o algo. Por otra parte la policía genera una confianza moderada, cercana al 35% en promedio, mientras que las fuerzas armadas despiertan niveles de confianza ligeramente mayores, con una media más cerca del 50%. La confianza tanto en la policía como en las fuerzas armadas en Uruguay es considerablemente mayor al promedio del continente.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 7, fig.height = 7, fig.align = "center"}
+confianza <- readxl::read_excel("data/latino/confianzas2020.xlsx") %>% 
+  mutate(Mucha = round(Mucha * 100, digits = 0),
+         Algo = round(Algo * 100, digits = 0),
+         Poca = round(Poca * 100, digits = 0),
+         Ninguna = round(Ninguna * 100, digits = 0)) %>% 
+  mutate(Saldo = (Mucha + Algo) - (Poca + Ninguna))  
+
+conf_rec <- confianza %>% 
+  mutate(confia = Mucha + Algo) %>% 
+  pivot_longer(Mucha:confia,
+               names_to = "cat",
+               values_to = "valor") 
+
+# Confianza - Otras Instituciones
+confia_otr <- conf_rec %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Policía", "Fuerzas armadas", "Iglesia", "Poder Judicial"))
+
+plot_ins <- ggplot() +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    linetype = "dotted", size = 0.5, color = "gray50"
+  ) +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    size = 2, alpha = .2
+  ) +
+  geom_point(
+    data = confia_otr,
+    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
+    size = 4, alpha = .9, shape = 21
+  ) +
+  labs(
+    x = "% que confía mucho o algo", y = NULL,
+    title = "Confianza en insituciones en 2020 según país",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_brewer(name = "", palette = "Dark2") +
+  xlim(0, 100)
+
+plot(plot_ins)
+```
+
+```{r}
+download_this(plot_ins,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(confianza %>%
+                filter(!(Institucion %in% c("Congreso",
+                                            "Gobierno",
+                                            "Presidente",
+                                            "Partidos Políticos"))),
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Leer data (descargar tabla a la izquierda)
+confianza <- readxl::read_excel("confianza2020.xlsx")
+
+# Formato largo
+conf_rec <- confianza %>% 
+  mutate(confia = Mucha + Algo) %>% 
+  pivot_longer(Mucha:confia,
+               names_to = "cat",
+               values_to = "valor") 
+
+# Confianza - Otras Instituciones
+confia_otr <- conf_rec %>% 
+  filter(cat == "confia") %>% 
+  filter(Institucion %in% c("Policía", "Fuerzas armadas", "Iglesia", "Poder Judicial"))
+
+plot_ins <- ggplot() +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      top_n(-1) %>% 
+      slice(1) %>%
+      ungroup(),
+    aes(x = 0, xend = 100, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    linetype = "dotted", size = 0.5, color = "gray50"
+  ) +
+  geom_segment(
+    data = confia_otr %>% 
+      group_by(Pais) %>% 
+      summarise(start = range(valor)[1], end = range(valor)[2]) %>% 
+      ungroup(),
+    aes(x = start, xend = end, y = reorder(Pais, desc(Pais)), yend = reorder(Pais, desc(Pais))),
+    size = 2, alpha = .2
+  ) +
+  geom_point(
+    data = confia_otr,
+    aes(valor, reorder(Pais, desc(Pais)), group = Institucion, fill = Institucion), 
+    size = 4, alpha = .9, shape = 21
+  ) +
+  labs(
+    x = "% que confía mucho o algo", y = NULL,
+    title = "Confianza en insituciones en 2020 según país",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 12)) +
+  scale_fill_brewer(name = "", palette = "Dark2") 
+
+plot(plot_ins)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+El gráfico debajo presenta la serie de tiempo de la confianza en las fuerzas armadas, la iglesia, el poder judicial y la polícia en Uruguay. Allí podemos observar diferentes tendencias. Por un lado la confianza en la policía aumenta a principios de los 2000s apra luego mantenerse estable alrededor del 50% hasta el 2015 donde comienza una nueva tendencia al aumento alcanzando el valor máximo (66%) en 2020. Por otra parte, la serie de confianza en las fuerzas armadas alcanza su menor valor 2005 (35%) y desde entonces muestra un aumento incremental con un valor superior al 60% en las últimas cuatro mediciones. La confianza en el poder judicial muestra una serie con considerable variación y varios cambios de tendencia, con un rango entre 40 y 60% y un importante aumento entre 2018 (40%) y 2020 (58%). Por último, la confianza en la iglesia muestra un prolongado descenso: a fines de los 90s alrededor del 60% de los uruguayos confiaba mucho o algo en la iglesia, frente a solo un 40% en las últimas tres mediciones (2017, 2018 y 2020).
 
 ### {.tabset .tabset-fade .tabset-pills}
 
 #### **Gráfico**
 ```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+confianza <- readxl::read_excel("data/latino/confianzas_serie.xlsx") %>% 
+  mutate(confia = `Mucha confianza` + `Algo de confianza`) %>%
+  mutate(year = as.numeric(year))
+
+confianza <- confianza%>% 
+  pivot_longer(cols = `Mucha confianza`:confia,
+               names_to = "cat",
+               values_to = "value") %>% 
+  mutate(value = round(value * 100, digits = 0))
+
 # Confianza - Otras Instituciones 
 confia_pol <- confianza %>% 
   filter(cat == "confia") %>% 
@@ -2480,6 +2492,8 @@ Moraes, J. A., & Luján, D. (2016). Un centro vacío de candidatos: evaluando mo
 Mason, L. (2018). Ideologues without issues: The polarizing consequences of ideological identities. Public Opinion Quarterly, 82(S1), 866-887.
 
 Newton, K. (2007). Social and political trust. In The Oxford handbook of political behavior.
+
+Newton, K., Stolle, D., & Zmerli, S. (2018). Social and political trust. The Oxford handbook of social and political trust, 37, 961-976.
 
 Pérez-Liñán, A. (2007). Presidential impeachment and the new political instability in Latin America. Cambridge University Press.
 
