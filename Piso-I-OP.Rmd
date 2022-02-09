@@ -2452,6 +2452,125 @@ tab <- tab %>%
 
 # **Principal problema del país**
 
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 8, fig.align = "center"}
+# Cargar tabla con datos y cambiar formato a largo
+prob <- readxl::read_excel(
+  "data/latino/prob_pais.xlsx",
+  col_types = c(
+    "text", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", 
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric")) 
+
+problemas <- c("Desocupación/desempleo",
+               "La economía/problemas económicos/financieros",
+               "Delincuencia/seguridad pública",
+               "Corrupción",
+               "Situación política/problemas de la política",
+               "La Pandemia/ Coronavirus/ Covid-19",
+               "Problemas de la salud")
+
+prob_rec <- prob %>% 
+  select(Categoría, problemas) %>% 
+  pivot_longer(-Categoría, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(cat_rec = case_when(
+    cat == "La Pandemia/ Coronavirus/ Covid-19" ~ "Covid-19/Salud",
+    cat == "Problemas de la salud" ~ "Covid-19/Salud",
+    cat == "La economía/problemas económicos/financieros" ~ "Economía/Desocupación",
+    cat == "Desocupación/desempleo" ~ "Economía/Desocupación",
+    TRUE ~ cat
+  )) %>% 
+  rename(Pais = Categoría) %>% 
+  select(Pais, cat_rec, valor) %>% 
+  group_by(Pais, cat_rec) %>% 
+  summarise(valor = sum(valor)) 
+
+
+prob_tabla <- prob_rec %>%
+  mutate(valor = round(valor, digits = 0)) %>% 
+  pivot_wider(names_from = "cat_rec",
+              values_from = "valor")
+
+plot_prob <- ggplot(prob_rec, 
+                 aes(y = valor, 
+                     x = tidytext::reorder_within(cat_rec, valor, Pais),
+                     fill = cat_rec)) +
+  geom_col(color = "black", alpha = .8) +
+  facet_wrap(~ Pais, scales = "free_y") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        strip.text = element_text(size = 11, face = "bold"),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  scale_fill_viridis_d(name = "") +
+  coord_flip() +
+  ylim(0, 50) +
+  labs(x = "",
+       y = "",
+       title = "Principal problema del país en 2020, según país")
+
+print(plot_prob)
+
+```
+
+```{r}
+download_this(plot_prob,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(prob_tabla,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Leer data (descargar tabla a la izquierda)
+prob_tabla <- readxl::read_excel("prob_tabla.xlsx")
+
+# Manipulación de datos
+prob_rec <- prob_tabla %>%
+  pivot_longer(-Pais, 
+               names_to = "cat_rec",
+               values_to = "valor") 
+
+# Gráfico
+ggplot(prob_rec, aes(y = valor, x = tidytext::reorder_within(cat_rec, valor, Pais), fill = cat_rec)) +
+  geom_col(color = "black", alpha = .8) +
+  facet_wrap(~ Pais, scales = "free_y", ncol = 4) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        strip.text = element_text(size = 11, face = "bold"),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  scale_fill_viridis_d(name = "") +
+  coord_flip() +
+  ylim(0, 50) +
+  labs(x = "",
+       y = "",
+       title = "Principal problema del país en 2020, según país")
+
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
 <br />
 
 <hr style="border:1.5px solid #2c3e50"> </hr>

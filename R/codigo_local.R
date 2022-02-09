@@ -1461,3 +1461,75 @@ demo <- readxl::read_excel("data/latino/tabla_demo.xlsx") %>%
     )
   )
 
+
+## Principal problema del país ----
+
+# Cargar tabla con datos y cambiar formato a largo
+prob <- readxl::read_excel(
+  "data/latino/prob_pais.xlsx",
+  col_types = c(
+    "text", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", 
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+    "numeric", "numeric", "numeric", "numeric")) 
+
+glimpse(prob)
+
+problemas <- c("Desocupación/desempleo",
+               "La economía/problemas económicos/financieros",
+               "Delincuencia/seguridad pública",
+               "Corrupción",
+               "Situación política/problemas de la política",
+               "La Pandemia/ Coronavirus/ Covid-19",
+               "Problemas de la salud")
+
+prob_rec <- prob %>% 
+  select(Categoría, problemas) %>% 
+  pivot_longer(-Categoría, 
+               names_to = "cat",
+               values_to = "valor") %>% 
+  mutate(cat_rec = case_when(
+    cat == "La Pandemia/ Coronavirus/ Covid-19" ~ "Covid-19/Salud",
+    cat == "Problemas de la salud" ~ "Covid-19/Salud",
+    cat == "La economía/problemas económicos/financieros" ~ "Economía/Desocupación",
+    cat == "Desocupación/desempleo" ~ "Economía/Desocupación",
+    TRUE ~ cat
+  )) %>% 
+  rename(Pais = Categoría) %>% 
+  select(Pais, cat_rec, valor) %>% 
+  group_by(Pais, cat_rec) %>% 
+  summarise(valor = sum(valor)) 
+
+
+prob_tabla <- prob_rec %>%
+  mutate(valor = round(valor, digits = 0)) %>% 
+  pivot_wider(names_from = "cat_rec",
+              values_from = "valor")
+
+prob_rec <- prob_tabla %>%
+  pivot_longer(-Pais, 
+               names_to = "cat_rec",
+               values_to = "valor") 
+
+
+ggplot(prob_rec, aes(y = valor, x = tidytext::reorder_within(cat_rec, valor, Pais), fill = cat_rec)) +
+  geom_col(color = "black", alpha = .8) +
+  facet_wrap(~ Pais, scales = "free_y", ncol = 4) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        strip.text = element_text(size = 11, face = "bold"),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  scale_fill_viridis_d(name = "") +
+  coord_flip() +
+  ylim(0, 50) +
+  labs(x = "",
+       y = "",
+       title = "Principal problema del país en 2020, según país")
+
+
+
