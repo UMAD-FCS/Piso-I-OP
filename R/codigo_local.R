@@ -1464,6 +1464,7 @@ demo <- readxl::read_excel("data/latino/tabla_demo.xlsx") %>%
 
 ## Principal problema del país ----
 
+## * Todos los paises ----
 # Cargar tabla con datos y cambiar formato a largo
 prob <- readxl::read_excel(
   "data/latino/prob_pais.xlsx",
@@ -1532,4 +1533,108 @@ ggplot(prob_rec, aes(y = valor, x = tidytext::reorder_within(cat_rec, valor, Pai
        title = "Principal problema del país en 2020, según país")
 
 
+## * Comparación -----
+prob_filtro <- c("Covid-19/Salud", 
+                 "Economía/Desocupación",
+                 "Situación política/problemas de la política",
+                 "Corrupción",
+                 "Delincuencia/seguridad pública",
+                 "")
 
+prob_comp <- readxl::read_excel("data/latino/prob_18_20.xlsx") %>% 
+  pivot_longer(Total:Uruguay,
+               values_to = "valor",
+               names_to = "pais") %>% 
+  mutate(cat_rec = case_when(
+    Categoría == "La Pandemia/ Coronavirus/ Covid-19" ~ "Covid-19/Salud",
+    Categoría == "Problemas de la salud" ~ "Covid-19/Salud",
+    Categoría == "La economía/problemas económicos/financieros" ~ "Economía/Desocupación",
+    Categoría == "Desocupación/desempleo" ~ "Economía/Desocupación",
+    TRUE ~ Categoría
+  )) %>% 
+  select(pais, fecha, cat_rec, valor) %>% 
+  group_by(pais, fecha, cat_rec) %>% 
+  summarise(valor = sum(valor)) %>% 
+  filter(cat_rec %in% prob_filtro) %>% 
+  mutate(pais = case_when(
+    pais == "Total" ~ "Total América Latina",
+    TRUE ~ pais
+  ))
+
+ggplot(prob_comp,
+       aes(x = fecha, y = valor, color = cat_rec)) +
+  geom_point(size = 4,  stroke = 1.5) +
+  geom_line(size = 1) +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "bottom",
+        strip.text = element_text(face = "bold")) +
+  facet_wrap(~ pais) +
+  scale_color_viridis_d(name = "") +
+  labs(x = "",
+       y = "",
+       title = "Principal problema del país 2018 y 2020") +
+  scale_x_continuous(limits = c(2018, 2020), 
+                     breaks = seq(2018, 2020, by = 2))
+
+ggsave("www/ppal_prob_uytot.png", units = "cm", width = 35, height = 25)
+
+
+## * Serie ----
+problemas <- c("Desocupación/desempleo",
+               "La economía/problemas económicos/financieros",
+               "Delincuencia/seguridad pública",
+               "Corrupción",
+               "Situación política/problemas de la política",
+               "La Pandemia/ Coronavirus/ Covid-19",
+               "Problemas de la salud",
+               "Inflación/aumento de precios")
+
+prob_serie <- readxl::read_excel("data/latino/prob_uru_serie.xlsx") %>% 
+  mutate(`2020` = as.numeric(`2020`)) %>% 
+  filter(Categoría %in%  problemas) %>%
+  pivot_longer(-Categoría, 
+               names_to = "fecha",
+               values_to = "valor") %>% 
+  mutate(cat_rec = case_when(
+    Categoría == "La Pandemia/ Coronavirus/ Covid-19" ~ "Covid-19/Salud",
+    Categoría == "Problemas de la salud" ~ "Covid-19/Salud",
+    Categoría == "La economía/problemas económicos/financieros" ~ "Economía/Desocupación",
+    Categoría == "Desocupación/desempleo" ~ "Economía/Desocupación",
+    Categoría == "Inflación/aumento de precios" ~ "Economía/Desocupación/Inflación",
+    TRUE ~ Categoría
+  )) %>% 
+  select(fecha, cat_rec, valor) %>% 
+  group_by(fecha, cat_rec) %>% 
+  summarise(valor = sum(valor)) %>% 
+  filter(cat_rec %in% prob_filtro) %>% 
+  mutate(fecha = as.numeric(fecha))
+
+prob_tabla <- prob_serie %>% 
+  pivot_wider(names_from = "cat_rec",
+              values_from = "valor")
+
+prob_serie <- prob_tabla %>% 
+  pivot_longer(-fecha,
+               names_to = "cat_rec",
+               values_to = "valor")
+
+ggplot(prob_serie,
+       aes(x = fecha, y = valor, color = cat_rec, fill = cat_rec)) +
+  geom_line(size = 1.25) +
+  geom_point(size = 3, shape = 21, fill = "white") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.key.size = unit(2,"line")) +
+  scale_color_viridis_d(name = "") +
+  labs(
+    y = "% por problema", x = NULL,
+    title = "Principal problema en Uruguay (2004-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+
+
+
+
+
+  

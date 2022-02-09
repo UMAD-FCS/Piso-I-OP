@@ -2452,6 +2452,17 @@ tab <- tab %>%
 
 # **Principal problema del país**
 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+<br />
+
+<div class="boxed">
+**Latinobarómetro pregunta por el principal problema del país de la siguiente manera:** *En su opinión, ¿Cuál considera Ud que es el problema más importante en el país?*.  
+</div>
+
+<br />
+
+
 ### {.tabset .tabset-fade .tabset-pills}
 
 #### **Gráfico**
@@ -2542,6 +2553,13 @@ DT::datatable(prob_tabla,
 #### **Código en R**
 
 ```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("readxl")
+
+library(tidyverse)
+library(readxl)
+
 # Leer data (descargar tabla a la izquierda)
 prob_tabla <- readxl::read_excel("prob_tabla.xlsx")
 
@@ -2572,6 +2590,129 @@ ggplot(prob_rec, aes(y = valor, x = tidytext::reorder_within(cat_rec, valor, Pai
 ## {.toc-ignore .unlisted .unnumbered}
 
 <br />
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+```{r , echo=FALSE, out.width= "90%"}
+include_graphics("www/ppal_prob_uytot.png")
+```
+
+El gráfico debajo muestra la serie de tiempo de confianza en instituciones políticas en Uruguay desde que existen datos de Latinobarómetro (1995-2020). Los datos sugieren una correlación entre las cuatro series, aunque la confianza en el presidente y el gobierno muestran mayores oscilaciones. Luego de una estabilidad con niveles de confianza moderados en la segunda mitad de la década de los 90s, la serie muestra los valores de confianza más bajos en 2002 y 2003 -en coincidencia con una fuerte crisis económica-. Con el cambio de gobierno en 2005 la confianza tanto en el preisdente como en el gobierno y el congreso aumentan drásticamente, así como también aumenta aunque de forma más moderada la confianza en los partidos políticos. Durante el período de 2005 a 2015 la confianza en las instituciones políticas presenta valores altos con relativa estabilidad. Entre 2016 y 2019 la confianza en el congreso, gobierno y partidos políticos se disminuyó mostrando niveles similares a los del comienzo de la serie. Por último, la medición de 2020 muestra un repunte en la confianza en instituciones políticas, aunque más mediciones son necesarias para confirmar si la tendencia se mantiene. 
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+problemas <- c("Desocupación/desempleo",
+               "La economía/problemas económicos/financieros",
+               "Delincuencia/seguridad pública",
+               "Corrupción",
+               "Situación política/problemas de la política",
+               "La Pandemia/ Coronavirus/ Covid-19",
+               "Problemas de la salud",
+               "Inflación/aumento de precios")
+
+prob_filtro <- c("Covid-19/Salud", 
+                 "Economía/Desocupación",
+                 "Situación política/problemas de la política",
+                 "Corrupción",
+                 "Delincuencia/seguridad pública",
+                 "")
+
+prob_serie <- readxl::read_excel("data/latino/prob_uru_serie.xlsx") %>% 
+  mutate(`2020` = as.numeric(`2020`)) %>% 
+  filter(Categoría %in%  problemas) %>%
+  pivot_longer(-Categoría, 
+               names_to = "fecha",
+               values_to = "valor") %>% 
+  mutate(cat_rec = case_when(
+    Categoría == "La Pandemia/ Coronavirus/ Covid-19" ~ "Covid-19/Salud",
+    Categoría == "Problemas de la salud" ~ "Covid-19/Salud",
+    Categoría == "La economía/problemas económicos/financieros" ~ "Economía/Desocupación",
+    Categoría == "Desocupación/desempleo" ~ "Economía/Desocupación",
+    Categoría == "Inflación/aumento de precios" ~ "Economía/Desocupación/Inflación",
+    TRUE ~ Categoría
+  )) %>% 
+  select(fecha, cat_rec, valor) %>% 
+  group_by(fecha, cat_rec) %>% 
+  summarise(valor = sum(valor)) %>% 
+  filter(cat_rec %in% prob_filtro) %>% 
+  mutate(fecha = as.numeric(fecha))
+
+prob_tabla_s <- prob_serie %>% 
+  pivot_wider(names_from = "cat_rec",
+              values_from = "valor")
+
+plot_prob_serie <- ggplot(prob_serie,
+       aes(x = fecha, y = valor, color = cat_rec, fill = cat_rec)) +
+  geom_line(size = 1.25) +
+  geom_point(size = 3, shape = 21, fill = "white") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.key.size = unit(2,"line")) +
+  scale_color_viridis_d(name = "") +
+  labs(
+    y = "% por problema", x = NULL,
+    title = "Principal problema en Uruguay (2004-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(plot_prob_serie)
+```
+
+```{r}
+download_this(plot_prob_serie,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(prob_tabla_s,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+## Instalar en caso de ser necesario
+# install.packages("tidyverse")
+# install.packages("readxl")
+
+library(tidyverse)
+library(readxl)
+
+# Leer de tabla a la izquierda
+prob_serie <- readxl::read_excel("prob_tabla.xlsx") %>% 
+  pivot_longer(-fecha,
+               names_to = "cat_rec",
+               values_to = "valor")
+  
+plot_prob_serie <- ggplot(prob_serie,
+       aes(x = fecha, y = valor, color = cat_rec, fill = cat_rec)) +
+  geom_line(size = 1.25) +
+  geom_point(size = 3, shape = 21, fill = "white") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.key.size = unit(2,"line")) +
+  scale_color_viridis_d(name = "") +
+  labs(
+    y = "% por problema", x = NULL,
+    title = "Principal problema en Uruguay (2004-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(plot_prob_serie)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
