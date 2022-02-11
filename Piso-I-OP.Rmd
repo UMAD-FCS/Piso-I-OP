@@ -2379,8 +2379,15 @@ plot(conf_serie_otr)
 
 # **Actitudes hacia la democracia**
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+En la sección anterior se presentan actitudes hacia instituciones políticas. Esos resultados pueden interpretarse como un análisis de coyuntura por parte de los ciudadanos, pero si la disatisfacción se generaliza hacia el régimen político y sus valores, puede causar una crisis democrática (Dalton, 2013). Para medir opiniones sobre el régimen democrático -o apoyo hacia la democracia- una de las preguntas que se utiliza es si la democracia es el mejor sistema del gobierno. Este tipo de preguntas son muy frecuentes en proyectos de opinión pública internacionales. La [Encuesta Mundial de Valores](https://www.worldvaluessurvey.org/WVSContents.jsp) -proyecto que realiza encuestas en más de 120 países y en todos los continentes- sugiere que el apoyo a la democracia es mayoritario en casi todos los países participantes del estudio (Thomassen, 2007). Es importante mencionar que lo que se entiende por democracia puede variar según el país, por lo que se debe ser cauteloso a la hora de comparar los resultados de estas preguntas en distintos países (Joignant et al., 2017).
 
+<br />
+
+<div class="boxed">
+**Latinobarómetro pregunta por el apoyo a la democracia:** *¿Con cuál de las siguientes frases está Ud más de acuerdo? (1) La democracia es preferible a cualquier sistema de gobierno; (2) En algunas circunstancias, un gobierno autoritario puede ser preferible; (3) A la gente como uno, nos da lo mismo un régimen democrático o no democrático*.  
+</div>
+
+<br />
 
 ```{r, echo=FALSE, fig.align="center"}
 library(gt)
@@ -2741,7 +2748,11 @@ Carlin, R. E., Hartlyn, J., Hellwig, T., Love, G. J., Martínez-Gallardo, C., & 
 
 Converse, P. E. (2006). The nature of belief systems in mass publics (1964). Critical review, 18(1-3), 1-74.
 
+Dalton, R. J. (2013). Citizen politics: Public opinion and political parties in advanced industrial democracies. Cq Press.
+
 Ellis, C., & Stimson, J. A. (2012). Ideology in America. Cambridge University Press.
+
+Joignant, A., Morales, M., & Fuentes, C. (2017). Malaise in representation: attitudes, beliefs, behaviors, and causalities. In Malaise in representation in latin american countries (pp. 1-43). Palgrave Macmillan, New York.
 
 Inglehart, R., & Sidjanski, D. (1976). The left, the right, the establishment and the Swiss electorate. Party identification and beyond, 240-41.
 
