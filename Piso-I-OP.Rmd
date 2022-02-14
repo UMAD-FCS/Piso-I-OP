@@ -2381,10 +2381,12 @@ plot(conf_serie_otr)
 
 En la sección anterior se presentan actitudes hacia instituciones políticas. Esos resultados pueden interpretarse como un análisis de coyuntura por parte de los ciudadanos, pero si la disatisfacción se generaliza hacia el régimen político y sus valores, puede causar una crisis democrática (Dalton, 2013). Para medir opiniones sobre el régimen democrático -o apoyo hacia la democracia- una de las preguntas que se utiliza es si la democracia es el mejor sistema del gobierno. Este tipo de preguntas son muy frecuentes en proyectos de opinión pública internacionales. La [Encuesta Mundial de Valores](https://www.worldvaluessurvey.org/WVSContents.jsp) -proyecto que realiza encuestas en más de 120 países y en todos los continentes- sugiere que el apoyo a la democracia es mayoritario en casi todos los países participantes del estudio (Thomassen, 2007). Es importante mencionar que lo que se entiende por democracia puede variar según el país, por lo que se debe ser cauteloso a la hora de comparar los resultados de estas preguntas en distintos países (Joignant et al., 2017).
 
+En 2020 el 78% de los uruguayos creían que la democraca es preferible a cualquier otra forma de gobierno, representando la cifra más alta dentro de los países participantes de Latinobarómetro. Al mismo tiempo, el 89% creía que "la democracia puede tener problemas pero es el mejor sistema de gobierno". A nivel regional existen importantes variaciones con países donde el porcentaje de los ciudadanos de acuerdo con ambas frases es menor al 50% como en Ecuador y Honduras.
+
 <br />
 
 <div class="boxed">
-**Latinobarómetro pregunta por el apoyo a la democracia:** *¿Con cuál de las siguientes frases está Ud más de acuerdo? (1) La democracia es preferible a cualquier sistema de gobierno; (2) En algunas circunstancias, un gobierno autoritario puede ser preferible; (3) A la gente como uno, nos da lo mismo un régimen democrático o no democrático*.  
+**Latinobarómetro pregunta por el apoyo a la democracia:** *¿Con cuál de las siguientes frases está Ud más de acuerdo? (1) La democracia es preferible a cualquier sistema de gobierno; (2) En algunas circunstancias, un gobierno autoritario puede ser preferible; (3) A la gente como uno, nos da lo mismo un régimen democrático o no democrático y Por favor, dígame si está muy de acuerdo, de acuerdo, en desacuerdo o muy en desacuerdo , con las siguientes afirmaciones: La democracia puede tener problemas pero es el mejor sistema de gobierno: (1) Muy de acuerdo; (2) De acuerdo; (3) En desacuerdo; (4) Muy en desacuerdo*.  
 </div>
 
 <br />
