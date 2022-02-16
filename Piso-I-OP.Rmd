@@ -1880,7 +1880,7 @@ tab %>%
 
 # **Confianza en instituciones** 
 
-Los proyectos de opinión pública a nivel internacional suelen preguntar cuánta confianza tienen los ciudadanos en distintas instituciones, políticas y no políticas. Algunas de las instituciones por las que suele preguntar son: el congreso o parlamento, el gobierno, el presidente, los partidos políticos, así como la policía, las fuerzas armadas, el poder judicial y la iglesia. Estas preguntas suelen ser utilizadas, entre otras cosas, como indicadores de confianza política. La confianza política suele estar asociada a mayor pariticipación política, apoyo a los líderes en gobierno y mayores niveles de cumplimiento tributario ([Uslaner, 2018](https://books.google.es/books?hl=es&lr=&id=mg5EDwAAQBAJ&oi=fnd&pg=PP1&dq=Uslaner,+E.+M.+(Ed.).+(2018).+The+Oxford+handbook+of+social+and+political+trust.+Oxford+University+Press.&ots=1jl1wvKiOx&sig=LC8buc3bKb3mSyglnQfIZ8Kf1ro#v=onepage&q=Uslaner%2C%20E.%20M.%20(Ed.).%20(2018).%20The%20Oxford%20handbook%20of%20social%20and%20political%20trust.%20Oxford%20University%20Press.&f=false)). Al mismo tiempo, la confianza institucional se acerca al concepto de legitimidad, y puede ser entendida como una medida de apoyo al regimen político ([Newton, 2007](https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199270125.001.0001/oxfordhb-9780199270125-e-018))
+Los proyectos de opinión pública a nivel internacional suelen preguntar cuánta confianza tienen los ciudadanos en distintas instituciones, políticas y no políticas. Algunas de las instituciones por las que suele preguntar son: el congreso o parlamento, el gobierno, el presidente, los partidos políticos, así como la policía, las fuerzas armadas, el poder judicial y la iglesia. Estas preguntas suelen ser utilizadas, entre otras cosas, como indicadores de confianza política. La confianza política suele estar asociada a mayor pariticipación política, apoyo a los líderes en gobierno y mayores niveles de cumplimiento tributario ([Uslaner, 2018](https://books.google.es/books?hl=es&lr=&id=mg5EDwAAQBAJ&oi=fnd&pg=PP1&dq=Uslaner,+E.+M.+(Ed.).+(2018).+The+Oxford+handbook+of+social+and+political+trust.+Oxford+University+Press.&ots=1jl1wvKiOx&sig=LC8buc3bKb3mSyglnQfIZ8Kf1ro#v=onepage&q=Uslaner%2C%20E.%20M.%20(Ed.).%20(2018).%20The%20Oxford%20handbook%20of%20social%20and%20political%20trust.%20Oxford%20University%20Press.&f=false)). Al mismo tiempo, la confianza institucional se acerca al concepto de legitimidad, y puede ser entendida como una medida de apoyo al regimen político ([Newton, 2007](https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199270125.001.0001/oxfordhb-9780199270125-e-018)). Estudios utilizan también la confianza en las instituciones como un indicador de desafección institucional [Torcal, 2006](https://www.redalyc.org/pdf/3871/387136359006.pdf)
 
 Los indicadores de confianza en instituciones suelen mostrar cierta estabilidad en el tiempo ([Newton, 2007](https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199270125.001.0001/oxfordhb-9780199270125-e-018)). Sin embargo, existen diferencias entre las distintas instituciones/personas por las que se pregunta. Por ejemplo, la confianza en el presidente y en el gobierno suelen mostrar mayores oscilaciones que la confianza en los partidos políticos o el poder judicial ([Torcal y Bargsted, 2015]( https://www.torrossa.com/gs/resourceProxy?an=4324401&publisher=FZQ370)).
 
@@ -2461,12 +2461,14 @@ tab <- tab %>%
 
 # **Principal problema del país**
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Otro indicador frequente en encuestas de opinión pública es la percepción sobre el principal problema del país. La percepción sobre el principal problema del país es un indicador para la prominencia o relvancia de cada tema -*issue salience*-. Cuando un tema es importante para el público los candidatos y partidos suelen tomar posición al respecto [Wlezien y Soroka, 2007](https://scholar.google.es/scholar?hl=es&as_sdt=0%2C5&q=The+Relationship+between+Public+Opinion+and+Policy+oxford+handbook&btnG=). A su vez, los ciudanos suelen preocuparse y tener opiniones formadas respecto a estos temas. Aunque es importante destacar que la pregunta sobre el principal problema del país no siempre es el mejor indicador para obtener la saliencia de todos los temas debido a que al preguntar por problemas no surgen temas donde el gobierno haya actuado bien [Wlezien, 2005](https://www.sciencedirect.com/science/article/pii/S026137940500020X?casa_token=Al5HAqI4XjQAAAAA:_dsDUL4RfBGvSSD1ldWERlHitCqIpiQsy0QQmI5SQq0XKHu77_eI6YkfAFy2ExOJGnn8TNRpKQM). 
+
+En el gráfico debajo se agrupan los problemas en las siguientes categorías: (1) Economía (incluye desempleo, precios altos, etc.); (2) Corrupción; (3) Covid 19/Salud; (4) Delincuencia/Seguridad Pública; (5) Situación Política/Problemas de la política. En 2020 la economía o la desocupación era el principal problema para los ciudadanos de la mayoría de los países de América Latina. La corrupción y la delincuencia o seguridad pública también figuran como temas importantes en varios países.
 
 <br />
 
 <div class="boxed">
-**Latinobarómetro pregunta por el principal problema del país de la siguiente manera:** *En su opinión, ¿Cuál considera Ud que es el problema más importante en el país?*.  
+**Latinobarómetro pregunta por el principal problema del país de la siguiente manera:** *En su opinión, ¿Cuál considera Ud. que es el problema más importante en el país?*.  
 </div>
 
 <br />
@@ -2600,14 +2602,14 @@ ggplot(prob_rec, aes(y = valor, x = tidytext::reorder_within(cat_rec, valor, Pai
 
 <br />
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Al ser encuestas posteriores a la llegada del COVID-19 a estos países, este figura como uno de los principales problemas en muchos países. El gráfico debajo muestra los cambios en la percepción del principal problema del país para el total de América Latina y Uruguay entre 2018 y 2020. En primer lugar se puede apreciar como el COVID-19 y la salud toma relevancia aumentando de manera considerable en este período. Asimismo, la delincuencia o seguridad pública disminuye como preocupación de los ciudadanos tanto en el total de América Latina como en Uruguay. En Uruguay en particular es notable como la economía pasa a ser el principal problema con un 40%.
 
 
 ```{r , echo=FALSE, out.width= "90%"}
 include_graphics("www/ppal_prob_uytot.png")
 ```
 
-El gráfico debajo muestra la serie de tiempo de confianza en instituciones políticas en Uruguay desde que existen datos de Latinobarómetro (1995-2020). Los datos sugieren una correlación entre las cuatro series, aunque la confianza en el presidente y el gobierno muestran mayores oscilaciones. Luego de una estabilidad con niveles de confianza moderados en la segunda mitad de la década de los 90s, la serie muestra los valores de confianza más bajos en 2002 y 2003 -en coincidencia con una fuerte crisis económica-. Con el cambio de gobierno en 2005 la confianza tanto en el preisdente como en el gobierno y el congreso aumentan drásticamente, así como también aumenta aunque de forma más moderada la confianza en los partidos políticos. Durante el período de 2005 a 2015 la confianza en las instituciones políticas presenta valores altos con relativa estabilidad. Entre 2016 y 2019 la confianza en el congreso, gobierno y partidos políticos se disminuyó mostrando niveles similares a los del comienzo de la serie. Por último, la medición de 2020 muestra un repunte en la confianza en instituciones políticas, aunque más mediciones son necesarias para confirmar si la tendencia se mantiene. 
+El gráfico debajo muestra la serie del principal problema del país en Uruguay desde que existen datos de Latinobarómetro (2004-2020). Los datos muestran como la economía y la seguridad pública han sido los temas más importantes en este período, alternando como el problema de mayor importancia. Desde el comienzo de la serie en 2004 hasta 2009 la economía fue la principal preocupación de los uruguayos, aunque con una tendencia hacia la disminución y hacia el aumento de la seguridad pública como principal problema. Entre 2010 y 2016 la seguridad pública pasa a ser el principal problema del país con alrededor de un 40% de los encuestados manfiestandose de esa forma. A partir de 2016 se alternan ambos temas como las principales preocupaciones de los uruguayos. 
 
 ### {.tabset .tabset-fade .tabset-pills}
 
@@ -2778,6 +2780,8 @@ Stimson, J. A., MacKuen, M. B., & Erikson, R. S. (1994). Opinion and policy: A g
 
 Stimson, J. A. (2018). The Dyad ratios algorithm for estimating latent public opinion: estimation, testing, and comparison to other approaches. Bulletin of Sociological Methodology/Bulletin de Méthodologie Sociologique, 137(1), 201-218.
 
+Torcal, M. (2006). Desafección institucional e historia democrática en las nuevas democracias. Revista SAAP. Publicación de Ciencia Política de la Sociedad Argentina de Análisis Político, 2(3), 591-634.
+
 Torcal, M., & Bargsted, M. (2015). Confianza política en Europa y América Latina: estudio comparado con datos y causas. Confianza política en Europa y América Latina: estudio comparado con datos y causas, 163-200.
 
 Uslaner, E. M. (2002). The moral foundations of trust. Disponible en SSRN 824504.
@@ -2785,6 +2789,10 @@ Uslaner, E. M. (2002). The moral foundations of trust. Disponible en SSRN 824504
 Uslaner, E. M. (Ed.). (2018). The Oxford handbook of social and political trust. Oxford University Press.
 
 Webster, S. W., & Abramowitz, A. I. (2017). The ideological foundations of affective polarization in the US electorate. American Politics Research, 45(4), 621-647.
+
+Wlezien, C. (2005). On the salience of political issues: The problem with ‘most important problem’. Electoral studies, 24(4), 555-579.
+
+Wlezien, C., & Soroka, S. N. (2007). The relationship between public opinion and policy. In The Oxford handbook of political behavior.
 
 Zechmeister, E. J. (2015). Left-right identifications and the Latin American voter. The Latin American voter: Pursuing representation and accountability in challenging contexts, 195-225.
 
