@@ -2381,7 +2381,7 @@ plot(conf_serie_otr)
 
 En la sección anterior se presentan actitudes hacia instituciones políticas. Esos resultados pueden interpretarse como un análisis de coyuntura por parte de los ciudadanos, pero si la disatisfacción se generaliza hacia el régimen político y sus valores, puede causar una crisis democrática (Dalton, 2013). Para medir opiniones sobre el régimen democrático -o apoyo hacia la democracia- una de las preguntas que se utiliza es si la democracia es el mejor sistema del gobierno. Este tipo de preguntas son muy frecuentes en proyectos de opinión pública internacionales. La [Encuesta Mundial de Valores](https://www.worldvaluessurvey.org/WVSContents.jsp) -proyecto que realiza encuestas en más de 120 países y en todos los continentes- sugiere que el apoyo a la democracia es mayoritario en casi todos los países participantes del estudio (Thomassen, 2007). Es importante mencionar que lo que se entiende por democracia puede variar según el país, por lo que se debe ser cauteloso a la hora de comparar los resultados de estas preguntas en distintos países (Joignant et al., 2017).
 
-En 2020 el 78% de los uruguayos creían que la democraca es preferible a cualquier otra forma de gobierno, representando la cifra más alta dentro de los países participantes de Latinobarómetro. Al mismo tiempo, el 89% creía que "la democracia puede tener problemas pero es el mejor sistema de gobierno". A nivel regional existen importantes variaciones con países donde el porcentaje de los ciudadanos de acuerdo con ambas frases es menor al 50% como en Ecuador y Honduras.
+En 2020 el 78% de los uruguayos creían que la democracia es preferible a cualquier otra forma de gobierno, representando la cifra más alta dentro de los países participantes de Latinobarómetro. Al mismo tiempo, el 89% creía que "la democracia puede tener problemas pero es el mejor sistema de gobierno". A nivel regional existen importantes variaciones con países donde el porcentaje de los ciudadanos de acuerdo con ambas frases es menor al 50% como en Ecuador y Honduras.
 
 <br />
 
@@ -2441,9 +2441,9 @@ tab <- tab %>%
 # Con bar
 (tab_2 <- tab %>%
     gt_plt_bar(column = preferible, scaled = TRUE, 
-               color = "#76448A", scale_type = "number") %>% 
+               color = "#2c3e50", scale_type = "number") %>% 
     gt_plt_bar(column = churchil, scaled = TRUE, 
-               color = "#1F618D", scale_type = "number") %>% 
+               color = "#76448A", scale_type = "number") %>% 
     gt_highlight_rows(rows = 1, fill = "lightblue",
                       bold_target_only = TRUE, target_col = Pais) %>% 
     gt_highlight_rows(rows = 9, fill = "lightgrey",
@@ -2457,11 +2457,330 @@ tab <- tab %>%
 
 <br />
 
+El gráfico debajo muestra la serie de apoyo a la democracia en Uruguay desde 1995 a 2020 según datos de Latinobarómetro. Si bien la serie muestra una importante estabilidad -como es usual en las actitudes frente al régimen del gobierno-, es posible observar una leve tendencia hacia la disminución del porcentaje de personas que cree que la democracia es preferible a cualquier otra forma de gobierno, desde 2009 a 2018 aproximadamente. El valor mínimo de la serie se da en la medición de 2018 donde slo el 64% de los uruguayos dice creer que la democracia es preferible a cualquier otra forma de gobierno. Sin embargo, los datos de 2020 sugieren un repunte considerable del apoyo a la democracia con un 78% de los uruguayos señalando que la democracia es preferible a cualquier otra forma de gobierno.
+
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+# Cargo la tabla 
+demo_apoyo <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  mutate(value = round(value * 100, digits = 0),
+         year = as.numeric(year)) %>% 
+  filter(pregunta == "apoyo")
+
+# Tabla
+demo_apoyo_tabla <- demo_apoyo %>% 
+  select(-pregunta) %>% 
+  pivot_wider(names_from = cat,
+              values_from = value)
+
+demo_apoyo_p <- ggplot(demo_apoyo,
+       aes(x = year, y = value, 
+           color = stringr::str_wrap(cat, 35), 
+           fill = stringr::str_wrap(cat, 35))) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = "Apoyo a la democracia en Uruguay (1995-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(demo_apoyo_p)
+```
+
+```{r}
+download_this(demo_apoyo_p,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(demo_apoyo_tabla,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Cargo la tabla 
+demo_apoyo <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  pivot_longer(-year,
+               names_to = "cat",
+               values_to = "value")
+
+demo_apoyo_p <- ggplot(demo_apoyo,
+       aes(x = year, y = value, 
+           color = cat, fill = cat)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = "Apoyo a la democracia en Uruguay (1995-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(demo_apoyo_p)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+<br />
+
+El siguiente gráfico muestra la serie (1995-2020) sobre la opinión de la frase de Churchill "La democracia puede tener problemas pero es el mejor sistema de gobierno". La serie muestra como la mayoría de los uruguayos está de acuerdo o muy de acuerdo con la frase, a pesar de mostrar una leve tendencia hacia la disminución a partir de 2015.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+# Cargo la tabla 
+demo_churc <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  mutate(value = round(value * 100, digits = 0),
+         year = as.numeric(year)) %>% 
+  filter(pregunta == "churchill")
+
+# Tabla
+demo_churc_tabla <- demo_churc %>% 
+  select(-pregunta) %>% 
+  pivot_wider(names_from = cat,
+              values_from = value)
+
+demo_churc_p <- ggplot(demo_churc,
+       aes(x = year, y = value, 
+           color = cat, fill = cat)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = 'Opinión sobre la frase "La democracia puede tener problemas pero es el mejor sistema de gobierno" en Uruguay',
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(demo_churc_p)
+```
+
+```{r}
+download_this(demo_churc_p,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(demo_churc_tabla,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Cargo la tabla 
+demo_churc <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  pivot_longer(-year,
+               names_to = "cat",
+               values_to = "value")
+
+demo_apoyo_p <- ggplot(demo_apoyo,
+       aes(x = year, y = value, 
+           color = cat, fill = cat)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = 'Opinión sobre la frase "La democracia puede tener problemas pero es el mejor sistema de gobierno" en Uruguay',
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(demo_churc_p)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
+<br />
+
+# **Satisfacción con la democracia**
+
+La satisfacción con la democracia está relacionada con la legitimidad del régimen político. Es una dimensión evaluativa (no afectiva) sobre el desempeño del régimen, aunque combina juicios sobre el régimen propiamente dicho y su desempeño (Dalton, 2004). Los datos de Latinobarómetro en 2020 muestran que la satisfacción con la democracia en América Latina es mucho menor al apoyo hacia la misma. En promedio el 55% de los latinoamericanos creen que la democracia es preferible a cualquier otra forma de gobierno, mientras que solo el 27% de los mismos dice estar satisfecho o muy satisfecho con el funcionamiento de la democracia en su país. 
+
+<br />
+
+<div class="boxed">
+**Latinobarómetro pregunta por la satisfacción con la democracia:** *En general, ¿Diría Ud que está muy satisfecho, más bien satisfecho, no muy satisfecho o nada satisfecho con el funcionamiento de la democracia en {PAÍS}?: (1) Muy satisfecho; (2) Más bien satisfecho; (3) No muy satisfecho; (4) Nada satisfecho*.  
+</div>
+
+<br />
+
+```{r, echo=FALSE, fig.align="center"}
+demo <- readxl::read_excel("data/latino/tabla_demo.xlsx") %>% 
+  select(Pais, satisfecho) %>% 
+  arrange(desc(satisfecho))
+
+tab <- gt(demo) %>% 
+    cols_label(Pais = "País",
+               satisfecho = "% satisfecho o muy satisfecho con la democracia") %>% 
+    tab_header(title = md("Satisfacción con la democracia en América Latina en 2020")) %>% 
+    tab_source_note(source_note = "Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro")
+
+tab <- tab %>% 
+    #Apply new style to all column headers
+    tab_style(
+      locations = cells_column_labels(columns = everything()),
+      style     = list(
+        #Give a thick border below
+        cell_borders(sides = "bottom", weight = px(3)),
+        #Make text bold
+        cell_text(weight = "bold")
+      )
+    ) %>% 
+    #Apply different style to the title
+    tab_style(
+      locations = cells_title(groups = "title"),
+      style     = list(
+        cell_text(weight = "bold", size = 24)
+      )
+    ) %>% 
+    cols_align(
+      align = c("center"),
+    ) %>% 
+    cols_align(
+      align = c("left"),
+      columns = Pais
+    ) %>% 
+    opt_table_font(
+      font = list(
+        google_font("Chivo"),
+        default_fonts())
+    )
+
+# Con bar
+(tab_2 <- tab %>%
+    gt_plt_bar(column = satisfecho, scaled = TRUE, 
+               color = "#2c3e50", scale_type = "number") %>% 
+    gt_highlight_rows(rows = 1, fill = "lightblue",
+                      bold_target_only = TRUE, target_col = Pais) %>% 
+    gt_highlight_rows(rows = 8, fill = "lightgrey",
+                      bold_target_only = TRUE, target_col = Pais) %>% 
+        cols_width(
+      Pais ~ px(175),
+      everything() ~ px(450)
+    ) %>%
+    tab_options(data_row.padding = px(2)))
+```
+
+<br />
+
+El gráfico debajo muestra la serie de satisfacción con la democracia en Uruguay (1995-2020) según datos de Latinobarómetro. Como era de esperar, esta serie muestra muchas más oscilaciones que las series sobre apoyo al régimen democrático, debido a su carácter evaluativo. Si bien a fines de la década de los 90s la satisfacción con la demorcacia en Uruguay presentaba un saldo muy favorable (cerca del 70% de los uruguayos se mostraban satisfechos), comienza a dismnuir hacia 2001 en el contexto de la crisis económica, alcanzando un saldo negativo (mayor porcentaje de insatisfechos que satsifechos) en 2003 y 2004. 
+
+A partir de 2005 hasta 2013 la satisfacción con el funcionamiento de la democracia en Uruguay fue en aumento hasta alcanzar más de un 80% de la población muy satisfecha o más bien satisfecha. Sin embargo, las mediciones de 2015 a 2018 presentan una caída en la satisfacción de la democracia mostrando un escenario mucho más dividido. Al igual que en la serie de apoyo a la democracia, la medición del 2020 muestra un salto importante hacia mayor satisfacción con el funcionamiento democrático en el país.
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### **Gráfico**
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.align = "center"}
+# Cargo la tabla 
+demo_sat <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  mutate(value = round(value * 100, digits = 0),
+         year = as.numeric(year)) %>% 
+  filter(pregunta == "satisfaccion")
+
+# Tabla
+demo_sat_tabla <- demo_sat %>% 
+  select(-pregunta) %>% 
+  pivot_wider(names_from = cat,
+              values_from = value)
+
+demo_sat_p <- ggplot(demo_sat,
+       aes(x = year, y = value, 
+           color = cat, fill = cat)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = "Satisfacción con la democracia en Uruguay (1995-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(demo_sat_p)
+```
+
+```{r}
+download_this(demo_sat_p,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### **Tabla**
+
+```{r}
+DT::datatable(demo_sat_tabla,
+              extensions =  'Buttons',
+              options =  list(dom = 'Bfrtip',
+                              buttons = c('copy', 'csv', 'excel', 'print')))
+```
+
+
+#### **Código en R**
+
+```{r, echo=TRUE, eval=FALSE}
+# Cargo la tabla 
+demo_sat <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  pivot_longer(-year,
+               names_to = "cat",
+               values_to = "value")
+
+demo_sat_p <- ggplot(demo_sat,
+       aes(x = year, y = value, 
+           color = cat, fill = cat)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = "Satisfacción con la democracia en Uruguay (1995-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+plot(demo_sat_p)
+```
+
+## {.toc-ignore .unlisted .unnumbered}
+
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
 # **Principal problema del país**
 
-Otro indicador frequente en encuestas de opinión pública es la percepción sobre el principal problema del país. La percepción sobre el principal problema del país es un indicador para la prominencia o relvancia de cada tema -*issue salience*-. Cuando un tema es importante para el público los candidatos y partidos suelen tomar posición al respecto [Wlezien y Soroka, 2007](https://scholar.google.es/scholar?hl=es&as_sdt=0%2C5&q=The+Relationship+between+Public+Opinion+and+Policy+oxford+handbook&btnG=). A su vez, los ciudanos suelen preocuparse y tener opiniones formadas respecto a estos temas. Aunque es importante destacar que la pregunta sobre el principal problema del país no siempre es el mejor indicador para obtener la saliencia de todos los temas debido a que al preguntar por problemas no surgen temas donde el gobierno haya actuado bien [Wlezien, 2005](https://www.sciencedirect.com/science/article/pii/S026137940500020X?casa_token=Al5HAqI4XjQAAAAA:_dsDUL4RfBGvSSD1ldWERlHitCqIpiQsy0QQmI5SQq0XKHu77_eI6YkfAFy2ExOJGnn8TNRpKQM). 
+Otro indicador frequente en encuestas de opinión pública es la percepción sobre el principal problema del país. La percepción sobre el principal problema del país es un indicador para la prominencia o relvancia de cada tema -*issue salience*-. Cuando un tema es importante para el público los candidatos y partidos suelen tomar posición al respecto ([Wlezien y Soroka, 2007](https://scholar.google.es/scholar?hl=es&as_sdt=0%2C5&q=The+Relationship+between+Public+Opinion+and+Policy+oxford+handbook&btnG=)). A su vez, los ciudanos suelen preocuparse y tener opiniones formadas respecto a estos temas. Aunque es importante destacar que la pregunta sobre el principal problema del país no siempre es el mejor indicador para obtener la saliencia de todos los temas debido a que al preguntar por problemas no surgen temas donde el gobierno haya actuado bien ([Wlezien, 2005](https://www.sciencedirect.com/science/article/pii/S026137940500020X?casa_token=Al5HAqI4XjQAAAAA:_dsDUL4RfBGvSSD1ldWERlHitCqIpiQsy0QQmI5SQq0XKHu77_eI6YkfAFy2ExOJGnn8TNRpKQM)). 
 
 En el gráfico debajo se agrupan los problemas en las siguientes categorías: (1) Economía (incluye desempleo, precios altos, etc.); (2) Corrupción; (3) Covid 19/Salud; (4) Delincuencia/Seguridad Pública; (5) Situación Política/Problemas de la política. En 2020 la economía o la desocupación era el principal problema para los ciudadanos de la mayoría de los países de América Latina. La corrupción y la delincuencia o seguridad pública también figuran como temas importantes en varios países.
 
@@ -2724,7 +3043,6 @@ plot(plot_prob_serie)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
 # **Citar este documento**
@@ -2751,6 +3069,8 @@ Carlin, R. E., Love, G. J., & Martínez-Gallardo, C. (2015). Cushioning the fall
 Carlin, R. E., Hartlyn, J., Hellwig, T., Love, G. J., Martínez-Gallardo, C., & Singer, M. M. (2018). Public support for Latin American presidents: The cyclical model in comparative perspective. Research & Politics, 5(3), 2053168018787690.
 
 Converse, P. E. (2006). The nature of belief systems in mass publics (1964). Critical review, 18(1-3), 1-74.
+
+Dalton, R. J. (2004). Democratic challenges, democratic choices. Oxford univ. press.Dalton, R. J. (2004). Democratic challenges, democratic choices. Oxford univ. press.
 
 Dalton, R. J. (2013). Citizen politics: Public opinion and political parties in advanced industrial democracies. Cq Press.
 
@@ -2826,10 +3146,4 @@ Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Mo
 ![](www/logo_umad.png){width=250px}
 </center>
 
-
 &nbsp;
-
-
-
-
-

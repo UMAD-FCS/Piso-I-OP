@@ -1638,3 +1638,51 @@ ggplot(prob_serie,
 
 
   
+
+
+## Democracia ----
+
+# Cargo la tabla 
+demo_apoyo <- readxl::read_excel("data/latino/demo_serie.xlsx") %>%
+  mutate(value = round(value * 100, digits = 0),
+         year = as.numeric(year)) %>% 
+  filter(pregunta == "apoyo")
+
+# Tabla
+demo_apoyo_tabla <- demo_apoyo %>% 
+  select(-pregunta) %>% 
+  pivot_wider(names_from = cat,
+              values_from = value)
+
+demo_apoyo <- demo_apoyo_tabla %>% 
+  pivot_longer(-year,
+               names_to = "cat",
+               values_to = "value")
+
+ggplot(demo_apoyo,
+       aes(x = year, y = value, 
+           color = cat, fill = cat)) +
+  geom_line(size=1.25) +
+  geom_point(size=3, shape=21, fill="white") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(name = "", palette = "Paired") +
+  labs(
+    y = NULL, x = NULL,
+    title = "Apoyo a la democracia en Uruguay (1995-2020)",
+    caption = 'Fuente: Unidad de Métodos y Acceso a Datos (FCS-UdelaR) en base a datos de Latinobarómetro'
+  )  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
