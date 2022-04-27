@@ -44,23 +44,56 @@ library(ggridges)
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
-# **Opinión pública en Uruguay**
+# **Encuestas de opinión pública**
 
-<div style="text-align: justify">
+## **Breve introducción**
+
+Las encuestas de opinión pública tal como las conocemos hoy surgieron en Estados Unidos en la década de 1930. Desde 1824, distintos medios de comunicación estadounidenses publicaban sondeos de opinón a grupos de personas sin una metodología específica, prestando poca atención a aspectos claves como el muestreo ([Bethlehem, 2017](https://www.taylorfrancis.com/books/mono/10.1201/9781315154220/understanding-public-opinion-polls-jelke-bethlehem)). Para la elección de 1936, donde se enfrentaban Franklin D. Roosvelt y Alf Landon, uno de estos medios -The Literary Digest- realizó un sondeo donde participaron más de 2 millones de personas. Los participantes eran obtenidos mediante un listado de dueños de automóviles y suscriptores de línea telefónica, augurando una victoria abultada de Alf Landon (57% L. vs 43% R.). Sin embargo, a pesar de la gran cantidad de encuestas realizadas, los encuestados no eran representativos del total de la población estadounidense, ya que solo los sectores más pudientes de la sociedad accedían a una línea teléfonica o un automovil y las personas con mayores ingresos votaban en mayor medida al candidado republicano. Para esa misma elección George Gallup llevó a cabo una encuesta utilizando una técnica de muestreo más sofisticada aunque con un tamaño 50 veces menor a la del Literary Digest, mostró una clara ventaja de Roosvelt (56% R. vs 44% L.) confirmada a posteriori con los resultados de la votación (61% R. vs 37% L.). A pesar de que la técnica de muestreo que utilizó Gallup -quota sampling- tenía importantes falencias evidenciadas en la elección de 1948, lo sucedido en la elección de 1936 tuvo un gran impacto en los sondeos de opinión, al evidenciar que la forma en que se selecciona una muestra es más importante que el tamaño ([Bethlehem, 2017](https://www.taylorfrancis.com/books/mono/10.1201/9781315154220/understanding-public-opinion-polls-jelke-bethlehem)).
+
+Las encuestas científicas son una técnica de recolección de datos que implica la administración de un cuestionario a un grupo de personas usualmente tomando una muestra de una población más grande. ([Traugott y Lavrakas, 2016](https://books.google.es/books?hl=es&lr=&id=aSOSDQAAQBAJ&oi=fnd&pg=PR9&dq=traugott+lavrakas+2016&ots=DBIVeAN7u5&sig=TRiCTCB4NOXISB3S4hH0RrFVBH0#v=onepage&q=traugott%20lavrakas%202016&f=false)). Esta técnica es utilizada para recolectar información para análisis estadísticos agregados, sin importar casos específicos. 
+
+Algunas de las encuestas de opinión pública, paricularmente encuestas electorales, constituyen una industria y tarea académica muy particular debido a que sus resultados pueden ser contrastados con los resultados en el mundo real. Si bien algunas encuestas específicas pueden ser fácilmente comparables con los parámetros que intentan estimar, los errores pueden provenir de distintos aspectos del diseño de una encuesta y el estudio de los potenciales errores es fundamental para producir encuestas válidas ([Atkeson y Alvarez, 2018](https://books.google.es/books?hl=es&lr=&id=J5FlDwAAQBAJ&oi=fnd&pg=PP1&dq=Lonna+Rae+Atkeson+and+R.+Michael+Alvarez+oxford+handbook&ots=x7iHnPmpbZ&sig=ef5lp2nGahVdBKD2pTL_1b8vqc8)).
+
+## **Opinión Pública en Uruguay**
 
 Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 ([Aguiar, 2000](https://dialnet.unirioja.es/servlet/articulo?codigo=3162414)). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [**Roper Center**](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país ([Zuasnábar, 2018](https://dialogopolitico.org/wp-content/uploads/2018/08/libro_30_anios_de_opinion_publica_en_el_uruguay.pdf)). Hacia finales de la década de 1990 las consultoras [**Equipos**](https://equipos.com.uy/), [**Cifra**](https://www.cifra.com.uy/), [**Factum**](https://factum.uy/), Interconsult y [**Radar**](https://www.gruporadar.com.uy/) a la que sumaría [**Opción Consultores**](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. Los datos agregados tanto de intención de voto como de aprobación presidencial fueron recolectados por la [UMAD](https://umad.cienciassociales.edu.uy/) y están disponibles en el paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy)).
 
 A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [**Latinobarómetro**](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [**Barómetro de las Américas**](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [**LAPOP**](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. Otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [**Encuesta Mundial de Valores**](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [**Comparative Study of Electoral Systems**](https://cses.org/) (2009 y 2019)
-</div>
 
 ## **Metodología y error en encuestas**
 
-En los últimos años se ha hablado mucho sobre el error de las encuestas de opinión pública -particularmente sobre indicadores de intención de voto-, sus métodos y validez como instrumento.  La elección de Donald Trump como presidente de Estados Unidos en 2016, el Brexit o la primera vuelta de las elecciones de 2014 en Uruguay suelen son algunos de los ejemplos que suelen ser citados por los críticos de los sondeos de opinión pública. Sin embargo, un metaanálisis reciente que incluyó 30000 encuestas en 45 países entre 1942 y 2017 no encontró evidencia de un aumento en el error de las encuestas de intención de voto (Jennings y Wlezien, 2018). Más allá de que la tendencia global no sea hacia el aumento del error en las encuestas de opinión pública, ejemplos como los citados anteriormente y otros sugieren que estas pueden alejarse de los parámetros poblacionales y por ende al analizar los resultados de una encuesta de opinión pública se deben analizar su metodología y tener en cuenta las posibles fuentes de error.
+En los últimos años se ha hablado mucho sobre el error de las encuestas de opinión pública -particularmente sobre las enmcuestas electorales-, sus métodos y validez como instrumento.  La elección de Donald Trump como presidente de Estados Unidos en 2016, el Brexit o la primera vuelta de las elecciones de 2014 en Uruguay son algunos de los ejemplos citados por los críticos. Sin embargo, un metaanálisis reciente que incluyó 30.000 encuestas en 45 países entre 1942 y 2017 no encontró evidencia de un aumento en el error de las encuestas de intención de voto ([Jennings y Wlezien, 2018](https://www.nature.com/articles/s41562%20018-0315-6)). Más allá de que la tendencia global no sea hacia el aumento del error en las encuestas de opinión pública, ejemplos como los citados anteriormente y otros, sugieren que estas pueden alejarse de los parámetros poblacionales y por ende al analizar los resultados de una encuesta de opinión pública se deben tener en cuenta las limitaciones de le técnica, la metodología y las posibles fuentes de error.
 
 ### **Error muestral**
 
+El error muestral es error que surge por obtener información de una muestra en lugar del total de la población. Es decir, si realizamos una encuesta al total de una población, no nos tenemos que preocupar por este tipo de error. Sin embargo, al utilizar una muestra como es la norma en las encuestas de opinión pública tenemos que tener en cuenta el error muestral. Cuando se utilizan técnicas de muestreo no probabilísticas pueden existir sesgos, cuando el muestreo es probabilístico el error puede ser calculado matemáticamente (lo que usualmente se refiere como margen de error). 
+
+Este error -al ser cuantificable- es el que generalmente se presenta junto a los resultados de las encuestas de opinión pública. Si en la publicación de los resultados de una encuesta de intención de voto se reporta que el 40% de la población vota al partido A, el 35% el partido B y que el margen de error es de ±3% significa que -asumiendo que no existen otros tipos de error- el valor verdadero de la intención de voto al partido A está entre 37 y 43% mientras que el del partido B está entre 32 y 38%. Al interpretar el márgen de error de una encuesta es importante considerar dos aspectos: (1) el margen de error no es calculable para todos los tipos de muestras (solo probabilísticas) y dentro de las muestras para las que es calculables la fórmula para su cálculo varía en función del tipo de muestreo; (2) el error muestral solo constituye un tipo de error en las encuestas, por lo que aún si fue calculado de forma correcta las estimaciones pueden caer por fuera del margen de error.
+
+<br />
+
+<div class="boxed">
+*En una* **muestra probabilística** *cada unidad en la población tiene una probabilidad conocida de ser seleccionada y estas son elegidas en forma aleatoria. Cuando el muestro probabilístico es aplicado de forma correcta, una muestra relativamente pequeña es suficiente para hacer inferencias sobre una población muy grande ([Lohr, 2021](https://www.taylorfrancis.com/books/mono/10.1201/9780429298899/sampling-sharon-lohr)).*.
+
+*El muestreo probabilístico puede tomar distintas formas, siendo la más común el* **muestreo aleatorio simple**. *Este tipo de muestreo requiere que cada unidad en la población tenga la misma probabilidad de ser seleccionada. Otro tipo de muestreo probabilístico de uso extendido es el muestreo estratificado, donde se divide a la población en subrgrupos -de interés para el investigador- llamados estratos, y se aplica muestreo aleatorio simple dentro de ellos ([Lohr, 2021](https://www.taylorfrancis.com/books/mono/10.1201/9780429298899/sampling-sharon-lohr)).* 
+</div>
+
+<br />
 
 ### **Error no muestral**
+
+La teoría del error total de encuesta es un marco conceptual que intenta describir los errores estadísticos de una encuesta incorporando distintos tipos de encuestas ([Grover y Lyberg, 2010](https://academic.oup.com/poq/article-abstract/74/5/849/1817502)). A diferencia del error muestral en muestras probabilísticas muchos de las otras fuentes de error de una encuesta no pueden ser estimados matemáticamente, aunque si existe mucha literatura sobre como reducirlos. 
+
+Algunos de los errores no muestrales a tener en cuenta son:
+
+<ol>
+  <br />
+  <li>**Sesgo de no respuesta:** este tipo de error puede ocurrir cuando los encuestados seleccionados en la muestra no pueden o se niegan a ser contactados. Este es uno de los problemas más frecuentes y relevantes de la investigación en opinión pública, con una tendencia al aumento de la tasa de no respuesta. Este error puede sesgar la muestra si las personas que se niegan o no pueden participar difieren sistemáticamente de las que si participan. </li>
+  <br />
+  <li> **Error de cobertura:** ocurre cuando hay un desfasaje entre la población objetivo y la población del marco muestral. Ejemplo: cuando se utilizan encuestas telefónicas y las personas que no tienen teléfono son de interés para la investigación (nunca van a poder ser incluidas en la encuesta) </li>
+  <br />
+  <li>**Errores en las respuestas:** los encuestados pueden no responder de forma sincera si no están lo suficientemente motivados como para hacerlo, o las preguntas no son lo suficientemente claras. A su vez, los encuestadores pueden cometer inducir error sistemático al encuestar ([Weisberg, 2018](https://www.degruyter.com/document/doi/10.7208/9780226891293/html)). </li>
+</ol>
 
 ### **Metodología de encuestas utilizadas**
 
@@ -3061,11 +3094,13 @@ UMAD (2020) Opinión Pública en Uruguay. Disponible en [**enlace en línea**]()
 # **Referencias bibliográficas**
 
 <div style="text-align: justify">										
-Apellido, Nombre (2010) Nombre de trabajo. Revista
+Atkeson, L. R., & Alvarez, R. M. (Eds.). (2018). The Oxford handbook of polling and survey methods. Oxford University Press.
 
 Aguiar, C. A. (2000). La Historia y la historia: Opinión Pública y opinión pública en el Uruguay. Prisma, (15), 7-45.
 
 Baker, A., & Greene, K. F. (2011). The Latin American left's mandate: free-market policies and issue voting in new democracies. World Politics, 63(1), 43-77.
+
+Bethlehem, J. (2017). Understanding public opinion polls. Chapman and Hall/CRC.
 
 Buquet, D., & Selios, L. (2017). Political congruence in Uruguay, 2014. In Malaise in Representation in Latin American Countries (pp. 187-210). Palgrave Macmillan, New York.
 
@@ -3083,9 +3118,15 @@ Dalton, R. J. (2013). Citizen politics: Public opinion and political parties in 
 
 Ellis, C., & Stimson, J. A. (2012). Ideology in America. Cambridge University Press.
 
+Groves, R. M., & Lyberg, L. (2010). Total survey error: Past, present, and future. Public opinion quarterly, 74(5), 849-879.
+
 Joignant, A., Morales, M., & Fuentes, C. (2017). Malaise in representation: attitudes, beliefs, behaviors, and causalities. In Malaise in representation in latin american countries (pp. 1-43). Palgrave Macmillan, New York.
 
 Inglehart, R., & Sidjanski, D. (1976). The left, the right, the establishment and the Swiss electorate. Party identification and beyond, 240-41.
+
+Lohr, S. L. (2021). Sampling: design and analysis. Chapman and Hall/CRC.
+
+Lyberg, L., & Weisberg, H. (2016). Total survey error: a paradigm for survey methodology (pp. 27-42). Thousand Oaks, CA: Sage.
 
 Martinez-Gallardo, C. (2012). Out of the cabinet: what drives defections from the government in presidential systems?. Comparative Political Studies, 45(1), 62-90.
 
@@ -3111,11 +3152,15 @@ Torcal, M. (2006). Desafección institucional e historia democrática en las nue
 
 Torcal, M., & Bargsted, M. (2015). Confianza política en Europa y América Latina: estudio comparado con datos y causas. Confianza política en Europa y América Latina: estudio comparado con datos y causas, 163-200.
 
+Traugott, P. D. M. W., & Lavrakas, P. D. P. J. (2016). The voter's guide to election polls. Lulu. com.
+
 Uslaner, E. M. (2002). The moral foundations of trust. Disponible en SSRN 824504.
 
 Uslaner, E. M. (Ed.). (2018). The Oxford handbook of social and political trust. Oxford University Press.
 
 Webster, S. W., & Abramowitz, A. I. (2017). The ideological foundations of affective polarization in the US electorate. American Politics Research, 45(4), 621-647.
+
+Weisberg, H. F. (2009). The total survey error approach. In The Total Survey Error Approach. University of Chicago Press.
 
 Wlezien, C. (2005). On the salience of political issues: The problem with ‘most important problem’. Electoral studies, 24(4), 555-579.
 
@@ -3125,32 +3170,12 @@ Zechmeister, E. J. (2015). Left-right identifications and the Latin American vot
 
 Zuasnábar, Ignacio (2018). Treinta años de opinión pública en el Uruguay. Montevideo: Konrad Adenauer Stiftung.
 
-&nbsp;
 <hr />
 
 <div style="text-align: center">										
 
-**Autores:** Fulanito, Menganito
-
-**Equipo de programación:** Fulanito, Menganito
-
-**Contacto:** umad@cienciassociales.com.uy
-
-
 <p style="text-align: center;font-size 22px;"> <a href="https://umad.cienciassociales.edu.uy/">Unidad de Métodos y Acceso a Datos</a></p>
-
-<!-- Add icon library -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
-<!-- Add font awesome icons -->
-<!-- <p style="text-align: center;"> -->
-<!--     <a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a> -->
-<!--     <a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a> -->
-<!--     <a href="https://github.com/holtzy/" class="fa fa-github"></a> -->
-<!-- </p> -->
 
 <center>
 ![](www/logo_umad.png){width=250px}
 </center>
-
-&nbsp;

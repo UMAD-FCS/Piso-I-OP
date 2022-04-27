@@ -1559,7 +1559,48 @@ prob_comp <- readxl::read_excel("data/latino/prob_18_20.xlsx") %>%
   mutate(pais = case_when(
     pais == "Total" ~ "Total América Latina",
     TRUE ~ pais
-  ))
+  )) %>%
+  mutate(pais = as.factor(pais)) %>% 
+  mutate(cat_rec_2 = paste0(cat_rec, "\n (", round(valor, digits = 0), "%)")) %>% 
+  mutate(k = 1) %>% 
+  group_by(fecha, pais) %>%
+  arrange(desc(valor), .by_group = TRUE) %>%
+  mutate(rank = rank(desc(valor))) %>% 
+  mutate(cat_rec_2 = gsub("/", "/ \n", cat_rec_2))
+
+library(ggalluvial)
+
+ggplot(prob_comp,
+       aes(x = fecha,
+           stratum = rank, 
+           alluvium = cat_rec, 
+           y = valor,
+           fill = cat_rec,
+           label = cat_rec_2))+
+  geom_stratum(width = 1/2, alpha = .5)+
+  geom_alluvium(width = 1/2, alpha = .3)+
+  geom_text(stat = "stratum", size = 3) +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none",
+        # plot.background = element_rect(fill = '#AED6F1', color = '#3498DB'),
+        axis.text.y = element_blank()) +
+  labs(y = "",
+       x = "",
+       title = "Principal problema del país 2018 y 2020") +
+  scale_fill_brewer(palette = "Dark2") +
+  facet_wrap(~ pais, scales = "free") +
+  scale_x_continuous(limits = c(2017.5, 2020.5), 
+                     breaks = seq(2018, 2020, by = 2))
+
+ggsave("www/ppal_prob_uytot_b.png", units = "cm", width = 35, height = 25)
+
+
+
+
+
+
+
+
 
 ggplot(prob_comp,
        aes(x = fecha, y = valor, color = cat_rec)) +
