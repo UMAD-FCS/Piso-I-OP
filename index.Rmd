@@ -48,25 +48,25 @@ library(ggridges)
 
 ## **Breve introducción**
 
-Las encuestas de opinión pública tal como las conocemos hoy surgieron en Estados Unidos en la década de 1930. Desde 1824, distintos medios de comunicación estadounidenses publicaban sondeos de opinón a grupos de personas sin una metodología específica, prestando poca atención a aspectos claves como el muestreo ([Bethlehem, 2017](https://www.taylorfrancis.com/books/mono/10.1201/9781315154220/understanding-public-opinion-polls-jelke-bethlehem)). Para la elección de 1936, donde se enfrentaban Franklin D. Roosvelt y Alf Landon, uno de estos medios -The Literary Digest- realizó un sondeo donde participaron más de 2 millones de personas. Los participantes eran obtenidos mediante un listado de dueños de automóviles y suscriptores de línea telefónica, augurando una victoria abultada de Alf Landon (57% L. vs 43% R.). Sin embargo, a pesar de la gran cantidad de encuestas realizadas, los encuestados no eran representativos del total de la población estadounidense, ya que solo los sectores más pudientes de la sociedad accedían a una línea teléfonica o un automovil y las personas con mayores ingresos votaban en mayor medida al candidado republicano. Para esa misma elección George Gallup llevó a cabo una encuesta utilizando una técnica de muestreo más sofisticada aunque con un tamaño 50 veces menor a la del Literary Digest, mostró una clara ventaja de Roosvelt (56% R. vs 44% L.) confirmada a posteriori con los resultados de la votación (61% R. vs 37% L.). A pesar de que la técnica de muestreo que utilizó Gallup -quota sampling- tenía importantes falencias evidenciadas en la elección de 1948, lo sucedido en la elección de 1936 tuvo un gran impacto en los sondeos de opinión, al evidenciar que la forma en que se selecciona una muestra es más importante que el tamaño ([Bethlehem, 2017](https://www.taylorfrancis.com/books/mono/10.1201/9781315154220/understanding-public-opinion-polls-jelke-bethlehem)).
+Las encuestas de opinión pública tal como las conocemos hoy surgieron en Estados Unidos en la década de 1930. Desde 1824, distintos medios de comunicación estadounidenses publicaban sondeos de opinón a grupos de personas sin una metodología específica, prestando poca atención a aspectos claves como el muestreo ([Bethlehem, 2017](https://www.taylorfrancis.com/books/mono/10.1201/9781315154220/understanding-public-opinion-polls-jelke-bethlehem)). Para la elección de 1936, donde se enfrentaban Franklin D. Roosvelt y Alf Landon, uno de estos medios -The Literary Digest- realizó un sondeo donde participaron más de 2 millones de personas. Los participantes eran obtenidos mediante un listado de dueños de automóviles y suscriptores de línea telefónica, augurando una victoria abultada de Alf Landon (57% L. vs 43% R.). Sin embargo, a pesar de la gran cantidad de encuestas realizadas, los encuestados no eran representativos del total de la población estadounidense, ya que solo los sectores más pudientes de la sociedad accedían a una línea teléfonica o un automovil y las personas con mayores ingresos votaban en mayor medida al candidado republicano. Para esa misma elección George Gallup llevó a cabo una encuesta utilizando una técnica de muestreo más sofisticada aunque con un tamaño 50 veces menor a la del Literary Digest, mostrando una clara ventaja de Roosvelt (56% R. vs 44% L.) confirmada a posteriori con los resultados de la votación (61% R. vs 37% L.). A pesar de que la técnica de muestreo que utilizó Gallup -quota sampling- tenía importantes falencias como se pudo notar en la elección de 1948, lo sucedido en la elección de 1936 tuvo un gran impacto en los sondeos de opinión, al evidenciar que la forma en que se selecciona una muestra es más importante que el tamaño ([Bethlehem, 2017](https://www.taylorfrancis.com/books/mono/10.1201/9781315154220/understanding-public-opinion-polls-jelke-bethlehem)).
 
 Las encuestas científicas son una técnica de recolección de datos que implica la administración de un cuestionario a un grupo de personas usualmente tomando una muestra de una población más grande. ([Traugott y Lavrakas, 2016](https://books.google.es/books?hl=es&lr=&id=aSOSDQAAQBAJ&oi=fnd&pg=PR9&dq=traugott+lavrakas+2016&ots=DBIVeAN7u5&sig=TRiCTCB4NOXISB3S4hH0RrFVBH0#v=onepage&q=traugott%20lavrakas%202016&f=false)). Esta técnica es utilizada para recolectar información para análisis estadísticos agregados, sin importar casos específicos. 
 
-Algunas de las encuestas de opinión pública, paricularmente encuestas electorales, constituyen una industria y tarea académica muy particular debido a que sus resultados pueden ser contrastados con los resultados en el mundo real. Si bien algunas encuestas específicas pueden ser fácilmente comparables con los parámetros que intentan estimar, los errores pueden provenir de distintos aspectos del diseño de una encuesta y el estudio de los potenciales errores es fundamental para producir encuestas válidas ([Atkeson y Alvarez, 2018](https://books.google.es/books?hl=es&lr=&id=J5FlDwAAQBAJ&oi=fnd&pg=PP1&dq=Lonna+Rae+Atkeson+and+R.+Michael+Alvarez+oxford+handbook&ots=x7iHnPmpbZ&sig=ef5lp2nGahVdBKD2pTL_1b8vqc8)).
+Algunas de las encuestas de opinión pública, particularmente encuestas electorales, constituyen una industria y tarea académica muy particular debido a que sus resultados pueden ser contrastados con los resultados en el mundo real. Si bien algunas encuestas específicas pueden ser fácilmente comparables con los parámetros que intentan estimar, los errores pueden provenir de distintos aspectos del diseño de la encuesta y el estudio de los potenciales errores es fundamental para producir encuestas válidas ([Atkeson y Alvarez, 2018](https://books.google.es/books?hl=es&lr=&id=J5FlDwAAQBAJ&oi=fnd&pg=PP1&dq=Lonna+Rae+Atkeson+and+R.+Michael+Alvarez+oxford+handbook&ots=x7iHnPmpbZ&sig=ef5lp2nGahVdBKD2pTL_1b8vqc8)).
 
 ## **Opinión Pública en Uruguay**
 
-Las primeras encuestas de opinión pública en Uruguay de las que existe regristo datan alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 ([Aguiar, 2000](https://dialnet.unirioja.es/servlet/articulo?codigo=3162414)). Incluso algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [**Roper Center**](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país ([Zuasnábar, 2018](https://dialogopolitico.org/wp-content/uploads/2018/08/libro_30_anios_de_opinion_publica_en_el_uruguay.pdf)). Hacia finales de la década de 1990 las consultoras [**Equipos**](https://equipos.com.uy/), [**Cifra**](https://www.cifra.com.uy/), [**Factum**](https://factum.uy/), Interconsult y [**Radar**](https://www.gruporadar.com.uy/) a la que sumaría [**Opción Consultores**](https://www.opcion.com.uy/) en la década de 2010 realizan periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. Los datos agregados tanto de intención de voto como de aprobación presidencial fueron recolectados por la [UMAD](https://umad.cienciassociales.edu.uy/) y están disponibles en el paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy)).
+Las primeras encuestas de opinión pública en Uruguay de las que existe registro datan de alrededor de 1956 generando incluso una fuerte presencia en los diarios de la época hacia fines de la década del 1950 y 1960 ([Aguiar, 2000](https://dialnet.unirioja.es/servlet/articulo?codigo=3162414)). Algunas de estas encuestas llevadas a cabo principalmente por la empresa Gallup están disponibles en el archivo de datos de ciencias sociales [**Roper Center**](https://ropercenter.cornell.edu/) de la Universidad de Cornell. Sin embargo, es a principio de los 90s que comienzan los estudios sistemáticos a nivel nacional de opinión pública -que cuentan con series históricas de preguntas realizadas hasta el día de hoy- en nuestro país ([Zuasnábar, 2018](https://dialogopolitico.org/wp-content/uploads/2018/08/libro_30_anios_de_opinion_publica_en_el_uruguay.pdf)). Hacia finales de la década de 1990 las consultoras [**Equipos**](https://equipos.com.uy/), [**Cifra**](https://www.cifra.com.uy/), [**Factum**](https://factum.uy/), Interconsult y [**Radar**](https://www.gruporadar.com.uy/) a la que sumaría [**Opción Consultores**](https://www.opcion.com.uy/) en la década de 2010 comienzan a realizar periódicamente encuestas de opinión pública para diversos actores en nuestro país, frecuentemente difundidas en medios de comunicación. Los datos agregados tanto de intención de voto como de aprobación presidencial fueron recolectados por la [UMAD](https://umad.cienciassociales.edu.uy/) y están disponibles en el paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy)).
 
-A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyetos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados de opinión pública entre países. El proyecto de más larga data es [**Latinobarómetro**](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [**Barómetro de las Américas**](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [**LAPOP**](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países de la región y fuera de la región también. Otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [**Encuesta Mundial de Valores**](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [**Comparative Study of Electoral Systems**](https://cses.org/) (2009 y 2019)
+A su vez, existen proyectos de opinión pública internacionales que realizan encuestas de opinión pública en Uruguay y habilitan acceso a los microdatos. Estos proyectos aplican los mismos -o muy similares- cuestionarios en distintos países de la región o el mundo facilitando los estudios comparados entre países. El proyecto de más larga data del que Uruguay es parte es [**Latinobarómetro**](https://www.latinobarometro.org/lat.jsp) que ha realizado 21 encuestas en nuestro país entre 1995 y 2020, realizando también encuestas en otros 17 países latinoamericanos y España. A su vez, el [**Barómetro de las Américas**](https://www.vanderbilt.edu/lapop-espanol/acerca-americasbarometer.php) de [**LAPOP**](https://www.vanderbilt.edu/lapop-espanol/) de la Universidad de Vanderbilt realiza encuestas periódicamente desde 2006 en nuestro país y otros países fuera y dentro de la región. Otros proyectos internacionales que ocasionalmente realizan encuestas de opinión pública en Uruguay son la [**Encuesta Mundial de Valores**](https://www.worldvaluessurvey.org/WVSNewsShow.jsp?ID=249) (1996, 2006 y 2011) y el [**Comparative Study of Electoral Systems**](https://cses.org/) (2009 y 2019)
 
 ## **Metodología y error en encuestas**
 
-En los últimos años se ha hablado mucho sobre el error de las encuestas de opinión pública -particularmente sobre las enmcuestas electorales-, sus métodos y validez como instrumento.  La elección de Donald Trump como presidente de Estados Unidos en 2016, el Brexit o la primera vuelta de las elecciones de 2014 en Uruguay son algunos de los ejemplos citados por los críticos. Sin embargo, un metaanálisis reciente que incluyó 30.000 encuestas en 45 países entre 1942 y 2017 no encontró evidencia de un aumento en el error de las encuestas de intención de voto ([Jennings y Wlezien, 2018](https://www.nature.com/articles/s41562%20018-0315-6)). Más allá de que la tendencia global no sea hacia el aumento del error en las encuestas de opinión pública, ejemplos como los citados anteriormente y otros, sugieren que estas pueden alejarse de los parámetros poblacionales y por ende al analizar los resultados de una encuesta de opinión pública se deben tener en cuenta las limitaciones de le técnica, la metodología y las posibles fuentes de error.
+En los últimos años se ha hablado mucho sobre el error de las encuestas de opinión pública -particularmente sobre las encuestas electorales-, sus métodos y validez como instrumento.  La elección de Donald Trump como presidente de Estados Unidos en 2016, el Brexit o la primera vuelta de las elecciones de 2014 en Uruguay son algunos de los ejemplos citados por los críticos. Sin embargo, un metaanálisis reciente que incluyó 30.000 encuestas en 45 países entre 1942 y 2017 no encontró evidencia de un aumento reciente en el error de las encuestas de intención de voto ([Jennings y Wlezien, 2018](https://www.nature.com/articles/s41562%20018-0315-6)). Más allá de que la tendencia global no sea hacia el aumento del error en las encuestas de opinión pública, ejemplos como los citados anteriormente y otros, sugieren que estas pueden alejarse de los parámetros poblacionales y por ende al analizar los resultados de una encuesta de opinión pública se deben tener en cuenta las limitaciones de le técnica, la metodología y las posibles fuentes de error.
 
 ### **Error muestral**
 
-El error muestral es error que surge por obtener información de una muestra en lugar del total de la población. Es decir, si realizamos una encuesta al total de una población, no nos tenemos que preocupar por este tipo de error. Sin embargo, al utilizar una muestra como es la norma en las encuestas de opinión pública tenemos que tener en cuenta el error muestral. Cuando se utilizan técnicas de muestreo no probabilísticas pueden existir sesgos, cuando el muestreo es probabilístico el error puede ser calculado matemáticamente (lo que usualmente se refiere como margen de error). 
+El error muestral es el error que surge por obtener información de una muestra en lugar del total de la población. Es decir, si realizamos una encuesta al total de una población, no nos tenemos que preocupar por este tipo de error. Sin embargo, al utilizar una muestra, como es la norma en las encuestas de opinión pública, tenemos que tener en cuenta el error muestral. Cuando se utilizan técnicas de muestreo no probabilísticas pueden existir sesgos, cuando el muestreo es probabilístico el error puede ser calculado matemáticamente (lo que usualmente se refiere como margen de error). 
 
 Este error -al ser cuantificable- es el que generalmente se presenta junto a los resultados de las encuestas de opinión pública. Si en la publicación de los resultados de una encuesta de intención de voto se reporta que el 40% de la población vota al partido A, el 35% el partido B y que el margen de error es de ±3% significa que -asumiendo que no existen otros tipos de error- el valor verdadero de la intención de voto al partido A está entre 37 y 43% mientras que el del partido B está entre 32 y 38%. Al interpretar el márgen de error de una encuesta es importante considerar dos aspectos: (1) el margen de error no es calculable para todos los tipos de muestras (solo probabilísticas) y dentro de las muestras para las que es calculables la fórmula para su cálculo varía en función del tipo de muestreo; (2) el error muestral solo constituye un tipo de error en las encuestas, por lo que aún si fue calculado de forma correcta las estimaciones pueden caer por fuera del margen de error.
 
@@ -75,27 +75,22 @@ Este error -al ser cuantificable- es el que generalmente se presenta junto a los
 <div class="boxed">
 *En una* **muestra probabilística** *cada unidad en la población tiene una probabilidad conocida de ser seleccionada y estas son elegidas en forma aleatoria. Cuando el muestro probabilístico es aplicado de forma correcta, una muestra relativamente pequeña es suficiente para hacer inferencias sobre una población muy grande ([Lohr, 2021](https://www.taylorfrancis.com/books/mono/10.1201/9780429298899/sampling-sharon-lohr)).*.
 
-*El muestreo probabilístico puede tomar distintas formas, siendo la más común el* **muestreo aleatorio simple**. *Este tipo de muestreo requiere que cada unidad en la población tenga la misma probabilidad de ser seleccionada. Otro tipo de muestreo probabilístico de uso extendido es el muestreo estratificado, donde se divide a la población en subrgrupos -de interés para el investigador- llamados estratos, y se aplica muestreo aleatorio simple dentro de ellos ([Lohr, 2021](https://www.taylorfrancis.com/books/mono/10.1201/9780429298899/sampling-sharon-lohr)).* 
+*El muestreo probabilístico puede tomar distintas formas, siendo la más común el* **muestreo aleatorio simple**. *Este tipo de muestreo requiere que cada unidad en la población tenga la misma probabilidad de ser seleccionada. Otro tipo de muestreo probabilístico de uso extendido es el **muestreo estratificado**, donde se divide a la población en subrgrupos -de interés para el investigador- llamados estratos, y se aplica muestreo aleatorio simple dentro de ellos ([Lohr, 2021](https://www.taylorfrancis.com/books/mono/10.1201/9780429298899/sampling-sharon-lohr)).* 
 </div>
 
 <br />
 
 ### **Error no muestral**
 
-La teoría del error total de encuesta es un marco conceptual que intenta describir los errores estadísticos de una encuesta incorporando distintos tipos de encuestas ([Grover y Lyberg, 2010](https://academic.oup.com/poq/article-abstract/74/5/849/1817502)). A diferencia del error muestral en muestras probabilísticas muchos de las otras fuentes de error de una encuesta no pueden ser estimados matemáticamente, aunque si existe mucha literatura sobre como reducirlos. 
+La teoría del error total de encuesta es un marco conceptual que intenta describir los errores estadísticos de una encuesta incorporando distintos tipos de errores, que pueden suceder a lo largo de todo el proceso de elaboración de una encuesta, no solo del muestreo ([Grover y Lyberg, 2010](https://academic.oup.com/poq/article-abstract/74/5/849/1817502)). A diferencia del error muestral en muestras probabilísticas muchos de las otras fuentes de error de una encuesta no pueden ser estimados matemáticamente, aunque si existe mucha literatura sobre como reducirlos. 
 
 Algunos de los errores no muestrales a tener en cuenta son:
 
 <ol>
-  <br />
   <li>**Sesgo de no respuesta:** este tipo de error puede ocurrir cuando los encuestados seleccionados en la muestra no pueden o se niegan a ser contactados. Este es uno de los problemas más frecuentes y relevantes de la investigación en opinión pública, con una tendencia al aumento de la tasa de no respuesta. Este error puede sesgar la muestra si las personas que se niegan o no pueden participar difieren sistemáticamente de las que si participan. </li>
-  <br />
-  <li> **Error de cobertura:** ocurre cuando hay un desfasaje entre la población objetivo y la población del marco muestral. Ejemplo: cuando se utilizan encuestas telefónicas y las personas que no tienen teléfono son de interés para la investigación (nunca van a poder ser incluidas en la encuesta) </li>
-  <br />
-  <li>**Errores en las respuestas:** los encuestados pueden no responder de forma sincera si no están lo suficientemente motivados como para hacerlo, o las preguntas no son lo suficientemente claras. A su vez, los encuestadores pueden cometer inducir error sistemático al encuestar ([Weisberg, 2018](https://www.degruyter.com/document/doi/10.7208/9780226891293/html)). </li>
+  <li> **Error de cobertura:** ocurre cuando hay un desfasaje entre la población objetivo y la población del marco muestral. Ejemplo: cuando se utilizan encuestas telefónicas y las personas que no tienen teléfono son de interés para la investigación (nunca podrían ser seleccionadas para la encuesta) </li>
+  <li>**Errores en las respuestas:** los encuestados pueden no responder de forma sincera si no están lo suficientemente motivados como para hacerlo, o las preguntas pueden no ser lo suficientemente claras. A su vez, los encuestadores pueden cometer inducir error sistemático al encuestar ([Weisberg, 2018](https://www.degruyter.com/document/doi/10.7208/9780226891293/html)). </li>
 </ol>
-
-### **Metodología de encuestas utilizadas**
 
 <br />
 
@@ -138,14 +133,14 @@ La aprobación presidencial suele -aunque no siempre- mostrar un **patrón cícl
 ## **Serie histórica de aprobación**
 
 <div style="text-align: justify">
-Como se menciona en la guía de uso, es necesario tener ciertos recabos al agregar datos de diferentes encuestas. Las consultoras de opinión pública que publican datos de evaluación del presidente suelen diferir en el fraseo de la pregunta, método de administración o esquema de ponderación. De esta forma, es necesario ser cauteloso al interpretar diferencias entre dos encuestas realizadas de forma distinta, dado que el error **no muestral** puede causar diferencias mayores al margen de error teórico. 
+Es necesario tener ciertos recabos al agregar datos de diferentes encuestas. Las consultoras de opinión pública que publican datos de evaluación del presidente suelen diferir en el fraseo de la pregunta, método de administración o esquema de ponderación. De esta forma, es necesario ser cauteloso al interpretar diferencias entre dos encuestas realizadas de forma distinta, dado que el error **no muestral** puede causar diferencias mayores al margen de error teórico. 
 
-Para poder analizar el cambio en el tiempo de la evaluación del presidente presentamos los datos de tres maneras, para que el usuario pueda utilizar la que más se ajuste a sus necesidades (se puede acceder a los datos completos a través del paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy): **(1)** calculamos la tendencia utilizando todos los datos disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy) mediante una regresión local (loess); **(2)** combinamos los datos de las series de cada encuestadora utilizando el algoritmo de *dyads-ratio* para estimar una sola serie; **(3)** presentamos la serie con los datos de la consultora con mayor cantidad de encuestas -en este caso Equipos-. Cada estrategia de análisis tiene ventajas y desventajas que deben ser consideradas al emplear estos datos una investigación. 
+Para poder analizar el cambio de la evaluación del presidente en el tiempo presentamos los datos de tres maneras, para que el usuario pueda utilizar la que más se ajuste a sus necesidades (se puede acceder a los datos completos a través del paquete de R [**opuy**](https://github.com/Nicolas-Schmidt/opuy): **(1)** calculamos tendencias utilizando todos los datos disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy)) mediante una regresión local (loess); **(2)** combinamos los datos de las series de cada encuestadora utilizando el algoritmo de *dyads-ratio* para estimar una sola serie; **(3)** presentamos la serie con los datos de la consultora con mayor cantidad de encuestas -en este caso Equipos-. Cada estrategia de análisis tiene ventajas y desventajas que deben ser consideradas al emplear estos datos una investigación. 
 </div>
 
 <br />
 
-### **1. Datos crudos de todas las fuentes**
+### **1. Tendencias a partir de datos crudos**
 
 <div style="text-align: justify">
 Los datos de evaluación del presidente disponibles en [**opuy**](https://github.com/Nicolas-Schmidt/opuy) conforman distintas series que no son estrictamente comparables, es decir, la serie de una consultora puede presentar de forma sistemática evaluaciones superiores o inferiores a la de otra consultora debido a los métodos utilizados (método de administración, pregunta, categorías de respuesta, esquema de ponderación, etc.). Por esto desaconsejamos el uso lineal de los datos combinados, y simplemente presentamos una **línea de tendencia** -estimada con una regresión local- que permite estimar a grandes rasgos los niveles absolutos de evaluación en cada período y la variación en cada período.
@@ -564,7 +559,7 @@ ggplot(dat_opuy %>%
 
 Para obtener una estimación concreta que permita maximizar los datos de todas las fuentes sin comparar linealmente series de distintas consultoras, estimamos una dimensión latente de aprobación presidencial con el algoritmo de *dyad-ratios* siguiendo el enfoque del [Executive Approval Project](http://www.executiveapproval.org/datasets) (ver [Carlin et al., 2015](https://link.springer.com/content/pdf/10.1007/s11109-014-9267-3.pdf)). El algoritmo de dyad-ratios fue creado por James Stimson en 1991 y es parte fundamental del estudio temporal de la **opinión pública agregada**. El algoritmo funciona bajo el supuesto de que la proporción entre dos valores cualquiera dentro de una serie -en este caso series de evaluación del presidente de distintas consultoras, con sus diferencias metodológicas- son indicadores válidos de del cambio relativo en la **dimensión latente**. Si estos cambios relativos verdaderamente reflejan a una dimensión latente común, deberían variar en conjunto -por más detalles sobre el funcionamiento del algoritmo ver ([Stimson, 2018](https://journals.sagepub.com/doi/full/10.1177/0759106318761614?casa_token=JUMBIfc8wHwAAAAA%3A_cv6CzoFoZa5oikshf0djBOJ51JYtcvxx6I5zOLgyz9kvoRwe6gkLzfsugXQx1qMC7_ZUN9WbXC2tg))-. 
 
-Los gráficos debajo musetran la estimación de la evaluación presidencial (tanto en % de aprobación como en saldo neto) para cada trimestre desde 1990 a 2021. La estimación explica el 90% de la varianza, al mismo tiempo que todas las series correlacionan de forma positiva con la estimación. La principal ventaja de este método nos permite obtener una **estimación concreta** para cada trimestre, maximizando la información de todas las fuentes. En términos generales la estimación trimestral también permite ver los patrones cíclicos de la evaluación presidencial, aunque evidenciando ciertas oscilaciones a mitad de mandato, por ejemplo Mujica alcanza su menor nivel de aprobación en el segundo trimestre del segundo año, Jorge Batlle durante la mitad del período (primer trimestre de 2003) mientras que el segundo gobierno de Vázquez obtiene su menor nivel de aprobación en el primer trimestre de su último año demandato.
+Los gráficos debajo muestran la estimación de la evaluación presidencial (tanto en % de aprobación como en saldo neto) para cada trimestre desde 1990 a 2021. La estimación explica el 90% de la varianza, al mismo tiempo que todas las series correlacionan de forma positiva con la estimación. La principal ventaja de este método nos permite obtener una **estimación concreta** para cada trimestre, maximizando la información de todas las fuentes. En términos generales la estimación trimestral también permite ver los patrones cíclicos de la evaluación presidencial, aunque evidenciando ciertas oscilaciones a mitad de mandato, por ejemplo Mujica alcanza su menor nivel de aprobación en el segundo trimestre del segundo año, Jorge Batlle durante la mitad del período (primer trimestre de 2003) mientras que el segundo gobierno de Vázquez obtiene su menor nivel de aprobación en el primer trimestre de su último año demandato.
 
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -771,7 +766,7 @@ plot(plot_dr_s)
 
 ## {.toc-ignore .unlisted .unnumbered}
 
-Los gráficos debajo muestran la media de nuestra estimación trimestral para % de aprobación y saldo neto, con las barras de error representando la **desviación estandar**. Las medias de la aprobación trimestral presentan un escenario similar al descripto anteriormente, con el primer gobierno de Vázquez y el gobierno de Mujica como los de mayor aprobación, y un nivel simiilar para el segundo gobierno de Sanguinetti y Vázquez. A su vez, la administración de Batlle es la que presenta mayor desviación debido a su luna de miel con altos % de aprobación y su posterior marcado declive hasta posiciones mayoritariamente negativas.
+Los gráficos debajo muestran la media de nuestra estimación trimestral para % de aprobación y saldo neto, con las barras de error representando la **desviación estandar**. Las medias de la aprobación trimestral presentan un escenario similar al descripto anteriormente, con el primer gobierno de Vázquez y el gobierno de Mujica como los de mayor aprobación, y un nivel similar para el segundo gobierno de Sanguinetti y Vázquez. A su vez, la administración de Batlle es la que presenta mayor desviación debido a su luna de miel con altos % de aprobación y su posterior marcado declive hasta posiciones mayoritariamente negativas.
 
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -932,7 +927,7 @@ plot_promedio_s <- ggplot(data = dat_equipos_avg,
 plot(plot_promedio_s)
 ```
 
-### **3. Datos solo de Equipos Consultores **
+### **3. Datos de Equipos Consultores **
 
 Por último, también es posible analizar la serie utilizando los datos de una única consultora, para mantener lo más constante posible la metodología de las encuestas. Si bien pueden existir cambios en la serie de una misma consultora, normalmente los grandes aspectos metodológicos presentan pocos cambios permitiendo la **comparación lineal**. En este caso presentamos la serie de Equipos Consultores porque es la mayor dentro de los datos de [**opuy**](https://github.com/Nicolas-Schmidt/opuy) (64% de las encuestas disponibles fueron realizadas por Equipos). Al igual que con la estimación mediante el algortimo de *dyad-ratios* la serie es trimestral. Como es de esperarse, los resultados son similares a los anteriormente descriptos. 
 
@@ -1351,144 +1346,14 @@ include_graphics("data/aprob_comparada.png")
 <div style="text-align: justify">
 Para poder comparar los niveles de aprobación presidencial entre países es necesario partir de estimaciones comparables y tener en cuenta los ciclos en la aprobación, es decir, comparar ciclos completos, o ciclos a la misma altura. En este caso para visualizar los promedios de aprobación de distintos presidentes en los países de América del Sur, utilizamos las series estimadas con el algoritmo de *dyad-ratios* publicadas por el [Executive Approval Project](http://www.executiveapproval.org/). Utilizando estas series trimestrales de aprobación en cada país calculamos el promedio para cada presidente que haya terminado su ciclo.
 
-El gráfico muestra que el **rango de aprobación** es similar para la mayoría de los países. Tanto Argentina, Brasil, Chile, Colombia, Ecuador y Uruguay muestran un rango de entre poco menos de 40% y 60% de aprobación promedio de los presidentes con ciclos cumplidos. Por otra parte, Paraguay y Venezuela muestrna un valor máximo inferior, cercano al 45% mientras que Perú es el país que presenta los dos pormedios de aprobación más bajos para gobiernos que cumplieron el ciclo. 
+El gráfico muestra que el **rango de aprobación** es similar para la mayoría de los países. Tanto Argentina, Brasil, Chile, Colombia, Ecuador y Uruguay muestran un rango de entre poco menos de 40% y 60% de aprobación promedio de los presidentes con ciclos cumplidos. Por otra parte, Paraguay y Venezuela muestran un valor máximo inferior, cercano al 45% mientras que Perú es el país que presenta los dos promedios de aprobación más bajos para gobiernos que cumplieron el ciclo. 
 
-Es importante considerar que la aprobación presidencial condiciona la probabilidad de que el presidente termine su ciclo. De esta forma, al considerar solamente gobiernos que hayan terminado su ciclo, se excluyen algunos mandatos con menor aprobación promedio 
+Es importante considerar que la aprobación presidencial condiciona la probabilidad de que el presidente termine su ciclo. De esta forma, al considerar solamente gobiernos que hayan terminado su ciclo, se excluyen algunos mandatos con menor aprobación promedio. 
 </div>
 
 <hr style="border:1.5px solid #2c3e50"> </hr>
 
 <br />
-
-<!-- # **Intención de voto** -->
-
-<!-- ## **Tabaré Vázquez II (2014-2019)** -->
-
-<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum. -->
-
-<!-- <br /> -->
-
-<!-- <br /> -->
-
-<!-- <div style="text-align: center"> -->
-<!-- #### **Nombre de Indicador I**  -->
-<!-- </div> -->
-
-<!-- ### {.tabset .tabset-fade .tabset-pills} -->
-
-<!-- #### Gráfico -->
-
-<!-- ```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"} -->
-<!-- gapminder <- gapminder::gapminder %>%  -->
-<!--   filter(country == "Uruguay") -->
-
-<!-- g1 <- ggplot(gapminder, -->
-<!--        aes(x = year, y = lifeExp)) + -->
-<!--   geom_point(size = 3, colour = "#2c3e50") + -->
-<!--   geom_line(size = 1, colour = "#2c3e50", alpha = .6) + -->
-<!--   theme_minimal() + -->
-<!--   labs(x = "", y = "", -->
-<!--        title = "Esperanza de vida en Uruguay") -->
-
-<!-- plot(g1) -->
-<!-- ``` -->
-
-
-<!-- ```{r} -->
-<!-- download_this(g1, -->
-<!--               button_label = "Descargar gráfico", -->
-<!--               icon = "fa fa-download") -->
-<!-- ``` -->
-
-
-<!-- #### Tabla -->
-
-<!-- ```{r} -->
-<!-- DT::datatable(gapminder, -->
-<!--               extensions =  'Buttons', -->
-<!--               options =  list(dom = 'Bfrtip', -->
-<!--                               buttons = c('copy', 'csv', 'excel', 'print'))) -->
-<!-- ``` -->
-
-<!-- #### Código en R -->
-
-<!-- ```{r, echo=TRUE, eval=FALSE} -->
-<!-- gapminder <- gapminder::gapminder %>%  -->
-<!--   filter(year == 2007) -->
-
-<!-- hist(gapminder$lifeExp, -->
-<!--      main = "Distribución de esperanza de vida en 2007", -->
-<!--      col = "skyblue3", -->
-<!--      border ="black", -->
-<!--      density = 75) -->
-
-<!-- ``` -->
-
-
-<!-- ## {.toc-ignore .unlisted .unnumbered} -->
-
-<!-- ## **José Mujica (2014-2019)** -->
-
-<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras interdum est a lorem ultricies feugiat. Curabitur vitae magna molestie, lacinia risus quis, egestas quam. Mauris tempor nunc neque, faucibus scelerisque leo porttitor eu. Maecenas sit amet mi ut justo consequat malesuada. Phasellus id ligula quis purus mattis vulputate nec a metus. Nam tempus pharetra feugiat. Nunc vitae metus commodo ante molestie semper vitae vitae orci. Ut convallis mi ligula, at aliquet justo tristique eu. Etiam facilisis nulla et luctus dapibus. In vel sagittis nibh. Cras mattis vehicula quam, et lacinia est sodales at. Fusce vitae mauris sed ante tempus tincidunt in eu elit. Etiam ornare fermentum erat, in aliquet mauris efficitur in. Morbi id tincidunt nisl. Ut et pharetra ipsum. -->
-
-<!-- <div style="text-align: center"> -->
-<!-- #### **Nombre de Indicador II**  -->
-<!-- </div> -->
-
-<!-- ### {.tabset .tabset-fade .tabset-pills} -->
-
-<!-- #### Gráfico -->
-
-<!-- ```{r, echo=FALSE, fig.width=8, fig.height=4, fig.align="center"} -->
-<!-- gapminder <- gapminder::gapminder %>%  -->
-<!--   filter(country == "Uruguay") -->
-
-<!-- g1 <- ggplot(gapminder, -->
-<!--        aes(x = year, y = lifeExp)) + -->
-<!--   geom_point(size = 3, colour = "#2c3e50") + -->
-<!--   geom_line(size = 1, colour = "#2c3e50", alpha = .6) + -->
-<!--   theme_minimal() + -->
-<!--   labs(x = "", y = "", -->
-<!--        title = "Esperanza de vida en Uruguay") -->
-
-<!-- plot(g1) -->
-<!-- ``` -->
-
-
-<!-- <!-- Por si no usan Plotly (que ya tiene botón de descarga) --> -->
-
-<!-- ```{r} -->
-<!-- download_this(g1, -->
-<!--               button_label = "Descargar gráfico", -->
-<!--               icon = "fa fa-download") -->
-<!-- ``` -->
-
-<!-- #### Tabla -->
-
-<!-- ```{r} -->
-<!-- DT::datatable(gapminder, -->
-<!--               extensions =  'Buttons', -->
-<!--               options =  list(dom = 'Bfrtip', -->
-<!--                               buttons = c('copy', 'csv', 'excel', 'print'))) -->
-<!-- ``` -->
-
-<!-- #### Código en R -->
-
-<!-- ```{r, echo=TRUE, eval=FALSE} -->
-<!-- gapminder <- gapminder::gapminder %>%  -->
-<!--   filter(year == 2007) -->
-
-<!-- hist(gapminder$lifeExp, -->
-<!--      main = "Distribución de esperanza de vida en 2007", -->
-<!--      col = "skyblue3", -->
-<!--      border ="black", -->
-<!--      density = 75) -->
-
-<!-- ``` -->
-
-<!-- ## {.toc-ignore .unlisted .unnumbered} -->
-
-<!-- <hr style="border:1.5px solid #2c3e50"> </hr> -->
 
 # **Autoidentificación ideológica**
 
